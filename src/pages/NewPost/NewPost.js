@@ -19,7 +19,6 @@ const NewPost = () => {
     const metadata = {
       contentType: file.type,
     };
-    //  指定變成file的type類型
     fileRef
       .put(file, metadata)
       .then(() => {
