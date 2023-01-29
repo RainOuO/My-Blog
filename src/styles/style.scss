@@ -37,62 +37,19 @@ body {
 }
 
 .app {
-  margin-top: 94px;
+  // margin-top: 94px;
 }
-
-.swal2-popup {
-  width: auto;
-  min-width: 420px;
-}
-
-.swal2-container {
-  z-index: 9999;
-}
-
-.swal2-icon.swal2-success {
-  border-color: rgba(255, 194, 0, 0.8);
-  color: rgba(255, 194, 0, 0.8);
-}
-
-.swal2-icon.swal2-success [class^="swal2-success-line"] {
-  background-color: rgba(255, 194, 0, 1);
-}
-
-.swal2-icon.swal2-success .swal2-success-ring {
-  border: 0.25em solid rgba(255, 194, 0, 0.4);
-}
-
-.swal2-styled.swal2-confirm {
-  background-color: #ef7a70;
-}
-
-.swal2-styled.swal2-cancel:focus,
-.swal2-styled.swal2-confirm:focus {
-  box-shadow: 0 0 0 0px;
-}
-
-.ant-popover {
-  z-index: 99999;
-  opacity: 0.8;
-}
-
-.ant-popover-inner {
-  border-radius: 8px;
-  color: #d4d4d4;
-}
-
 .offcanvas {
   border: none;
   // max-width: 90vw;
 }
-
+.custom-container {
+  max-width: 1280px;
+  padding: 0 70px;
+}
 @media screen and (max-width: 768px) {
   .app {
-    margin-top: 80px;
-  }
-  .swal2-popup {
-    width: auto;
-    min-width: 260px;
+    // margin-top: 80px;
   }
 
   * {

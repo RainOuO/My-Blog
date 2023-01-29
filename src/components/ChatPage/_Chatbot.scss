@@ -1,20 +1,28 @@
 .messenger {
-  position: relative;
-  padding-left: 100px;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  z-index: 999;
 
   .wrap {
+    background-color: #f4f5f7;
+    overflow: hidden;
+    width: 30%;
+    position: fixed;
+    right: 15px;
+    bottom: 15px;
     .closebtn {
       align-items: center;
-      background-color: #707c92;
+      // background-color: #707c92;
       border-radius: 1rem;
-      color: rgb(235, 61, 61);
+      color: #b7bcc2;
       cursor: pointer;
       display: flex;
       font-size: 2rem;
       justify-content: center;
       opacity: 0.7;
       position: absolute;
-      right: 48%;
+      right: 5%;
       top: 10px;
       transition: opacity 0.2s;
       height: 1.75rem;
@@ -36,9 +44,7 @@
         }
       }
     }
-    background-color: #f4f5f7;
-    overflow: hidden;
-    width: 50%;
+
     // height: auto;
 
     .wrap-open {
@@ -54,7 +60,7 @@
           .header {
             border-top-left-radius: 5px;
             border-top-right-radius: 5px;
-            background-color: rgb(107, 107, 226);
+            background-color: #6c767c;
             .title {
               height: 4rem;
               width: 100%;
@@ -71,10 +77,11 @@
           }
         }
         .body-sections {
+          padding: 10px;
           // height: calc(100% - 4rem - 34px);
           // overflow: hidden;
           height: 60vh;
-          overflow-y: scroll;
+          overflow-x: auto;
           position: relative;
           .dummy-bar {
             display: block;
@@ -82,7 +89,7 @@
             top: 0;
             transition: height 0.1s ease;
             height: 1.5rem;
-            width: 100%;
+            width: 90%;
             .card-layout {
               height: 100%;
               overflow-x: hidden;
@@ -92,15 +99,17 @@
           }
         }
         .chatBoxBottom {
-          margin-top: 5px;
+          margin-top: 10px;
           display: flex;
           align-items: center;
           justify-content: space-between;
+          border-radius: 6px;
         }
         .chatMessageInput {
-          width: 80%;
-          height: 90px;
+          width: 95%;
+          height: 60px;
           padding: 10px;
+          margin-bottom: 10px;
         }
         .chatSumnitButton {
           width: 70px;
@@ -165,4 +174,18 @@
       }
     }
   }
+}
+@media screen and (max-width: 1024px) {
+}
+@media screen and (max-width: 768px) and (max-width: 920px) {
+}
+@media screen and (max-width: 767px) {
+  .messenger {
+    z-index: 999;
+    .wrap {
+      width: 90%;
+    }
+  }
+}
+@media screen and (max-width: 375px) {
 }

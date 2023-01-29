@@ -96,12 +96,12 @@ const ChatFooter = ({ socket }) => {
         <input
           type="text"
           placeholder="請輸入"
-          className="chatMessageInput"
+          className="chatMessageInput form-control"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleTyping}
         />
-        <button
+        {/* <button
           className="chatSumnitButton"
           onClick={(e) => {
             if (message === "") {
@@ -110,7 +110,7 @@ const ChatFooter = ({ socket }) => {
           }}
         >
           發送
-        </button>
+        </button> */}
       </form>
     </div>
   );

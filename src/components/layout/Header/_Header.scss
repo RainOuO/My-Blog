@@ -1,358 +1,53 @@
-$fmain_color: #ffc200; // 主色
-$header_bg_color: #fffef4; //特別調的header色
-$second_maincolor: #feefc3;
+$header_bg_color: #c0c6b9;
 $graycolor: #747474;
-$font-size: 1.05rem;
-$font-weight: 1000;
-
-.header_mobile_menu {
-  display: none;
+$font-size_P: 18rem;
+a,
+ul {
+  text-decoration: none;
+  list-style: none;
 }
-
 .header_main_body {
   background-color: $header_bg_color;
-  // #feefc3;
 }
-
 .header_main {
-  padding: 0 80px;
+  padding: 0 100px;
   box-shadow: rgba(232, 232, 232, 0.662) 1px 1px 5px;
-
-  .header_menu {
-    padding: 4px 0;
-  }
-
-  a {
-    position: relative;
-    text-decoration: none;
-  }
-
-  .header_dog-logo {
-    width: auto;
-    height: 86px;
-  }
-
-  .header_container {
-    width: auto;
-  }
-
-  .header_tittle {
-    justify-content: center;
-    align-items: center;
-    font-size: $font-size;
-    font-weight: $font-weight;
-    // margin-right: 50px;
-  }
-}
-
-.header_product {
-  letter-spacing: 0.2rem;
-  color: #000;
-  // padding-right: 20px;
-  // padding-left: 20px;
-  padding: 8px 28px;
-  position: relative;
-
-  &:last-child::after {
-    width: 0;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    width: 1px;
-    height: 70%;
-    top: 50%;
-    transform: translateY(-50%);
-    right: -1rem;
-    background: #000;
-  }
-
-  &::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 0;
-    transform: translateX(-50%);
-    border-bottom: 2.5px $fmain_color solid;
-    transition: 0.3s all;
-  }
-
-  &:hover {
-    color: $fmain_color;
-    font-weight: bolder;
-    // text-shadow:#ffbf00 1px 0px 1px ;
-    transition: 0.5s all step-start;
-
-    &::before {
-      width: calc(100% - 16px);
-    }
-  }
-
-  &.active::before {
-    width: calc(100% - 16px);
-  }
-}
-
-.aaaa {
-  background-color: rgb(220, 31, 31);
-}
-
-.header_community {
-  color: #000;
-  padding: 0 48px;
-  position: relative;
-
-  &:hover {
-    color: $fmain_color;
-
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      border-bottom: $fmain_color 2px solid;
-      width: 50%;
-      transition: 0.5s all;
+  .user-picture {
+    img {
+      width: 100%;
+      height: 40px;
+      object-fit: contain;
+      border-radius: 8px;
     }
   }
 }
 
-.header_Icon {
-  width: 120px;
-  gap: 16px;
-
-  svg {
-    cursor: pointer;
-    color: $fmain_color;
-    width: 25px;
-    height: 25px;
-    margin: 3px;
-    flex-shrink: 0;
+@media screen and (max-width: 1024px) {
+  .header_main {
+    padding: 0 70px;
   }
-
-  .header_Icon {
-    &_user {
-      svg {
-        padding: 2px;
-
-        path {
-          color: $fmain_color;
-        }
+}
+@media screen and (max-width: 768px) and (max-width: 920px) {
+  .header_main {
+    .header_Icon {
+      // padding-left: 1rem;
+    }
+    .header_Icon_content {
+      .row > * {
+        // margin: 0;
+        padding-right: 0;
+        padding-left: 0;
       }
     }
   }
 }
-
-
-.header_rwd_menu_Offcanvas {
-  .header_rwd_tittle {
-    position: relative;
-    background-color: #feefc3;
-    justify-content: center;
-
-    button {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      padding: 8px;
-      margin: 0;
-
-      &:active,
-      &:focus {
-        border: 0;
-        box-shadow: none;
-      }
-    }
-
-    .header_rwd_menu_imgWrap {
-      img {
-        height: 180px;
-      }
-    }
-  }
-
-  .offcanvas-body {
-    .header_rwd_menu_NavLink {
-      position: relative;
-      width: 90%;
-      margin: 0 auto;
-      padding: 12px 0;
-      font-weight: bold;
-      letter-spacing: 1.5px;
-
-      &::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100%;
-        height: 1px;
-        background-color: #74747440;
-      }
-
-      img {
-        height: 12px;
-      }
-    }
+@media screen and (max-width: 767px) {
+  .header_main {
+    padding: 0 30px;
   }
 }
-
-// === RWD ===
-@media screen and (max-width: 1400px) {
-  .header_main_body {
-    .header_main {
-      padding: 0 40px;
-    }
-
-    .header_product {
-      &::after {
-        right: 0rem;
-        height: 40%;
-      }
-
-      &:hover::before,
-      &.active::before {
-        width: calc(100% - 40px);
-      }
-    }
-  }
-}
-
-@media screen and (max-width: 1080px) {
-  .header_main_body {
-    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.05);
-
-    .header_product,
-    .header_main,
-    .header_dog-logo,
-    .header_community,
-    .header_main {
-      display: none !important;
-    }
-
-    .header_main {
-      padding: 0 1rem;
-
-      .header_dog-logo {
-        margin-left: 30px;
-        height: 80px;
-      }
-    }
-
-    .header_mobile_menu {
-      display: flex;
-      width: 90%;
-      margin: 0 auto;
-
-      .header_rwd_menuBar {
-        width: 100%;
-      }
-
-      .navbar-brand {
-        margin: 0;
-        padding: 0;
-
-        img {
-          height: 64px;
-        }
-      }
-
-      // = mobile icon area
-      .header_Icon {
-        flex: 1 1 auto;
-        padding-right: 4px;
-
-        a {
-          margin: 0;
-
-          svg {
-            color: #747474;
-          }
-        }
-      }
-
-      // = mobile menu btn
-
-      .header_rwd_menubtn {
-        .navbar-toggler-icon {
-          svg {
-            color: $fmain_color !important;
-          }
-        }
-        margin-left: 16px;
-        border: 0;
-        padding: 0;
-        svg {
-          color: $fmain_color !important;
-        }
-        &:focus,
-        &:active {
-          border: 0;
-          box-shadow: none;
-        }
-      }
-      svg {
-        color: $fmain_color !important;
-      }
-    }
-  }
-
-  .header_rwd_menu_Offcanvas {
-    .header_rwd_tittle {
-      .header_rwd_menu_imgWrap {
-        img {
-          height: 160px;
-        }
-      }
-    }
-
-    .offcanvas-body {
-      .header_rwd_tittle {
-        .header_rwd_menu_imgWrap {
-          img {
-            height: 160px;
-          }
-        }
-      }
-    }
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .header_main_body {
-    .header_mobile_menu {
-      // = mobile icon area
-      .header_Icon {
-        padding: 0;
-
-        a {
-          margin-right: 12px;
-
-          svg {
-            width: 22px;
-          }
-
-          &.header_Icon_cart svg {
-            width: 24px;
-          }
-        }
-      }
-    }
-  }
-
-  .header_rwd_menu_Offcanvas {
-    width: 100% !important;
-
-    .header_rwd_tittle {
-      .header_rwd_menu_imgWrap {
-        img {
-          height: 100px;
-        }
-      }
-    }
+@media screen and (max-width: 375px) {
+  .header_main {
+    padding: 0 30px;
   }
 }

@@ -1,0 +1,49 @@
+.postInfo {
+  margin-top: 100px;
+  min-height: 80vh;
+}
+.article-info {
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(219, 219, 219);
+  border-bottom-right-radius: 3px;
+  border-top-right-radius: 3px;
+}
+.article-other_userPhoto {
+  width: 100%;
+  img {
+    width: 60%;
+    border-radius: 50%;
+  }
+}
+.article-name {
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+.isLikes_icon {
+  cursor: pointer;
+  svg {
+    font-size: 1.6rem;
+  }
+}
+.isCollected {
+  cursor: pointer;
+  svg {
+    color: red;
+    font-size: 1.6rem;
+  }
+}
+.comments_container {
+  overflow-y: auto;
+  height: 330px;
+  width: 100%;
+  .row {
+    margin-right: 0;
+    margin-left: 0;
+  }
+}
+.comment-Content {
+  width: 70%;
+  border: solid 1px rgb(178 169 169);
+  border-radius: 6px;
+  padding: 5px 20px;
+}

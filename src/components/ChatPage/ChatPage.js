@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import ChatBody from "./ChatBody";
 import ChatFooter from "./ChatFooter";
 import "./Chatpage.scss";
+import "./_Chatbot.scss";
 
 const ChatPage = ({ socket }) => {
   const [messages, setMessages] = useState([]);
@@ -22,7 +23,7 @@ const ChatPage = ({ socket }) => {
     lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
   const [chatbot, setChatbot] = useState(false);
-  console.log(messages);
+  // console.log(messages);
 
   return (
     <div className="messenger">
@@ -64,14 +65,14 @@ const ChatPage = ({ socket }) => {
                           <div className="message__chats" key={message.id}>
                             <p className="sender__name">{message.name}</p>
                             <div className="message__sender">
-                              <p>{message.text}</p>
+                              <span>{message.text}</span>
                             </div>
                           </div>
                         ) : (
                           <div className="message__chats" key={message.id}>
                             <p>客服人員</p>
                             <div className="message__recipient">
-                              <p>{message.text}</p>
+                              <span>{message.text}</span>
                             </div>
                           </div>
                         )

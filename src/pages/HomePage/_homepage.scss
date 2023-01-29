@@ -1,20 +1,232 @@
+.header-background {
+  background-color: #eae7dc;
+  min-height: 12vh;
+}
 .homeContainer {
-  margin-top: 120px;
-  .editor {
-    min-height: 100vh;
+  background-color: #eae7dc;
+  .loading-state {
+    margin-top: 2rem;
   }
-  .main-editor {
-    position: relative;
-    overflow: hidden;
-    border-color: transparent;
-    // color: transparent;
-    pointer-events: none;
+  .loading-state {
+    .login-with-google-btn {
+      width: 50%;
+      transition: background-color 0.3s, box-shadow 0.3s;
+      padding: 12px 26px 12px 42px;
+      border: none;
+      border-radius: 6px;
+      box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
+      color: #757575;
+      font-size: 1.4rem;
+      font-weight: 500;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+        sans-serif;
+
+      background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=);
+      background-color: white;
+      background-repeat: no-repeat;
+      background-position: 12px 20px;
+
+      &:hover {
+        box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25);
+      }
+
+      &:active {
+        background-color: #eeeeee;
+      }
+      &:focus {
+        outline: none;
+        box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25),
+          0 0 0 3px #c8dafc;
+      }
+
+      &:disabled {
+        filter: grayscale(100%);
+        background-color: #ebebeb;
+        box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
+        cursor: not-allowed;
+      }
+    }
+
+    .guest-btn {
+      border-radius: 6px;
+      padding: 10px 20px 5px 10px;
+      width: 50%;
+      color: #757575;
+      font-size: 1.4rem;
+      font-weight: 500;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+        sans-serif;
+      transition: 0.3s ease-in-out;
+      background-color: antiquewhite;
+      &:hover {
+        box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25);
+      }
+
+      &:active {
+        background-color: #eeeeee;
+      }
+      &:focus {
+        outline: none;
+        box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25),
+          0 0 0 3px #c8dafc;
+      }
+
+      &:disabled {
+        filter: grayscale(100%);
+        background-color: #ebebeb;
+        box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
+        cursor: not-allowed;
+      }
+    }
+  }
+  .about-Myblog {
+    margin-top: 6rem;
+    p {
+      font-size: 1.2rem;
+    }
+  }
+}
+//滑鼠轉動開始
+.mouse-hover {
+  .mouser-box {
+    width: "50%";
+    height: "10%";
+  }
+  @media screen and (min-width: 1025px) and (max-width: 1440px) {
+    // margin-top: 10%;
+  }
+  margin-top: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position: relative;
+  z-index: 10;
+  .section-down-arrow {
+    border: none !important;
+    overflow: visible;
+    text-align: center;
+    opacity: 1;
+    height: auto;
+    bottom: 13px;
+    animation: nudgeMouse 2.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+    display: inline-block;
+    line-height: 50px;
+    border-radius: 100px;
+    font-size: 25px;
+    transition: opacity 0.4s ease;
+    margin-left: 0;
+    left: 0;
+  }
+
+  @keyframes nudgeMouse {
+    0% {
+      transform: translateY(0);
+    }
+    45% {
+      transform: translateY(8px);
+    }
+    100%,
+    65% {
+      transform: translateY(0);
+    }
+  }
+  .nectar-scroll-icon-path {
+    fill: transparent;
+    stroke-width: 2px;
+    stroke-dashoffset: 120; //! stroke線條隱藏兩個一定都要有
+    stroke-dasharray: 120; //! stroke線條隱藏兩個一定都要有
+    animation: mouse-scroll-btn-roll-out 0.55s cubic-bezier(0.5, 0.1, 0.07, 1);
+  }
+  @keyframes mouse-scroll-btn-roll-out {
+    0% {
+      stroke-dashoffset: 0;
+    }
+    100% {
+      stroke-dashoffset: -120;
+    }
+  }
+  .section-down-arrow:hover {
+    .nectar-scroll-icon-path {
+      stroke-dashoffset: 0;
+      animation: mouse-scroll-btn-roll-over 0.55s
+        cubic-bezier(0.5, 0.1, 0.07, 1);
+    }
+  }
+  @keyframes mouse-scroll-btn-roll-over {
+    0% {
+      stroke-dashoffset: 120;
+    }
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  .section-down-arrow::before {
+    z-index: 5;
+    position: absolute;
+    content: "";
+    display: block;
+    left: 50%;
+    margin-left: -1px;
+    top: 15px;
+    background-color: #c7bc90;
+    width: 2px;
+    height: 6px;
+    border-radius: 10px;
+    transition: background-color 0.55s cubic-bezier(0.5, 0.1, 0.07, 1);
+  }
+
+  .section-down-arrow::after {
+    content: "";
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    display: block;
+    width: 30px;
+    height: 45px;
+    margin-left: -15px;
+    margin-top: -15px;
+    border: 2px solid #c7bc90;
+    border-radius: 30px;
+    -webkit-box-sizing: border-box;
     box-sizing: border-box;
-    width: 992.125px;
-    // height: 3616.42px;
-    border-width: 0px;
-    border-style: none;
-    padding: 0px;
-    top: 0px;
+    z-index: 5;
+    transition: background-color 0.55s cubic-bezier(0.5, 0.1, 0.07, 1);
   }
+  .nectar-scroll-icon {
+    width: 30px;
+    height: 45px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    z-index: 100;
+  }
+}
+@media screen and (max-width: 1024px) {
+}
+@media screen and (max-width: 768px) and (max-width: 920px) {
+  .homeContainer {
+    .loading-state {
+      .guest-btn {
+        width: 80%;
+      }
+      .login-with-google-btn {
+        width: 80%;
+      }
+    }
+  }
+}
+@media screen and (max-width: 767px) {
+  .header-background {
+    min-height: 30vh;
+  }
+  .home-header_img {
+    width: 100%;
+    img {
+      width: 100%;
+    }
+  }
+}
+@media screen and (max-width: 375px) {
 }
