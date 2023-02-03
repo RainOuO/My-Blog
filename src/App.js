@@ -12,15 +12,20 @@ import socketIO from "socket.io-client";
 import MyPosts from "./pages/MyPosts";
 import Mycollections from "./pages/Mycollections";
 import Mysettings from "./pages/MySettings/Mysettings";
+import AboutMe from "./pages/AboutMe";
 import "./styles/style.scss";
 import firebase from "./utils/firebase";
 import { useEffect, useState } from "react";
 import Loading from "./components/layout/Loading";
 import { io } from "socket.io-client";
 const API_URL = process.env.REACT_APP_OPEN_URL;
+const NgrokCookie = API_URL.replace("https://", "");
+// console.log("NgrokCookie=======", NgrokCookie);
 // const socket = io(API_URL, {
 //   withCredentials: true,
-//   extraHeaders: { "my-custom-header": "abccd" },
+//   extraHeaders: { "my-custom-header": "abcd" },
+//   "Access-Control-Allow-Headers": "*",
+//   "Access-Control-Allow-Credentials": true,
 // });
 const socket = socketIO.connect("http://localhost:3002");
 function App() {
@@ -32,6 +37,7 @@ function App() {
       setUsersLodaing(currentUser);
     });
     setguestLodaing(null);
+    document.cookie = `abuse_interstitial=${NgrokCookie}`;
   }, []);
   return (
     <div className="app">
@@ -43,8 +49,12 @@ function App() {
             <Homepage socket={socket} setguestLodaing={setguestLodaing} />
           }
         />
+        <Route path="/AboutMe" element={<AboutMe socket={socket} />}></Route>
         <Route path="/PDF" element={<PDFContent socket={socket} />}></Route>
-        <Route path="/post" element={<Post socket={socket} />}></Route>
+        <Route
+          path="/post"
+          element={<Post socket={socket} usersLodaing={usersLodaing} />}
+        ></Route>
         <Route path="/signin" element={<Signin />}></Route>
         <Route path="/new-post" element={<NewPost />}></Route>
         <Route path="/Loading" element={<Loading />}></Route>

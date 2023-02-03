@@ -11,16 +11,13 @@ import "firebase/compat/storage";
 import "./_PostInfo.scss";
 import { handleWarningComfirm } from "../../utils/handler/handleStatusCard";
 const API_URL = process.env.REACT_APP_OPEN_URL;
-console.log("API_URL", API_URL);
 const PostInfo = ({ usersLodaing }) => {
-  console.log("使用者狀態", usersLodaing);
   const navigate = useNavigate();
   const { postId } = useParams();
   const [post, setPost] = useState({ auther: {} });
   const [commentContent, setCommentContent] = useState("");
   const [userMessage, setuserMessage] = useState({});
   const [comments, setComments] = useState("");
-  console.log("comments內容", comments);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     firebase
@@ -76,11 +73,9 @@ const PostInfo = ({ usersLodaing }) => {
     firebase.auth().currentUser?.uid
   );
   function toggleLiked() {
-    // const uid = firebase.auth().currentUser.uid;
     const email = firebase.auth().currentUser.email;
     const LikeuserPhoto = firebase.auth().currentUser.photoURL;
     const likeuser = firebase.auth().currentUser.displayName;
-    console.log("LikeuserPhoto照片", LikeuserPhoto);
     if ((isLike, LikeByEmails, LikebyPhoto)) {
       firebase
         .firestore()
@@ -121,19 +116,8 @@ const PostInfo = ({ usersLodaing }) => {
   );
   async function onSubmit(e) {
     e.preventDefault();
-    try {
-      const result = await axios.post(
-        `${API_URL}/Rain0u0`,
-        { userMessage },
-        {
-          withCredentials: true,
-        }
-      );
-
-      const data = result.data;
-      console.log("data", data);
-    } catch (error) {
-      console.log("404伺服器網址出現問題", error);
+    if (commentContent === "") {
+      return;
     }
     setIsLoading(true);
     const firestore = firebase.firestore();
@@ -143,7 +127,6 @@ const PostInfo = ({ usersLodaing }) => {
       commentsCount: firebase.firestore.FieldValue.increment(1),
       // increment是firestore提供的增加1的function
     });
-
     const commentRef = postRef.collection("comments").doc();
     try {
       e.preventDefault();
@@ -156,14 +139,27 @@ const PostInfo = ({ usersLodaing }) => {
           photoURL: firebase.auth().currentUser.photoURL || "",
         },
       });
+      console.log("batch==================", batch);
     } catch (error) {
       console.log(error);
     }
-
     await batch.commit().then(() => {
       setCommentContent("");
       setIsLoading(false);
     });
+    try {
+      const result = await axios.post(
+        `${API_URL}/Rain0u0`,
+        { userMessage },
+        {
+          withCredentials: true,
+        }
+      );
+      const data = result.data;
+      console.log("data", data);
+    } catch (error) {
+      console.log("404伺服器網址出現問題", error);
+    }
   }
   function GuestSubmit(e) {
     e.preventDefault();
@@ -185,6 +181,7 @@ const PostInfo = ({ usersLodaing }) => {
       "所以不能留言唷~點擊確認到首頁登入google吧!"
     );
   }
+
   function Collected(e) {
     e.preventDefault();
     handleWarningComfirm(

@@ -43,11 +43,24 @@ ul {
 }
 @media screen and (max-width: 767px) {
   .header_main {
-    padding: 0 30px;
+    padding: 0 20px;
+    .post_article {
+      display: none;
+    }
+    .header_Icon {
+      padding-left: 3rem;
+    }
   }
 }
 @media screen and (max-width: 375px) {
   .header_main {
-    padding: 0 30px;
+    padding: 0 15px;
+    .post_article {
+      display: none;
+    }
+    .header_Icon {
+      padding-left: 4rem;
+      text-align: center;
+    }
   }
 }

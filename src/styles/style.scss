@@ -9,7 +9,10 @@
   box-sizing: border-box;
   -webkit-user-drag: none;
 }
-
+.swal2-icon.swal2-warning {
+  border-color: #fd0230 !important;
+  color: #fd0230 !important;
+}
 body {
   font-family: "Noto Sans TC", "Open Sans", sans-serif !important;
 }

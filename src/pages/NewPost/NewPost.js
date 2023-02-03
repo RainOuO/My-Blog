@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import firebase from "../../utils/firebase";
 import "firebase/compat/firestore";
 import "firebase/compat/storage";
-import Photo from "../../images/dogs.png";
+import defaultPhoto from "../../images/photo_backgroung.jpg";
 import { useNavigate } from "react-router-dom";
 import "./_NewPost.scss";
 const NewPost = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [file, setFile] = useState([]);
+  const [file, setFile] = useState(null);
   const navigate = useNavigate();
 
   function onSubmit(e) {
@@ -34,6 +34,7 @@ const NewPost = () => {
               email: firebase.auth().currentUser.email,
             },
             imageUrl,
+            LikeBy: [],
           });
         });
       })
@@ -46,9 +47,7 @@ const NewPost = () => {
         }
       });
   }
-  // const previewUrl = file
-  //   ? URL.createObjectURL(file)
-  //   : "https://picsum.photos/200/300";
+  const previewUrl = file ? URL?.createObjectURL(file) : defaultPhoto;
   return (
     <>
       <div className="Newpost">
@@ -57,7 +56,7 @@ const NewPost = () => {
           <form action="" onSubmit={onSubmit}>
             <div>
               <div>
-                <img className="w-25" src={Photo} alt="" />
+                <img className="w-25" src={previewUrl} alt="" />
               </div>
               <div>
                 <div>

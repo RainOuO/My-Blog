@@ -5,14 +5,14 @@
     color: #49676e;
   }
   .photo {
+    width: 100%;
     display: flex;
+    justify-content: center;
     margin: 0 auto;
     max-width: 500px;
     object-fit: contain;
   }
-
   .article {
-    // background-color: #eae7dc;
     margin-top: 1rem;
     background-color: rgb(255, 255, 255);
     border: 1px solid rgb(219, 219, 219);

@@ -1,36 +1,113 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import firebase from "../../utils/firebase";
 import { BsBookmark } from "react-icons/bs";
 import { FcLikePlaceholder } from "react-icons/fc";
+import { FcLike } from "react-icons/fc";
 import ChatPage from "../../components/ChatPage/ChatPage";
-
+import { Waypoint } from "react-waypoint";
 import photo_backgroung from "../../images/photo_backgroung.jpg";
-// import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import { handleWarningComfirm } from "../../utils/handler/handleStatusCard";
+
 import "firebase/compat/storage";
 import "./_Post.scss";
 
-const Post = ({ socket }) => {
+const Post = ({ socket, usersLodaing }) => {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [show, setShow] = useState(false);
+  const [Likecancel, setLikeCancel] = useState(false);
+  const [postLikeID, setPostLikeID] = useState("");
+  const [likeee, setLikeee] = useState([]);
+  // console.log("這是true 或false", likeee);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  console.log("按讚人============", posts);
+  const lastPostSnapshotRef = useRef();
+  // console.log("目前文章", posts);
   useEffect(() => {
+    //第一次拉firebase資料渲染
     firebase
       .firestore()
       .collection("posts")
       .orderBy("createdAt", "desc")
+      .limit(3)
       .get()
       .then((collectionSnapshot) => {
         const data = collectionSnapshot.docs.map((docSnapshot) => {
           const id = docSnapshot.id;
           return { ...docSnapshot.data(), id };
         });
+        lastPostSnapshotRef.current =
+          collectionSnapshot.docs[collectionSnapshot.docs.length - 1];
         setPosts(data);
       });
-  }, []);
+    userLike();
+    //點擊愛心後的函式
+  }, [Likecancel]);
+  useEffect(() => {
+    let like_icon = posts.map((e) => {
+      return e.LikeBy.includes(userLikes);
+    });
+    setLikeee(like_icon);
+  }, [posts]);
+  const userLikes = firebase.auth().currentUser?.displayName;
+  let WhoLikesID = posts.filter((v) => {
+    return v.id.includes(postLikeID);
+  });
+  const whoLikes = WhoLikesID[0]?.LikeBy.filter((e) => {
+    return e === userLikes || "";
+  });
+  //判斷使用者是否有點過
+  const toogleLike = whoLikes?.includes(
+    firebase.auth().currentUser?.displayName
+  );
+  const commentID = posts.map((e) => {
+    return e.id;
+  });
+  const NewComment = commentID.filter((x) => {
+    return x === postLikeID;
+  });
+  const postListID = posts.filter((e) => {
+    return e.id === NewComment[0];
+  });
+  async function userLike() {
+    const emails = firebase.auth().currentUser.email;
+    const LikeuserPhoto = firebase.auth().currentUser.photoURL;
+
+    const likeuser = firebase.auth().currentUser.displayName;
+    if (toogleLike) {
+      await firebase
+        .firestore()
+        .collection("posts")
+        .doc(postLikeID)
+        .update({
+          LikeBy: firebase.firestore.FieldValue.arrayRemove(likeuser),
+          LikeByEmail: firebase.firestore.FieldValue.arrayRemove(emails),
+          LikeuserPhot:
+            firebase.firestore.FieldValue.arrayRemove(LikeuserPhoto),
+        });
+    } else {
+      await firebase
+        .firestore()
+        .collection("posts")
+        .doc(postLikeID)
+        .update({
+          LikeBy: firebase.firestore.FieldValue.arrayUnion(likeuser),
+          LikeByEmail: firebase.firestore.FieldValue.arrayUnion(emails),
+          LikeuserPhot: firebase.firestore.FieldValue.arrayUnion(LikeuserPhoto),
+        });
+    }
+  }
+  function GuestSubmit() {
+    handleWarningComfirm(
+      "你沒有登入",
+      () => {
+        navigate("/");
+      },
+      "所以不能按讚唷~點擊確認到首頁登入google吧!"
+    );
+  }
   return (
     <>
       <div className="container post custom-container">
@@ -43,20 +120,16 @@ const Post = ({ socket }) => {
               Most recent works
             </h2>
             {posts !== "" ? (
-              posts.map((post) => {
+              posts.map((post, index) => {
                 return (
                   <div key={post.id} className="row">
-                    <div className="col-12">
+                    <div className="col-12 d-flex justify-content-center">
                       <Link to={`/postInfo/${post.id}`}>
-                        <div className="w-100">
-                          <img
-                            className="photo"
-                            src={
-                              post.imageUrl ? post.imageUrl : photo_backgroung
-                            }
-                            alt=""
-                          />
-                        </div>
+                        <img
+                          className="photo"
+                          src={post.imageUrl ? post.imageUrl : photo_backgroung}
+                          alt=""
+                        />
                       </Link>
                     </div>
                     <div className="col-12 mb-5">
@@ -64,22 +137,54 @@ const Post = ({ socket }) => {
                         <div className="">
                           <div className="row ">
                             <div className="col-3 d-flex">
-                              <span className="pe-3 likeIcon">
-                                <FcLikePlaceholder className="" />
-                              </span>
+                              {usersLodaing === null ? (
+                                <>
+                                  <span
+                                    className="pe-3 likeIcon "
+                                    onClick={() => {
+                                      GuestSubmit();
+                                    }}
+                                  >
+                                    {likeee[index] !== false ? (
+                                      <FcLike />
+                                    ) : (
+                                      <FcLikePlaceholder />
+                                    )}
+                                  </span>
+                                </>
+                              ) : (
+                                <>
+                                  <span
+                                    className="pe-3 likeIcon "
+                                    onClick={() => {
+                                      setPostLikeID(post.id);
+                                      setLikeCancel(!Likecancel);
+                                    }}
+                                  >
+                                    {likeee[index] !== false ? (
+                                      <FcLike />
+                                    ) : (
+                                      <FcLikePlaceholder />
+                                    )}
+                                  </span>
+                                </>
+                              )}
+
                               <p>{post.LikeBy?.[0] || "0"}</p>
                             </div>
-
                             <div
                               className=" d-inline otherLikes col-7"
-                              onClick={handleShow}
+                              onClick={() => {
+                                handleShow();
+                                setPostLikeID(post.id);
+                              }}
                             >
-                              {post.LikeBy === [] ? (
-                                <span>123</span>
+                              {post.LikeBy === undefined ? (
+                                <span></span>
                               ) : (
                                 <span>
                                   和其他
-                                  {post.LikeBy?.length || 0}人都說讚
+                                  {post.LikeBy?.length || ""}人都說讚
                                 </span>
                               )}
                             </div>
@@ -92,14 +197,40 @@ const Post = ({ socket }) => {
                               </Modal.Header>
                               <Modal.Body>
                                 <div className="row">
-                                  <div className="col-2 otherLikes_photo">
-                                    <img src={post.LikeuserPhot} alt="" />
-                                  </div>
+                                  <div className="col-2 otherLikes_photo"></div>
                                   <div className="col-10">
-                                    <p>{post.LikeBy || "按讚人"}</p>
-                                    <br />
-                                    <p>{post.LikeByEmail || "email"}</p>
-                                    <br />
+                                    {postListID.map((e) => {
+                                      let likeList = e.LikeBy;
+                                      let likeEmail = e.LikeByEmail;
+                                      let likeuserImage = e.LikeuserPhot;
+                                      let tidyUser_info = [];
+                                      for (
+                                        let i = 0;
+                                        i < likeList.length;
+                                        i++
+                                      ) {
+                                        let newsssss = {
+                                          name: likeList[i],
+                                          email: likeEmail[i],
+                                          photo: likeuserImage[i],
+                                        };
+                                        tidyUser_info.push(newsssss);
+                                      }
+                                      return (
+                                        <>
+                                          {tidyUser_info.map((v) => {
+                                            return (
+                                              <>
+                                                <img src={v.photo} alt="" />
+                                                <p>{v.name}</p>
+                                                <br />
+                                                <p>{v.email}</p>
+                                              </>
+                                            );
+                                          })}
+                                        </>
+                                      );
+                                    })}
                                   </div>
                                 </div>
                               </Modal.Body>
@@ -123,13 +254,35 @@ const Post = ({ socket }) => {
             ) : (
               <>
                 <div style={{ height: "80vh" }}>
-                  <h1 className="text-center mt-5">網頁搜尋不到 請稍後</h1>
+                  <h1 className="text-center mt-5">網頁搜尋不到 請重新整理</h1>
                 </div>
               </>
             )}
           </div>
         </div>
       </div>
+      <Waypoint
+        onEnter={() => {
+          if (lastPostSnapshotRef.current) {
+            firebase
+              .firestore()
+              .collection("posts")
+              .orderBy("createdAt", "desc")
+              .startAfter(lastPostSnapshotRef.current)
+              .limit(2)
+              .get()
+              .then((collectionSnapshot) => {
+                const data = collectionSnapshot.docs.map((docSnapshot) => {
+                  const id = docSnapshot.id;
+                  return { ...docSnapshot.data(), id };
+                });
+                lastPostSnapshotRef.current =
+                  collectionSnapshot.docs[collectionSnapshot.docs.length - 1];
+                setPosts([...posts, ...data]);
+              });
+          }
+        }}
+      />
     </>
   );
 };

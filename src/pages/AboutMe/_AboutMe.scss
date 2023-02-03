@@ -1,0 +1,164 @@
+.about_background {
+  background-color: #f2f2e9;
+  min-height: 12vh;
+}
+.abouts {
+  background-color: #f2f2e9;
+}
+.about {
+  background-color: #f2f2e9;
+  .myPhoto {
+    padding: 5%;
+    img {
+      width: 100%;
+    }
+  }
+  .about_info {
+    padding: 5% 3%;
+    p {
+      font-size: 1.4rem;
+    }
+    &_skill {
+      margin-top: 10%;
+    }
+  }
+  .PDF-btn {
+    width: 20%;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    padding: 12px 26px 12px 65px;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
+    color: #757575;
+    font-size: 1.4rem;
+    background-image: url("../../images/pdf-svgrepo-com.svg");
+    background-color: white;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: 5px 0px;
+    &:hover {
+      box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25);
+    }
+    &:active {
+      background-color: #eeeeee;
+    }
+    &:focus {
+      outline: none;
+      box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25),
+        0 0 0 3px #c8dafc;
+    }
+    &:disabled {
+      filter: grayscale(100%);
+      background-color: #ebebeb;
+      box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
+      cursor: not-allowed;
+    }
+  }
+  .skillContent {
+    .skillTop {
+      padding: 10% 5% 2% 5%;
+    }
+    .skillBottom {
+      padding: 5%;
+    }
+    .con-title {
+      span {
+        font-size: 1.6rem;
+      }
+    }
+    .sk-title {
+      margin-left: 10px;
+      margin-top: 0px;
+    }
+    .skill-con-left,
+    .skill-con-right {
+      display: inline-block;
+      width: 230px;
+      height: 130px;
+      margin-top: 20px;
+    }
+    .skill-bar {
+      span {
+        display: inline-block;
+        font-weight: bold;
+        margin-left: 10px;
+        width: 90px;
+      }
+    }
+    .skill-level {
+      display: inline-block;
+      margin-left: 10px;
+    }
+    .yes {
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      border-radius: 100%;
+      background-color: #90a955;
+      margin-top: 10px;
+      margin-right: 2px;
+    }
+    .no {
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      border-radius: 100%;
+      background-color: #c1d7ae;
+      margin-top: 10px;
+      margin-right: 2px;
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .about {
+    .PDF-btn {
+      width: 30%;
+    }
+    .skillContent {
+      .skillTop {
+        padding: 3% 1% 2% 3%;
+      }
+      .skillBottom {
+        padding: 3%;
+      }
+    }
+  }
+}
+@media screen and (max-width: 768px) and (max-width: 920px) {
+  .about {
+    .myPhoto {
+      padding: 3%;
+    }
+    .about_info {
+      padding: 3%;
+      p {
+        font-size: 1.2rem;
+      }
+      &_skill {
+        margin-top: 3%;
+      }
+    }
+    .PDF-btn {
+      width: 40%;
+    }
+    .skillContent {
+      .skill-con-left,
+      .skill-con-right {
+        display: inline-block;
+        width: 230px;
+        height: 110px;
+        margin-top: 10px;
+      }
+    }
+  }
+}
+@media screen and (max-width: 767px) {
+  .about {
+    .PDF-btn {
+      width: 100%;
+    }
+  }
+}
+@media screen and (max-width: 375px) {
+}

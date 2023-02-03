@@ -1,21 +1,26 @@
 import { FaUser } from "react-icons/fa";
 import firebase from "../../../utils/firebase";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./_Header.scss";
 import { useEffect, useState } from "react";
-
-const Header = ({ usersLodaing, guestLodaing, setguestLodaing }) => {
-  console.log("usersLodaing狀態,", usersLodaing);
-  console.log("guestLodaing狀態", guestLodaing);
+import { handleWarningComfirm } from "../../../utils/handler/handleStatusCard";
+const Header = ({ usersLodaing }) => {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   useEffect(() => {
     firebase.auth().onAuthStateChanged((currentUser) => {
       setUser(currentUser);
     });
   }, []);
-  function logout(e) {
-    firebase.auth().signOut();
-    setguestLodaing(null);
+  function logout() {
+    handleWarningComfirm(
+      "是否登出?",
+      () => {
+        firebase.auth().signOut();
+        navigate("/");
+      },
+      "歡迎再次登入來留言互動!"
+    );
   }
   const AuthBtn = () => {
     return (
@@ -35,39 +40,27 @@ const Header = ({ usersLodaing, guestLodaing, setguestLodaing }) => {
             </Link>
           </div>
           <div className="col-xxl-4 col-xl-3 col-6 ">
-            {usersLodaing || guestLodaing !== null || false ? (
-              <ul className="d-flex my-auto">
-                <li className="mx-xl-5 mx-md-4">
-                  <Link to="/Post" className="">
-                    Post
-                  </Link>
-                </li>
-                <li className="mx-xl-5 mx-md-4">
-                  <Link to="" className="">
-                    About
-                  </Link>
-                </li>
-                <li className="mx-xl-5 mx-md-4">
-                  <Link to="" className="">
-                    Skills
-                  </Link>
-                </li>
-                <li className="mx-xl-5 mx-md-4">
-                  <Link to="/PDF" className="">
-                    Portfolio
-                  </Link>
-                </li>
-              </ul>
-            ) : (
-              <></>
-            )}
+            <ul className="d-flex my-auto">
+              <Link to="/Post" className="">
+                <li className="mx-xl-5 mx-md-4 mx-2">Post</li>
+              </Link>
+              <Link to="/AboutMe" className="">
+                <li className="mx-xl-5 mx-md-4 mx-2">About</li>
+              </Link>
+              <Link to="" className="">
+                <li className="mx-xl-5 mx-md-4 mx-2">Anything</li>
+              </Link>
+              <Link to="/PDF" className="">
+                <li className="mx-xl-5 mx-md-4 mx-2">Portfolio</li>
+              </Link>
+            </ul>
           </div>
           <div className="col-xxl-4 col-xl-6 col-5 ">
-            <div className="d-flex  header_Icon align-items-center justify-content-md-end ps-5">
+            <div className="d-flex  header_Icon align-items-center justify-content-md-end ps-md-5">
               {user ? (
                 <>
                   <div className="">
-                    <Link className="pe-3 my-auto" to="/new-post">
+                    <Link className="post_article pe-3 my-auto" to="/new-post">
                       發表文章
                     </Link>
                   </div>
@@ -81,7 +74,7 @@ const Header = ({ usersLodaing, guestLodaing, setguestLodaing }) => {
                     </Link>
                   </div>
                   <div className="">
-                    <Link className="ps-3 my-auto" onClick={logout}>
+                    <Link className="ps-md-3 my-auto" onClick={logout}>
                       登出
                     </Link>
                   </div>

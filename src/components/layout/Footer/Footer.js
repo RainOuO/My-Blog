@@ -14,21 +14,21 @@ const Footer = () => {
           <div className="col-12">
             <nav className="mt-3 footer-icon">
               <ul className="d-flex justify-content-center ">
-                <li className="mx-5 py-2">
-                  <a href="https://www.facebook.com/yucai.letter/">
+                <a href="https://www.facebook.com/yucai.letter/">
+                  <li className="mx-5 py-2">
                     <FiFacebook />
-                  </a>
-                </li>
-                <li className="mx-5 py-2">
-                  <a href="https://www.instagram.com/unique__0102/">
+                  </li>
+                </a>
+                <a href="https://www.instagram.com/unique__0102/">
+                  <li className="mx-5 py-2">
                     <AiOutlineInstagram />
-                  </a>
-                </li>
-                <li className="mx-5 py-2">
-                  <a href="https://github.com/RainOuO">
+                  </li>
+                </a>
+                <a href="https://github.com/RainOuO">
+                  <li className="mx-5 py-2">
                     <AiFillGithub />
-                  </a>
-                </li>
+                  </li>
+                </a>
               </ul>
             </nav>
           </div>

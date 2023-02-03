@@ -23,7 +23,7 @@ const Loading = () => {
 
   return (
     <>
-      <div className="loading_page"></div>
+      {/* <div className="loading_page"></div>
       <div className="loading_drop">
         <div
           className="loading_loader"
@@ -35,8 +35,8 @@ const Loading = () => {
             "請登入後再進行回復"
           )}
         ></div>
-      </div>
-      {/* <div className="text-center py-5">
+      </div> */}
+      <div className="text-center py-5">
         <p className="text-center pt-5 m-0">
           {"使用方式：當成 function 直接呼叫"}
           <br />
@@ -198,7 +198,7 @@ const Loading = () => {
           提示：有跳轉
         </button>
         <br />
-      </div> */}
+      </div>
     </>
   );
 };
