@@ -8,6 +8,7 @@ import { BsBookmarkFill } from "react-icons/bs";
 import axios from "axios";
 import { FaUserCircle } from "react-icons/fa";
 import "firebase/compat/storage";
+import PostEditor from "../../components/WYSIWYG/PostEditor";
 import "./_PostInfo.scss";
 import { handleWarningComfirm } from "../../utils/handler/handleStatusCard";
 const API_URL = process.env.REACT_APP_OPEN_URL;
@@ -15,6 +16,9 @@ const PostInfo = ({ usersLodaing }) => {
   const navigate = useNavigate();
   const { postId } = useParams();
   const [post, setPost] = useState({ auther: {} });
+
+  console.log("所有內容", post);
+
   const [commentContent, setCommentContent] = useState("");
   const [userMessage, setuserMessage] = useState({});
   const [comments, setComments] = useState("");
@@ -196,109 +200,89 @@ const PostInfo = ({ usersLodaing }) => {
     <>
       {usersLodaing === null ? (
         <>
-          <div className="container postInfo custom-container ">
+          <div className="boxheight"></div>
+          <div className="postheader text-center">
+            <div className="article-headerPhoto">
+              <img className="" src={post.imageUrl} alt="" />
+            </div>
+            <div className="mb-3 postheader_title">
+              <h2>{post.title}</h2>
+            </div>
+            <div>
+              <p>
+                {post.createdAt?.toDate().toLocaleDateString()} /{" "}
+                {post.author?.displayName || "使用者"}
+              </p>
+            </div>
+          </div>
+          <div className="container postInfo mt-1 custom-container ">
             <div className="row">
-              <div className="col-12 d-flex article-info">
-                <div className="col-6 my-auto">
-                  <img className="w-100 " src={post.imageUrl} alt="" />
-                </div>
-                <div className="col-6 p-3">
-                  <div className="container ">
-                    <div className="row d-flex border-bottom">
-                      {post.author?.photoURL ? (
-                        <div className="col-2 article-other_userPhoto">
-                          <img src={post.author.photoURL} alt="" />
-                        </div>
-                      ) : (
-                        <FaUserCircle />
-                      )}
+              <div className="col-12  article-info mb-5">
+                {/* <div className="col-12 my-auto article-headerPhoto">
+                  <img className="" src={post.imageUrl} alt="" />
+                </div> */}
+                <div className="col-12 p-3 mt-2">
+                  <div className=" ">
+                    <div className="row mt-3 ">
                       <div className="col-10">
-                        <p className="article-name">
-                          {post.author?.displayName || "使用者"}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="row mt-3 border-bottom">
-                      <div className="col-2 my-auto ">
-                        {post.author?.photoURL ? (
-                          <div className="article-other_userPhoto">
-                            <img src={post.author.photoURL} alt="" />
-                          </div>
-                        ) : (
-                          <FaUserCircle />
-                        )}
-                      </div>
-                      <div className="col-10">
-                        <h3>{post.title}</h3>
                         <p>{post.content}</p>
+                        <div
+                          dangerouslySetInnerHTML={{ __html: post.markdown }}
+                        >
+                          {/* post是我撈出來的api . markdown是我存到資料庫的名稱 */}
+                        </div>
                       </div>
                     </div>
+                    <div className="p-2 ">
+                      <div className="my-1  d-md-flex justify-content-between align-items-center">
+                        <div className="col-xxl-3 col-md-4">
+                          <span>{post.LikeBy?.length || 0}個讚</span>
+                          <span className="my-1 ms-5">
+                            {post.LikeBy?.[0]}
+                            <span>和其他人都說讚</span>
+                            <br />
+                          </span>
+                        </div>
 
-                    <div className="comments_container">
-                      {comments.map?.((comment) => {
-                        return (
-                          <div className="row my-3 " key={comment.createdAt}>
-                            <div className="col-2 article-other_userPhoto">
-                              {comment.author?.photoURL ? (
-                                <FaUserCircle />
-                              ) : (
-                                <img
-                                  className=""
-                                  src={comment?.auther?.photoURL}
-                                  alt="123"
-                                />
-                              )}
-                            </div>
-                            <div className="col-10 my-auto">
-                              <span className="pe-3">
-                                {comment.auther.displayName || "使用者"}
-                              </span>
-                              {comment.content || ""}
-                              <br />
-                              {comment.createdAt.toDate().toLocaleString() ||
-                                ""}
-                            </div>
+                        <div className="d-flex mb-2 ">
+                          {/* 留言 {post.commentsCount || 0} */}
+                          <div
+                            className="isLikes_icon mx-3 mt-1"
+                            onClick={GuestSubmit}
+                          >
+                            {isLike ? <FcLike /> : <FcLikePlaceholder />}
                           </div>
-                        );
-                      })}
-                    </div>
-                    <div className="border-top"></div>
-                    <div className="p-2">
-                      <div className="d-flex mb-2">
-                        <div
-                          className="isLikes_icon mx-3 mt-1"
-                          onClick={GuestSubmit}
-                        >
-                          {isLike ? <FcLike /> : <FcLikePlaceholder />}
-                        </div>
-                        <div
-                          className="isCollected mx-3 mt-1 "
-                          onClick={Collected}
-                        >
-                          {isCollected ? <BsBookmarkFill /> : <BsBookmark />}
+                          <div
+                            className="isCollected mx-3 mt-1 "
+                            onClick={Collected}
+                          >
+                            {isCollected ? <BsBookmarkFill /> : <BsBookmark />}
+                          </div>
                         </div>
                       </div>
-                      <div className="my-1">{post.LikeBy?.length || 0}個讚</div>
-                      <p className="my-1">
-                        {post.LikeBy?.[0]}
-                        <span>和其他人都說讚</span>
-                        <br />
-                      </p>
-                      <p className="my-1">
-                        {post.createdAt?.toDate().toLocaleDateString()}
-                      </p>
                     </div>
-
-                    <div className="container">
+                    <div className="border-bottom"></div>
+                    <div className="container mt-3">
                       <div className="row">
-                        <form onSubmit={GuestInputSubmit}>
+                        <div className="col-2 article-other_userPhoto">
+                          {post.author?.photoURL ? (
+                            <FaUserCircle />
+                          ) : (
+                            <img
+                              className=""
+                              src={post?.auther?.photoURL}
+                              alt="123"
+                            />
+                          )}
+                        </div>
+                        <form onSubmit={GuestInputSubmit} className="col-10">
                           <input
-                            // value={commentContent}
-                            // onChange={formCotent}
+                            value={commentContent}
+                            onChange={formCotent}
                             className="comment-Content "
                             cols="30"
                             rows="5"
+                            placeholder="留下點什麼"
                           ></input>
                           <button
                             className={
@@ -314,6 +298,34 @@ const PostInfo = ({ usersLodaing }) => {
                       </div>
                     </div>
                   </div>
+                  <div className="comments_container">
+                    {comments.map?.((comment) => {
+                      return (
+                        <div className="row my-3 " key={comment.createdAt}>
+                          <div className="col-2 article-other_userPhoto">
+                            {comment.author?.photoURL ? (
+                              <FaUserCircle />
+                            ) : (
+                              <img
+                                className=""
+                                src={comment?.auther?.photoURL}
+                                alt="123"
+                              />
+                            )}
+                          </div>
+                          <div className="col-10 my-auto">
+                            <span className="pe-3">
+                              {comment.auther.displayName || "使用者"}
+                            </span>
+                            {comment.content || ""}
+                            <br />
+                            {comment.createdAt.toDate().toLocaleString() || ""}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="border-top"></div>
                 </div>
               </div>
             </div>
@@ -321,110 +333,89 @@ const PostInfo = ({ usersLodaing }) => {
         </>
       ) : (
         <>
-          <div className="container postInfo custom-container ">
+          <div className="boxheight"></div>
+          <div className="postheader text-center">
+            <div className="article-headerPhoto">
+              <img className="" src={post.imageUrl} alt="" />
+            </div>
+            <div className="mb-3 postheader_title">
+              <h2>{post.title}</h2>
+            </div>
+            <div>
+              <p>
+                {post.createdAt?.toDate().toLocaleDateString()} /{" "}
+                {post.author?.displayName || "使用者"}
+              </p>
+            </div>
+          </div>
+          <div className="container postInfo mt-1 custom-container ">
             <div className="row">
-              <div className="col-12 d-flex article-info">
-                <div className="col-6 my-auto">
-                  <img className="w-100 " src={post.imageUrl} alt="" />
-                </div>
-                <div className="col-6 p-3">
-                  <div className="container ">
-                    <div className="row d-flex border-bottom">
-                      {post.author?.photoURL ? (
-                        <div className="col-2 article-other_userPhoto">
-                          <img src={post.author.photoURL} alt="" />
-                        </div>
-                      ) : (
-                        <FaUserCircle />
-                      )}
+              <div className="col-12  article-info mb-5">
+                {/* <div className="col-12 my-auto article-headerPhoto">
+                  <img className="" src={post.imageUrl} alt="" />
+                </div> */}
+                <div className="col-12 p-3 mt-2">
+                  <div className=" ">
+                    <div className="row mt-3 ">
                       <div className="col-10">
-                        <p className="article-name">
-                          {post.author?.displayName || "使用者"}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="row mt-3 border-bottom">
-                      <div className="col-2 my-auto ">
-                        {post.author?.photoURL ? (
-                          <div className="article-other_userPhoto">
-                            <img src={post.author.photoURL} alt="" />
-                          </div>
-                        ) : (
-                          <FaUserCircle />
-                        )}
-                      </div>
-                      <div className="col-10">
-                        <h3>{post.title}</h3>
                         <p>{post.content}</p>
+                        <div
+                          dangerouslySetInnerHTML={{ __html: post.markdown }}
+                        >
+                          {/* post是我撈出來的api . markdown是我存到資料庫的名稱 */}
+                        </div>
                       </div>
                     </div>
+                    <div className="p-2 ">
+                      <div className="my-1  d-md-flex justify-content-between align-items-center">
+                        <div className="col-xxl-3 col-md-4 ">
+                          <span>{post.LikeBy?.length || 0}個讚</span>
+                          <span className="my-1 ms-5">
+                            {post.LikeBy?.[0]}
+                            <span>和其他人都說讚</span>
+                            <br />
+                          </span>
+                        </div>
 
-                    <div className="comments_container">
-                      {comments.map?.((comment) => {
-                        return (
-                          <div className="row my-3 " key={comment.createdAt}>
-                            <div className="col-2 article-other_userPhoto">
-                              {comment.author?.photoURL ? (
-                                <FaUserCircle />
-                              ) : (
-                                <img
-                                  className=""
-                                  src={comment?.auther?.photoURL}
-                                  alt="123"
-                                />
-                              )}
-                            </div>
-                            <div className="col-10 my-auto">
-                              <span className="pe-3">
-                                {comment.auther.displayName || "使用者"}
-                              </span>
-                              {comment.content || ""}
-                              <br />
-                              {comment.createdAt.toDate().toLocaleString() ||
-                                ""}
-                            </div>
+                        <div className="d-flex mb-2 ">
+                          {/* 留言 {post.commentsCount || 0} */}
+                          <div
+                            className="isLikes_icon mx-3 mt-1"
+                            onClick={toggleLiked}
+                          >
+                            {isLike ? <FcLike /> : <FcLikePlaceholder />}
                           </div>
-                        );
-                      })}
-                    </div>
-                    <div className="border-top"></div>
-                    <div className="p-2">
-                      <div className="d-flex mb-2">
-                        {/* 留言 {post.commentsCount || 0} */}
-                        <div
-                          className="isLikes_icon mx-3 mt-1"
-                          onClick={toggleLiked}
-                        >
-                          {isLike ? <FcLike /> : <FcLikePlaceholder />}
-                        </div>
-                        <div
-                          className="isCollected mx-3 mt-1 "
-                          onClick={toggleCollected}
-                        >
-                          {isCollected ? <BsBookmarkFill /> : <BsBookmark />}
+                          <div
+                            className="isCollected mx-3 mt-1 "
+                            onClick={toggleCollected}
+                          >
+                            {isCollected ? <BsBookmarkFill /> : <BsBookmark />}
+                          </div>
                         </div>
                       </div>
-                      <div className="my-1">{post.LikeBy?.length || 0}個讚</div>
-                      <p className="my-1">
-                        {post.LikeBy?.[0]}
-                        <span>和其他人都說讚</span>
-                        <br />
-                      </p>
-                      <p className="my-1">
-                        {post.createdAt?.toDate().toLocaleDateString()}
-                      </p>
                     </div>
-
-                    <div className="container">
+                    <div className="border-bottom"></div>
+                    <div className="container mt-3">
                       <div className="row">
-                        <form onSubmit={onSubmit}>
+                        <div className="col-2 article-other_userPhoto">
+                          {post.author?.photoURL ? (
+                            <FaUserCircle />
+                          ) : (
+                            <img
+                              className=""
+                              src={post?.auther?.photoURL}
+                              alt="123"
+                            />
+                          )}
+                        </div>
+                        <form onSubmit={onSubmit} className="col-10">
                           <input
                             value={commentContent}
                             onChange={formCotent}
                             className="comment-Content "
                             cols="30"
                             rows="5"
+                            placeholder="留下點什麼"
                           ></input>
                           <button
                             className={
@@ -440,6 +431,34 @@ const PostInfo = ({ usersLodaing }) => {
                       </div>
                     </div>
                   </div>
+                  <div className="comments_container">
+                    {comments.map?.((comment) => {
+                      return (
+                        <div className="row my-3 " key={comment.createdAt}>
+                          <div className="col-2 article-other_userPhoto">
+                            {comment.author?.photoURL ? (
+                              <FaUserCircle />
+                            ) : (
+                              <img
+                                className=""
+                                src={comment?.auther?.photoURL}
+                                alt="123"
+                              />
+                            )}
+                          </div>
+                          <div className="col-10 my-auto">
+                            <span className="pe-3">
+                              {comment.auther.displayName || "使用者"}
+                            </span>
+                            {comment.content || ""}
+                            <br />
+                            {comment.createdAt.toDate().toLocaleString() || ""}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="border-top"></div>
                 </div>
               </div>
             </div>

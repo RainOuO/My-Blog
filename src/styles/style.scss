@@ -13,6 +13,9 @@
   border-color: #fd0230 !important;
   color: #fd0230 !important;
 }
+.modal-content {
+  // width: 1000px !important;
+}
 body {
   font-family: "Noto Sans TC", "Open Sans", sans-serif !important;
 }
@@ -75,5 +78,11 @@ body {
     /* Chrome Safari */
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 4px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .custom-container {
+    max-width: 1280px;
+    padding: 0 20px;
   }
 }

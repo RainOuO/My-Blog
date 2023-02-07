@@ -31,7 +31,7 @@ const Post = ({ socket, usersLodaing }) => {
       .firestore()
       .collection("posts")
       .orderBy("createdAt", "desc")
-      .limit(3)
+      .limit(4)
       .get()
       .then((collectionSnapshot) => {
         const data = collectionSnapshot.docs.map((docSnapshot) => {
@@ -111,154 +111,153 @@ const Post = ({ socket, usersLodaing }) => {
   return (
     <>
       <div className="container post custom-container">
+        <ChatPage socket={socket} />
+        <h2 className="text-center">
+          Portfolio
+          <br />
+          Most recent works
+        </h2>
         <div className="row">
-          <ChatPage socket={socket} />
-          <div className="col-12">
-            <h2 className="text-center">
-              Portfolio
-              <br />
-              Most recent works
-            </h2>
-            {posts !== "" ? (
-              posts.map((post, index) => {
-                return (
-                  <div key={post.id} className="row">
-                    <div className="col-12 d-flex justify-content-center">
+          {posts !== "" ? (
+            posts.map((post, index) => {
+              return (
+                <div
+                  key={post.id}
+                  className="col-xl-5 col-md-6 mx-auto col-12 post_map_content"
+                >
+                  <div className="col-12 d-flex justify-content-center ">
+                    <Link to={`/postInfo/${post.id}`}>
+                      <img
+                        className="photo"
+                        src={post.imageUrl ? post.imageUrl : photo_backgroung}
+                        alt=""
+                      />
+                    </Link>
+                  </div>
+                  <div className="col-12  ">
+                    <div className="article mx-auto ">
+                      <div className="">
+                        <div className="row ">
+                          <div className="col-lg-3 d-flex col-md-4">
+                            {usersLodaing === null ? (
+                              <>
+                                <span
+                                  className="pe-lg-3 pe-md-2 likeIcon "
+                                  onClick={() => {
+                                    GuestSubmit();
+                                  }}
+                                >
+                                  {likeee[index] !== false ? (
+                                    <FcLike />
+                                  ) : (
+                                    <FcLikePlaceholder />
+                                  )}
+                                </span>
+                              </>
+                            ) : (
+                              <>
+                                <span
+                                  className="pe-3 likeIcon "
+                                  onClick={() => {
+                                    setPostLikeID(post.id);
+                                    setLikeCancel(!Likecancel);
+                                  }}
+                                >
+                                  {likeee[index] !== false ? (
+                                    <FcLike />
+                                  ) : (
+                                    <FcLikePlaceholder />
+                                  )}
+                                </span>
+                              </>
+                            )}
+
+                            <p>{post.LikeBy?.[0] || "0"}</p>
+                          </div>
+                          <div
+                            className=" d-inline otherLikes col-lg-7 col-md-6"
+                            onClick={() => {
+                              handleShow();
+                              setPostLikeID(post.id);
+                            }}
+                          >
+                            {post.LikeBy === undefined ? (
+                              <span></span>
+                            ) : (
+                              <span>
+                                和其他
+                                {post.LikeBy?.length || ""}人都說讚
+                              </span>
+                            )}
+                          </div>
+                          <div className="col-lg-2 col-md-2 text-end pe-4">
+                            <BsBookmark className="BsBookmark" />
+                          </div>
+                          <Modal show={show} onHide={handleClose}>
+                            <Modal.Header closeButton className="text-center">
+                              <Modal.Title>說讚的用戶</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                              <div className="row">
+                                <div className="col-2 otherLikes_photo"></div>
+                                <div className="col-10">
+                                  {postListID.map((e) => {
+                                    let likeList = e.LikeBy;
+                                    let likeEmail = e.LikeByEmail;
+                                    let likeuserImage = e.LikeuserPhot;
+                                    let tidyUser_info = [];
+                                    for (let i = 0; i < likeList.length; i++) {
+                                      let newsssss = {
+                                        name: likeList[i],
+                                        email: likeEmail[i],
+                                        photo: likeuserImage[i],
+                                      };
+                                      tidyUser_info.push(newsssss);
+                                    }
+                                    return (
+                                      <>
+                                        {tidyUser_info.map((v) => {
+                                          return (
+                                            <>
+                                              <img src={v.photo} alt="" />
+                                              <p>{v.name}</p>
+                                              <br />
+                                              <p>{v.email}</p>
+                                            </>
+                                          );
+                                        })}
+                                      </>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            </Modal.Body>
+                          </Modal>
+                        </div>
+                      </div>
+                      <div className="post_description">
+                        <span className="pe-3">
+                          {post.author?.displayName || "使用者"}
+                        </span>
+                        <span className="post_title">{post.title}</span>
+                      </div>
                       <Link to={`/postInfo/${post.id}`}>
-                        <img
-                          className="photo"
-                          src={post.imageUrl ? post.imageUrl : photo_backgroung}
-                          alt=""
-                        />
+                        <p className="my-2">
+                          查看全部{post.commentsCount || 0}則留言
+                        </p>
                       </Link>
                     </div>
-                    <div className="col-12 mb-5">
-                      <div className="article mx-auto ">
-                        <div className="">
-                          <div className="row ">
-                            <div className="col-3 d-flex">
-                              {usersLodaing === null ? (
-                                <>
-                                  <span
-                                    className="pe-3 likeIcon "
-                                    onClick={() => {
-                                      GuestSubmit();
-                                    }}
-                                  >
-                                    {likeee[index] !== false ? (
-                                      <FcLike />
-                                    ) : (
-                                      <FcLikePlaceholder />
-                                    )}
-                                  </span>
-                                </>
-                              ) : (
-                                <>
-                                  <span
-                                    className="pe-3 likeIcon "
-                                    onClick={() => {
-                                      setPostLikeID(post.id);
-                                      setLikeCancel(!Likecancel);
-                                    }}
-                                  >
-                                    {likeee[index] !== false ? (
-                                      <FcLike />
-                                    ) : (
-                                      <FcLikePlaceholder />
-                                    )}
-                                  </span>
-                                </>
-                              )}
-
-                              <p>{post.LikeBy?.[0] || "0"}</p>
-                            </div>
-                            <div
-                              className=" d-inline otherLikes col-7"
-                              onClick={() => {
-                                handleShow();
-                                setPostLikeID(post.id);
-                              }}
-                            >
-                              {post.LikeBy === undefined ? (
-                                <span></span>
-                              ) : (
-                                <span>
-                                  和其他
-                                  {post.LikeBy?.length || ""}人都說讚
-                                </span>
-                              )}
-                            </div>
-                            <div className="col-2 text-end pe-4">
-                              <BsBookmark className="BsBookmark" />
-                            </div>
-                            <Modal show={show} onHide={handleClose}>
-                              <Modal.Header closeButton className="text-center">
-                                <Modal.Title>說讚的用戶</Modal.Title>
-                              </Modal.Header>
-                              <Modal.Body>
-                                <div className="row">
-                                  <div className="col-2 otherLikes_photo"></div>
-                                  <div className="col-10">
-                                    {postListID.map((e) => {
-                                      let likeList = e.LikeBy;
-                                      let likeEmail = e.LikeByEmail;
-                                      let likeuserImage = e.LikeuserPhot;
-                                      let tidyUser_info = [];
-                                      for (
-                                        let i = 0;
-                                        i < likeList.length;
-                                        i++
-                                      ) {
-                                        let newsssss = {
-                                          name: likeList[i],
-                                          email: likeEmail[i],
-                                          photo: likeuserImage[i],
-                                        };
-                                        tidyUser_info.push(newsssss);
-                                      }
-                                      return (
-                                        <>
-                                          {tidyUser_info.map((v) => {
-                                            return (
-                                              <>
-                                                <img src={v.photo} alt="" />
-                                                <p>{v.name}</p>
-                                                <br />
-                                                <p>{v.email}</p>
-                                              </>
-                                            );
-                                          })}
-                                        </>
-                                      );
-                                    })}
-                                  </div>
-                                </div>
-                              </Modal.Body>
-                            </Modal>
-                          </div>
-                        </div>
-                        <p>
-                          <span className="pe-3">
-                            {post.author?.displayName || "使用者"}
-                          </span>
-                          {post.title}
-                        </p>
-                        <Link to={`/postInfo/${post.id}`}>
-                          <p>查看全部{post.commentsCount || 0}則留言</p>
-                        </Link>
-                      </div>
-                    </div>
                   </div>
-                );
-              })
-            ) : (
-              <>
-                <div style={{ height: "80vh" }}>
-                  <h1 className="text-center mt-5">網頁搜尋不到 請重新整理</h1>
                 </div>
-              </>
-            )}
-          </div>
+              );
+            })
+          ) : (
+            <>
+              <div style={{ height: "80vh" }}>
+                <h1 className="text-center mt-5">網頁搜尋不到 請重新整理</h1>
+              </div>
+            </>
+          )}
         </div>
       </div>
       <Waypoint

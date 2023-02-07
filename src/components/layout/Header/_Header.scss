@@ -1,4 +1,6 @@
 $header_bg_color: #c0c6b9;
+// $header_bg_color: #b0d0d3;
+
 $graycolor: #747474;
 $font-size_P: 18rem;
 a,
@@ -20,18 +22,30 @@ ul {
       border-radius: 8px;
     }
   }
+  .post_article {
+    cursor: pointer;
+  }
+  .header_logo {
+    width: 100%;
+    img {
+      object-fit: contain;
+      height: 70px;
+    }
+  }
 }
 
 @media screen and (max-width: 1024px) {
   .header_main {
     padding: 0 70px;
+    .header_logo {
+      img {
+        height: 80px;
+      }
+    }
   }
 }
 @media screen and (max-width: 768px) and (max-width: 920px) {
   .header_main {
-    .header_Icon {
-      // padding-left: 1rem;
-    }
     .header_Icon_content {
       .row > * {
         // margin: 0;
@@ -49,6 +63,11 @@ ul {
     }
     .header_Icon {
       padding-left: 3rem;
+    }
+    .header_logo {
+      img {
+        height: 70px;
+      }
     }
   }
 }

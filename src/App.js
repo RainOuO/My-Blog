@@ -5,7 +5,7 @@ import Homepage from "./pages/HomePage";
 import PDFContent from "./components/PDF/PDFContent";
 import Signin from "./pages/Signin";
 import Post from "./pages/Post";
-import NewPost from "./pages/NewPost";
+// import NewPost from "./pages/NewPost";
 import PostInfo from "./pages/PostInfo";
 import MyMenu from "./components/MyMenu";
 import socketIO from "socket.io-client";
@@ -20,12 +20,17 @@ import Loading from "./components/layout/Loading";
 import { io } from "socket.io-client";
 const API_URL = process.env.REACT_APP_OPEN_URL;
 const NgrokCookie = API_URL.replace("https://", "");
-// console.log("NgrokCookie=======", NgrokCookie);
+console.log("API_URL", API_URL);
+console.log("NgrokCookie=======", NgrokCookie);
 // const socket = io(API_URL, {
+//   transports: ["websocket"],
 //   withCredentials: true,
-//   extraHeaders: { "my-custom-header": "abcd" },
-//   "Access-Control-Allow-Headers": "*",
-//   "Access-Control-Allow-Credentials": true,
+//   extraHeaders: {
+//     "Access-Control-Allow-Origin": API_URL,
+//     "Access-Control-Allow-Methods": "GET,POST",
+//     "Access-Control-Allow-Headers": "my-custom-header",
+//     "Access-Control-Allow-Credentials": true,
+//   },
 // });
 const socket = socketIO.connect("http://localhost:3002");
 function App() {
@@ -56,7 +61,7 @@ function App() {
           element={<Post socket={socket} usersLodaing={usersLodaing} />}
         ></Route>
         <Route path="/signin" element={<Signin />}></Route>
-        <Route path="/new-post" element={<NewPost />}></Route>
+        {/* <Route path="/new-post" element={<NewPost />}></Route> */}
         <Route path="/Loading" element={<Loading />}></Route>
 
         <Route

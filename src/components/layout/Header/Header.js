@@ -3,10 +3,18 @@ import firebase from "../../../utils/firebase";
 import { Link, useNavigate } from "react-router-dom";
 import "./_Header.scss";
 import { useEffect, useState } from "react";
+import NewPosts from "../../../pages/NewPosts";
 import { handleWarningComfirm } from "../../../utils/handler/handleStatusCard";
+import Modal from "react-bootstrap/Modal";
+import logoPhoto from "../../../images/logo3.png";
+
 const Header = ({ usersLodaing }) => {
   const navigate = useNavigate();
+
   const [user, setUser] = useState(null);
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   useEffect(() => {
     firebase.auth().onAuthStateChanged((currentUser) => {
       setUser(currentUser);
@@ -36,7 +44,9 @@ const Header = ({ usersLodaing }) => {
         <div className="row d-flex align-items-center">
           <div className="col-xxl-4 col-xl-3 col-1">
             <Link to="/" className="header_menu">
-              <h1>Logo</h1>
+              <div className="header_logo">
+                <img src={logoPhoto} alt="" />
+              </div>
             </Link>
           </div>
           <div className="col-xxl-4 col-xl-3 col-6 ">
@@ -47,10 +57,10 @@ const Header = ({ usersLodaing }) => {
               <Link to="/AboutMe" className="">
                 <li className="mx-xl-5 mx-md-4 mx-2">About</li>
               </Link>
-              <Link to="" className="">
+              <Link to="#" className="">
                 <li className="mx-xl-5 mx-md-4 mx-2">Anything</li>
               </Link>
-              <Link to="/PDF" className="">
+              <Link to="#" className="">
                 <li className="mx-xl-5 mx-md-4 mx-2">Portfolio</li>
               </Link>
             </ul>
@@ -60,9 +70,28 @@ const Header = ({ usersLodaing }) => {
               {user ? (
                 <>
                   <div className="">
-                    <Link className="post_article pe-3 my-auto" to="/new-post">
+                    <p
+                      className="post_article pe-3 my-auto"
+                      onClick={handleShow}
+                    >
                       發表文章
-                    </Link>
+                    </p>
+                    <Modal
+                      show={show}
+                      onHide={handleClose}
+                      className="custom_modal"
+                    >
+                      <Modal.Header closeButton className="text-center">
+                        <Modal.Title>發表文章</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <div className="row">
+                          <div className="col-12">
+                            <NewPosts setShow={setShow} />
+                          </div>
+                        </div>
+                      </Modal.Body>
+                    </Modal>
                   </div>
 
                   <div className="user-picture my-auto">

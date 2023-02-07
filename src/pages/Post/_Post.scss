@@ -10,7 +10,9 @@
     justify-content: center;
     margin: 0 auto;
     max-width: 500px;
-    object-fit: contain;
+    object-fit: cover;
+    height: 300px;
+    border-radius: 12px;
   }
   .article {
     margin-top: 1rem;
@@ -20,16 +22,11 @@
     padding: 15px;
     max-width: 510px;
     position: relative;
-    &::after {
-      content: "";
-      width: 100%;
-      position: absolute;
-      bottom: -20px;
-      left: 0;
-      border-color: #ccc;
-      border-style: solid;
-      border-width: 0 0 1px 0;
-    }
+  }
+  .post_map_content {
+    padding: 15px;
+    margin: 10px 0;
+    background-color: #f8eeed;
   }
 }
 .likeIcon {
@@ -47,4 +44,21 @@
     width: 90%;
     border-radius: 50%;
   }
+}
+@media screen and (max-width: 768px) and (max-width: 920px) {
+  .post {
+    .post_description {
+      .post_title {
+        padding: 10px 0;
+        width: 280px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+      }
+    }
+  }
+}
+@media screen and (max-width: 767px) {
 }

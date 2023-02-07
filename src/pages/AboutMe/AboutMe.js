@@ -25,8 +25,8 @@ const AboutMe = ({ socket }) => {
   return (
     <>
       <ChatPage socket={socket} />
-      <div className="about_background" id="aboutPDF"></div>
-      <div className="abouts">
+      <div className="about_background"></div>
+      <div className="abouts" id="aboutPDF">
         <div className="about custom-container container">
           <h1 className="text-center mb-md-3 mb-5">Wanna Know Me? </h1>
           <div className="aboutme row">
