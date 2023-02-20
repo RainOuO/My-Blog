@@ -236,7 +236,7 @@ const PostInfo = ({ usersLodaing }) => {
                     <div className="p-2 ">
                       <div className="my-1  d-md-flex justify-content-between align-items-center">
                         <div className="col-xxl-3 col-md-4">
-                          <span>{post.LikeBy?.length || 0}個讚</span>
+                          <span>{post.LikeBy?.length || ""}個讚</span>
                           <span className="my-1 ms-5">
                             {post.LikeBy?.[0]}
                             <span>和其他人都說讚</span>

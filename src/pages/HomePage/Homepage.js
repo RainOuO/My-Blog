@@ -3,7 +3,7 @@ import { GoogleAuthProvider } from "firebase/auth";
 import firebase from "../../utils/firebase";
 import { useNavigate } from "react-router-dom";
 import "firebase/compat/auth";
-import dogs from "../../images/dogs.png";
+import { FaUserCircle } from "react-icons/fa";
 import ChatPage from "../../components/ChatPage/ChatPage";
 import "./_homepage.scss";
 
@@ -28,17 +28,64 @@ const Homepage = ({ socket, setguestLodaing }) => {
     setguestLodaing(null);
     navigate("/post");
   }
+  let string1 = "leetcode";
+
+  function abc(string1) {
+    let arr = {};
+    for (let value of string1) {
+      let bbb = (arr[value] = (arr[value] || 0) + 1);
+      console.log("bbb,", bbb);
+      // for (let i = 0; i < string1.length; i++) {
+      //   if (arr[i] === 0) {
+      //     console.log("i111", i++);
+      //     return i++;
+      //   } else {
+      //     console.log("i", i);
+      //     return -1;
+      //   }
+      // }
+    }
+    console.log("arr", arr);
+  }
+  abc(string1);
+  // const s = "loveleetcode";
+
+  // let firstUniqChar = function (s) {
+  //   const map = {};
+  //   for (let v of s) {
+  //     map[v] = (map[v] || 0) + 1;
+  //   }
+  //   for (let i = 0; i < s.length; i++) {
+  //     if (map[s[i]] === 1) {
+  //       console.log("arr", map);
+  //       return i;
+  //     } else {
+  //       console.log("arr", map);
+  //       return -1;
+  //     }
+  //   }
+  //   console.log("arr", map);
+  // };
+  // firstUniqChar(s);
+
   return (
     <>
+      <ChatPage socket={socket} />
+      <video
+        class="cloud-sunBackground"
+        autoPlay
+        loop
+        muted
+        poster="https://www.mitonedesign.jp/img/common/sunlight.jpg"
+      >
+        <source src="https://www.mitonedesign.jp/img/common/sunlight.mp4" />
+      </video>
       <div className="header-background"></div>
       <div className="homeContainer">
-        <div className="container custom-container">
+        <div className="container ">
           <ChatPage socket={socket} />
           <div className="row">
-            <div className=" col-12 home-header">
-              <div className="d-flex home-header_img justify-content-center">
-                <img src={dogs} alt="" />
-              </div>
+            <div className="col-12">
               <a href="#down">
                 <div className="mouse-hover">
                   <div>
@@ -52,7 +99,7 @@ const Homepage = ({ socket, setguestLodaing }) => {
                           <path
                             className="nectar-scroll-icon-path"
                             fill="none"
-                            stroke="#e4dcbe"
+                            stroke="#312d2b"
                             strokeWidth="2"
                             strokeMiterlimit="100"
                             d="M15,1.118c12.352,0,13.967,12.88,13.967,12.88v18.76  c0,0-1.514,11.204-13.967,11.204S0.931,32.966,0.931,32.966V14.05C0.931,14.05,2.648,1.118,15,1.118z"
@@ -64,17 +111,47 @@ const Homepage = ({ socket, setguestLodaing }) => {
                 </div>
               </a>
             </div>
-            <div className="col-12 loading-state">
+            <div className="col-md-6 col-12 d-md-flex align-items-end">
+              <h2 className="welcome_h2">Welcome to RainBlog</h2>
+            </div>
+            <div className="col-6 ">
               <div className="row">
-                <div className=" col-6 d-flex justify-content-center">
-                  <button className="btn guest-btn" onClick={guestSubmit}>
-                    訪客模式
-                  </button>
+                <div className="col-12  d-flex justify-content-end">
+                  <div class="js-anim_elm -button is-act">
+                    <div class="c-button01 c-text07 -thin u-mt35 -delay2">
+                      <a href="#!" onClick={guestSubmit}>
+                        <span className="text ">訪客模式</span>
+                        <figure className="c-illust is-loaded">
+                          <span>
+                            <span>
+                              <FaUserCircle />
+                            </span>
+                          </span>
+                        </figure>
+                      </a>
+                    </div>
+                  </div>
                 </div>
-                <div className="col-6 d-flex justify-content-center">
-                  <button onClick={onSubmit} className="login-with-google-btn">
-                    Google登入
-                  </button>
+                <div className="col-12  d-flex justify-content-end ">
+                  <div class="js-anim_elm -button is-act">
+                    <div class="c-button01 c-text07 -thin u-mt35 -delay2 ">
+                      <a href="#!" className="" onClick={onSubmit}>
+                        <span className="text ">Google登入</span>
+                        <figure className="c-illust is-loaded">
+                          <span>
+                            <span>
+                              <img
+                                className="google_btnPhoto"
+                                alt=""
+                                aria-hidden="true"
+                                src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4="
+                              />
+                            </span>
+                          </span>
+                        </figure>
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

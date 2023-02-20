@@ -77,7 +77,7 @@ const AboutMe = ({ socket }) => {
                 </p>
               </div>
             </div>
-            <div className="col-md-6 col-12 skillContent">
+            {/* <div className="col-md-6 col-12 skillContent">
               <div className="skillTop">
                 <div className="con-title sk-title">
                   <span>Frontend Development</span>
@@ -188,7 +188,7 @@ const AboutMe = ({ socket }) => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="row Contact_me">
             <div className="col-12 mb-5 mt-5">

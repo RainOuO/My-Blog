@@ -33,7 +33,57 @@ ul {
     }
   }
 }
+.header_hoverLink {
+  a {
+    position: relative;
+    &:hover > li {
+      transition: 0.5s all step-start;
+      // - hover後 文字底線有bottom浮動特效
+      &::before {
+        width: calc(100% - 30px);
+      }
+    }
+  }
+  li {
+    color: #312d2b;
+    opacity: 0.85;
+    font-weight: 700;
+    // - hover後 文字底線有bottom浮動特效
+    &::before {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      width: 0;
+      transform: translateX(-50%);
+      // border-bottom: 2.5px #eae7dc solid;
+      border-bottom: 2.5px rgb(220, 90, 90) solid;
 
+      transition: 0.3s all;
+    }
+    &:active::before {
+      width: calc(100% - 16px);
+    }
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+.active {
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    width: 0;
+    transform: translateX(-50%);
+    border-bottom: 2.5px rgb(220, 90, 90) solid;
+    transition: 0.3s all;
+  }
+  &::before {
+    width: calc(100% - 30px);
+  }
+}
 @media screen and (max-width: 1024px) {
   .header_main {
     padding: 0 70px;

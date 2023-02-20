@@ -1,6 +1,6 @@
 import { FaUser } from "react-icons/fa";
 import firebase from "../../../utils/firebase";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, NavLink } from "react-router-dom";
 import "./_Header.scss";
 import { useEffect, useState } from "react";
 import NewPosts from "../../../pages/NewPosts";
@@ -50,19 +50,19 @@ const Header = ({ usersLodaing }) => {
             </Link>
           </div>
           <div className="col-xxl-4 col-xl-3 col-6 ">
-            <ul className="d-flex my-auto">
-              <Link to="/Post" className="">
+            <ul className="d-flex my-auto header_hoverLink">
+              <NavLink to="/Post" className="">
                 <li className="mx-xl-5 mx-md-4 mx-2">Post</li>
-              </Link>
-              <Link to="/AboutMe" className="">
+              </NavLink>
+              <NavLink to="/AboutMe" className="">
                 <li className="mx-xl-5 mx-md-4 mx-2">About</li>
-              </Link>
-              <Link to="#" className="">
+              </NavLink>
+              <NavLink to="/404" className="">
                 <li className="mx-xl-5 mx-md-4 mx-2">Anything</li>
-              </Link>
-              <Link to="#" className="">
+              </NavLink>
+              <NavLink to="/404" className="">
                 <li className="mx-xl-5 mx-md-4 mx-2">Portfolio</li>
-              </Link>
+              </NavLink>
             </ul>
           </div>
           <div className="col-xxl-4 col-xl-6 col-5 ">

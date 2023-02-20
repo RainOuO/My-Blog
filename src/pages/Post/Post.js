@@ -51,6 +51,7 @@ const Post = ({ socket, usersLodaing }) => {
     });
     setLikeee(like_icon);
   }, [posts]);
+
   const userLikes = firebase.auth().currentUser?.displayName;
   let WhoLikesID = posts.filter((v) => {
     return v.id.includes(postLikeID);
@@ -112,6 +113,16 @@ const Post = ({ socket, usersLodaing }) => {
     <>
       <div className="container post custom-container">
         <ChatPage socket={socket} />
+        <video
+          class="cloud-sunBackground"
+          autoPlay
+          loop
+          muted
+          poster="https://www.mitonedesign.jp/img/common/sunlight.jpg"
+        >
+          <source src="https://www.mitonedesign.jp/img/common/sunlight.mp4" />
+        </video>
+
         <h2 className="text-center">
           Portfolio
           <br />
@@ -126,7 +137,7 @@ const Post = ({ socket, usersLodaing }) => {
                   className="col-xl-5 col-md-6 mx-auto col-12 post_map_content"
                 >
                   <div className="col-12 d-flex justify-content-center ">
-                    <Link to={`/postInfo/${post.id}`}>
+                    <Link to={`/postInfo/${post.id}`} className="post_linkImg">
                       <img
                         className="photo"
                         src={post.imageUrl ? post.imageUrl : photo_backgroung}
@@ -181,26 +192,28 @@ const Post = ({ socket, usersLodaing }) => {
                               setPostLikeID(post.id);
                             }}
                           >
-                            {post.LikeBy === undefined ? (
+                            {post.LikeBy == "" ? (
                               <span></span>
-                            ) : (
+                            ) : post.LikeBy.length > 1 ? (
                               <span>
                                 和其他
-                                {post.LikeBy?.length || ""}人都說讚
+                                {post.LikeBy?.length - 1 || ""}人都說讚
                               </span>
+                            ) : (
+                              <span></span>
                             )}
                           </div>
-                          <div className="col-lg-2 col-md-2 text-end pe-4">
+                          {/* <div className="col-lg-2 col-md-2 text-end pe-4">
                             <BsBookmark className="BsBookmark" />
-                          </div>
+                          </div> */}
                           <Modal show={show} onHide={handleClose}>
                             <Modal.Header closeButton className="text-center">
                               <Modal.Title>說讚的用戶</Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
                               <div className="row">
-                                <div className="col-2 otherLikes_photo"></div>
-                                <div className="col-10">
+                                {/* <div className="col-2 otherLikes_photo"></div> */}
+                                <div className="col-12">
                                   {postListID.map((e) => {
                                     let likeList = e.LikeBy;
                                     let likeEmail = e.LikeByEmail;
@@ -219,10 +232,19 @@ const Post = ({ socket, usersLodaing }) => {
                                         {tidyUser_info.map((v) => {
                                           return (
                                             <>
-                                              <img src={v.photo} alt="" />
-                                              <p>{v.name}</p>
+                                              <div className="d-flex">
+                                                <div className="modal_like_photo">
+                                                  <img src={v.photo} alt="" />
+                                                </div>
+                                                <div className="d-flex align-items-center">
+                                                  <p className="modal_like_userName">
+                                                    {v.name}
+                                                  </p>
+                                                </div>
+                                              </div>
+
                                               <br />
-                                              <p>{v.email}</p>
+                                              {/* <p>{v.email}</p> */}
                                             </>
                                           );
                                         })}

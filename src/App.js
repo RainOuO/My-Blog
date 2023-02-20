@@ -17,6 +17,7 @@ import "./styles/style.scss";
 import firebase from "./utils/firebase";
 import { useEffect, useState } from "react";
 import Loading from "./components/layout/Loading";
+import Undefined404 from "./pages/Undefined404";
 import { io } from "socket.io-client";
 const API_URL = process.env.REACT_APP_OPEN_URL;
 const NgrokCookie = API_URL.replace("https://", "");
@@ -72,6 +73,7 @@ function App() {
         <Route path="/my/posts" element={<MyPosts />}></Route>
         <Route path="/my/collections" element={<Mycollections />}></Route>
         <Route path="/my/settings" element={<Mysettings />}></Route>
+        <Route path="/404" element={<Undefined404 />}></Route>
       </Routes>
       <Footer />
     </div>

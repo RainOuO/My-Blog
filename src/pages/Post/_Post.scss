@@ -1,19 +1,40 @@
 .post {
   margin-top: 100px;
+  position: relative;
   h2 {
     font-weight: 500;
     color: #49676e;
   }
+  .cloud-sunBackground {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+    height: 100%;
+    opacity: 0.5;
+    pointer-events: none;
+  }
   .photo {
     width: 100%;
+    max-width: 500px;
+
     display: flex;
     justify-content: center;
     margin: 0 auto;
-    max-width: 500px;
     object-fit: cover;
     height: 300px;
     border-radius: 12px;
+    transform: scale(0.99);
+    transition: all 0.3s ease 0s;
+    overflow: hidden;
+
+    &:hover {
+      transform: scale(1.011);
+    }
   }
+
   .article {
     margin-top: 1rem;
     background-color: rgb(255, 255, 255);
@@ -26,7 +47,7 @@
   .post_map_content {
     padding: 15px;
     margin: 10px 0;
-    background-color: #f8eeed;
+    // background-color: #f8eeed;
   }
 }
 .likeIcon {
@@ -38,12 +59,16 @@
 .BsBookmark {
   cursor: pointer;
 }
-.otherLikes_photo {
-  width: 100%;
+
+.modal_like_photo {
   img {
-    width: 90%;
+    width: 65%;
     border-radius: 50%;
   }
+}
+.modal_like_userName {
+  font-size: 1.4rem;
+  font-weight: 500;
 }
 @media screen and (max-width: 768px) and (max-width: 920px) {
   .post {
