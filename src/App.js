@@ -13,6 +13,7 @@ import MyPosts from "./pages/MyPosts";
 import Mycollections from "./pages/Mycollections";
 import Mysettings from "./pages/MySettings/Mysettings";
 import AboutMe from "./pages/AboutMe";
+import Layouts from "./components/layout/Layouts";
 import "./styles/style.scss";
 import firebase from "./utils/firebase";
 import { useEffect, useState } from "react";
@@ -47,34 +48,39 @@ function App() {
   }, []);
   return (
     <div className="app">
-      <Header usersLodaing={usersLodaing} guestLodaing={guestLodaing} />
       <Routes>
+        <Route
+          element={
+            <Layouts usersLodaing={usersLodaing} guestLodaing={guestLodaing} />
+          }
+        >
+          <Route path="/AboutMe" element={<AboutMe socket={socket} />}></Route>
+          <Route path="/PDF" element={<PDFContent socket={socket} />}></Route>
+          <Route
+            path="/post"
+            element={<Post socket={socket} usersLodaing={usersLodaing} />}
+          ></Route>
+          <Route path="/signin" element={<Signin />}></Route>
+          <Route path="/Loading" element={<Loading />}></Route>
+          <Route
+            path="/postInfo/:postId"
+            element={<PostInfo usersLodaing={usersLodaing} socket={socket} />}
+          ></Route>
+          <Route path="/MyMenu" element={<MyMenu />}></Route>
+          <Route path="/my/posts" element={<MyPosts />}></Route>
+          <Route path="/my/collections" element={<Mycollections />}></Route>
+          <Route path="/my/settings" element={<Mysettings />}></Route>
+          <Route path="/404" element={<Undefined404 />}></Route>
+        </Route>
         <Route
           path="/"
           element={
             <Homepage socket={socket} setguestLodaing={setguestLodaing} />
           }
         />
-        <Route path="/AboutMe" element={<AboutMe socket={socket} />}></Route>
-        <Route path="/PDF" element={<PDFContent socket={socket} />}></Route>
-        <Route
-          path="/post"
-          element={<Post socket={socket} usersLodaing={usersLodaing} />}
-        ></Route>
-        <Route path="/signin" element={<Signin />}></Route>
-        {/* <Route path="/new-post" element={<NewPost />}></Route> */}
-        <Route path="/Loading" element={<Loading />}></Route>
-
-        <Route
-          path="/postInfo/:postId"
-          element={<PostInfo usersLodaing={usersLodaing} socket={socket} />}
-        ></Route>
-        <Route path="/MyMenu" element={<MyMenu />}></Route>
-        <Route path="/my/posts" element={<MyPosts />}></Route>
-        <Route path="/my/collections" element={<Mycollections />}></Route>
-        <Route path="/my/settings" element={<Mysettings />}></Route>
-        <Route path="/404" element={<Undefined404 />}></Route>
       </Routes>
+      <Routes element={<Layouts />}></Routes>
+      {/* <Header /> */}
       <Footer />
     </div>
   );

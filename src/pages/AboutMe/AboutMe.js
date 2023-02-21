@@ -5,6 +5,19 @@ import work from "../../images/work.png";
 import html2canvas from "html2canvas";
 import ChatPage from "../../components/ChatPage/ChatPage";
 import jsPDF from "jspdf";
+import { FaNode } from "react-icons/fa";
+import { SiMysql } from "react-icons/si";
+import { FaPhp } from "react-icons/fa";
+import { SiHtml5 } from "react-icons/si";
+import { DiCss3 } from "react-icons/di";
+import { IoLogoSass } from "react-icons/io";
+import { FaReact } from "react-icons/fa";
+import { IoLogoJavascript } from "react-icons/io";
+import { DiBootstrap } from "react-icons/di";
+import { DiGit } from "react-icons/di";
+
+import { GrDocumentPdf } from "react-icons/gr";
+
 const AboutMe = ({ socket }) => {
   const exportPDF = () => {
     const input = document.getElementById("aboutPDF");
@@ -77,73 +90,49 @@ const AboutMe = ({ socket }) => {
                 </p>
               </div>
             </div>
-            {/* <div className="col-md-6 col-12 skillContent">
+            <div className="col-md-6 col-12 skillContent">
               <div className="skillTop">
                 <div className="con-title sk-title">
                   <span>Frontend Development</span>
                 </div>
                 <div className="skill-content">
                   <div className="skill-con-left">
-                    <div className="skill-bar">
-                      <span>HTML</span>
-                      <div className="skill-level">
-                        <div className="yes"></div>
-                        <div className="yes"></div>
-                        <div className="yes"></div>
-                        <div className="yes"></div>
-                        <div className="yes"></div>
+                    <div className="skill-bar skill-level_HTML">
+                      <SiHtml5 />
+                      <div className="skill-level ">
+                        <span>HTML5</span>
                       </div>
                     </div>
-                    <div className="skill-bar">
-                      <span>CSS</span>
+                    <div className="skill-bar skill-level_CSS">
+                      <DiCss3 />
                       <div className="skill-level">
-                        <div className="yes"></div>
-                        <div className="yes"></div>
-                        <div className="yes"></div>
-                        <div className="yes"></div>
-                        <div className="yes"></div>
+                        <span>CSS3</span>
                       </div>
                     </div>
-                    <div className="skill-bar">
-                      <span>SCSS</span>
+                    <div className="skill-bar skill-level_SCSS">
+                      <IoLogoSass />
                       <div className="skill-level">
-                        <div className="yes"></div>
-                        <div className="yes"></div>
-                        <div className="yes"></div>
-                        <div className="yes"></div>
-                        <div className="yes"></div>
+                        <span>SCSS</span>
                       </div>
                     </div>
                   </div>
                   <div className="skill-con-right">
-                    <div className="skill-bar">
-                      <span>React</span>
+                    <div className="skill-bar skill-level_React">
+                      <FaReact />
                       <div className="skill-level">
-                        <div className="yes"></div>
-                        <div className="yes"></div>
-                        <div className="yes"></div>
-                        <div className="yes"></div>
-                        <div className="no"></div>
+                        <span>React</span>
                       </div>
                     </div>
-                    <div className="skill-bar">
-                      <span>JavaScript</span>
+                    <div className="skill-bar skill-level_JS">
+                      <IoLogoJavascript />
                       <div className="skill-level">
-                        <div className="yes"></div>
-                        <div className="yes"></div>
-                        <div className="yes"></div>
-                        <div className="no"></div>
-                        <div className="no"></div>
+                        <span>JavaScript</span>
                       </div>
                     </div>
-                    <div className="skill-bar">
-                      <span>Bootstrap</span>
+                    <div className="skill-bar skill-level_BS">
+                      <DiBootstrap />
                       <div className="skill-level">
-                        <div className="yes"></div>
-                        <div className="yes"></div>
-                        <div className="yes"></div>
-                        <div className="yes"></div>
-                        <div className="no"></div>
+                        <span>Bootstrap</span>
                       </div>
                     </div>
                   </div>
@@ -156,39 +145,38 @@ const AboutMe = ({ socket }) => {
                 <div className="skill-content">
                   <div className="skill-con-left">
                     <div className="skill-bar">
-                      <span>Node.js</span>
+                      <FaNode />
                       <div className="skill-level">
-                        <div className="yes"></div>
-                        <div className="yes"></div>
-                        <div className="yes"></div>
-                        <div className="yes"></div>
-                        <div className="no"></div>
+                        <span>basic</span>
                       </div>
                     </div>
                     <div className="skill-bar">
-                      <span>PHP</span>
+                      <FaPhp />
                       <div className="skill-level">
-                        <div className="yes"></div>
-                        <div className="yes"></div>
-                        <div className="no"></div>
-                        <div className="no"></div>
-                        <div className="no"></div>
+                        <span>basic</span>
                       </div>
                     </div>
                     <div className="skill-bar">
-                      <span>MySQL</span>
+                      <SiMysql />
                       <div className="skill-level">
-                        <div className="yes"></div>
+                        <span>basic</span>
+                        {/* <div className="yes"></div>
                         <div className="yes"></div>
                         <div className="yes"></div>
                         <div className="no"></div>
-                        <div className="no"></div>
+                        <div className="no"></div> */}
+                      </div>
+                    </div>
+                    <div className="skill-bar skill-level_HTML">
+                      <DiGit />
+                      <div className="skill-level">
+                        <span>Git</span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div> */}
+            </div>
           </div>
           <div className="row Contact_me">
             <div className="col-12 mb-5 mt-5">
@@ -197,11 +185,24 @@ const AboutMe = ({ socket }) => {
                   想更加了解我嗎?那就把他轉成PDF觀看吧!
                 </h3>
               </div>
-              <div className="d-flex justify-content-center mt-5">
-                <button className="PDF-btn" onClick={() => exportPDF()}>
-                  轉成PDF下載
-                </button>
+              <div className="col-6  mx-auto mb-5">
+                <div class="js-anim_elm -button is-act">
+                  <div class=" about_c-button01 c-text07 -thin u-mt35 -delay2">
+                    <a href="#!" onClick={() => exportPDF()}>
+                      <figure className="c-illust is-loaded ">
+                        <span>
+                          <span className="PDF_iconsaa">
+                            <span className="text ">轉成PDF下載</span>
+                          </span>
+                        </span>
+                      </figure>
+                    </a>
+                  </div>
+                </div>
               </div>
+              {/* <div className="d-flex justify-content-center mt-5">
+                <button className="PDF-btn">轉成PDF下載</button>
+              </div> */}
             </div>
           </div>
         </div>

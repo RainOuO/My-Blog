@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "firebase/compat/auth";
 import { FaUserCircle } from "react-icons/fa";
 import ChatPage from "../../components/ChatPage/ChatPage";
+import HomePaheHeader from "../HomePageHeader/HomePageHeader";
 import "./_homepage.scss";
 
 const Homepage = ({ socket, setguestLodaing }) => {
@@ -70,6 +71,7 @@ const Homepage = ({ socket, setguestLodaing }) => {
 
   return (
     <>
+      <HomePaheHeader />
       <ChatPage socket={socket} />
       <video
         class="cloud-sunBackground"

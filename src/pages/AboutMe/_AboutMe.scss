@@ -2,6 +2,7 @@
   background-color: #f2f2e9;
   min-height: 12vh;
 }
+
 .abouts {
   background-color: #f2f2e9;
 }
@@ -22,6 +23,7 @@
       margin-top: 10%;
     }
   }
+
   .PDF-btn {
     width: 20%;
     transition: background-color 0.3s, box-shadow 0.3s;
@@ -70,6 +72,36 @@
       margin-left: 10px;
       margin-top: 0px;
     }
+    .skill-level_HTML {
+      svg {
+        color: orangered;
+      }
+    }
+    .skill-level_CSS {
+      svg {
+        color: rgb(36, 36, 247);
+      }
+    }
+    .skill-level_SCSS {
+      svg {
+        color: rgb(213, 47, 47);
+      }
+    }
+    .skill-level_React {
+      svg {
+        color: rgb(73, 198, 230);
+      }
+    }
+    .skill-level_JS {
+      svg {
+        color: rgb(234, 234, 52);
+      }
+    }
+    .skill-level_BS {
+      svg {
+        color: rgb(123, 16, 123);
+      }
+    }
     .skill-con-left,
     .skill-con-right {
       display: inline-block;
@@ -80,36 +112,103 @@
     .skill-bar {
       span {
         display: inline-block;
-        font-weight: bold;
         margin-left: 10px;
         width: 90px;
+        font-weight: 700;
+      }
+      svg {
+        display: inline-block;
+        margin-left: 10px;
+        font-size: 2.5rem;
+        margin-right: 10px;
       }
     }
     .skill-level {
       display: inline-block;
-      margin-left: 10px;
+      margin: 15px 30px;
     }
-    .yes {
-      display: inline-block;
-      width: 15px;
-      height: 15px;
-      border-radius: 100%;
-      background-color: #90a955;
-      margin-top: 10px;
-      margin-right: 2px;
-    }
-    .no {
-      display: inline-block;
-      width: 15px;
-      height: 15px;
-      border-radius: 100%;
-      background-color: #c1d7ae;
-      margin-top: 10px;
-      margin-right: 2px;
-    }
+    // .yes {
+    //   display: inline-block;
+    //   width: 15px;
+    //   height: 15px;
+    //   border-radius: 100%;
+    //   background-color: #90a955;
+    //   margin-top: 10px;
+    //   margin-right: 2px;
+    // }
+    // .no {
+    //   display: inline-block;
+    //   width: 15px;
+    //   height: 15px;
+    //   border-radius: 100%;
+    //   background-color: #c1d7ae;
+    //   margin-top: 10px;
+    //   margin-right: 2px;
+    // }
   }
 }
 
+.about_c-button01 {
+  display: flex;
+  position: relative;
+  a {
+    width: 270px;
+    position: relative;
+    transition: 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+    height: 60px;
+  }
+  .c-illust {
+    position: absolute;
+    width: 104px;
+    bottom: -10px;
+    right: 50px;
+    opacity: 0;
+    transform: translateX(10%);
+    transition: opacity 0.4s, transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+  }
+  a .text {
+    position: relative;
+    left: -40px;
+    transition: margin-left 0.4s cubic-bezier(0.77, 0, 0.175, 1),
+      opacity 0.8s 1.6s;
+  }
+  a:before {
+    content: "";
+    background: url("../../images/pdf-svgrepo-com.svg");
+    background-repeat: no-repeat;
+    background-position: 2px 11px;
+    background-size: auto 70%;
+    position: absolute;
+    width: 60px;
+    height: 80px;
+    top: 0;
+    left: 0;
+    border-radius: 60px 99px 99px 60px;
+    transition: box-shadow 0.4s cubic-bezier(0.77, 0, 0.175, 1),
+      width 0.4s cubic-bezier(0.77, 0, 0.175, 1),
+      border-color 0.4s cubic-bezier(0.77, 0, 0.175, 1),
+      background-color 0.4s cubic-bezier(0.77, 0, 0.175, 1),
+      transform 1.6s cubic-bezier(0.77, 0, 0.175, 1), opacity 1.6s;
+  }
+}
+.about_c-button01 a:focus:before,
+.about_c-button01 a:hover:before {
+  box-shadow: 0 0 min(1.6806722689vw + 25.0420168067px, 48px) 0
+    rgba(0, 0, 0, 0.15);
+  width: 75%;
+  border-color: #fff;
+  background-color: #fff;
+  background-position: 5px 11px;
+  background-size: auto 70%;
+  border-radius: 60px 99px 99px 60px;
+}
+.about_c-button01 a:focus .c-illust,
+.about_c-button01 a:hover .c-illust {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.4s 0.2s,
+    transform 0.4s cubic-bezier(0.77, 0, 0.175, 1) 0.2s;
+}
 @media screen and (max-width: 1024px) {
   .about {
     .PDF-btn {

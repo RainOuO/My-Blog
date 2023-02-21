@@ -39,83 +39,88 @@ const Header = ({ usersLodaing }) => {
   };
 
   return (
-    <div className="header_main_body fixed-top">
-      <div className="header_main ">
-        <div className="row d-flex align-items-center">
-          <div className="col-xxl-4 col-xl-3 col-1">
-            <Link to="/" className="header_menu">
-              <div className="header_logo">
-                <img src={logoPhoto} alt="" />
-              </div>
-            </Link>
-          </div>
-          <div className="col-xxl-4 col-xl-3 col-6 ">
-            <ul className="d-flex my-auto header_hoverLink">
-              <NavLink to="/Post" className="">
-                <li className="mx-xl-5 mx-md-4 mx-2">Post</li>
-              </NavLink>
-              <NavLink to="/AboutMe" className="">
-                <li className="mx-xl-5 mx-md-4 mx-2">About</li>
-              </NavLink>
-              <NavLink to="/404" className="">
-                <li className="mx-xl-5 mx-md-4 mx-2">Anything</li>
-              </NavLink>
-              <NavLink to="/404" className="">
-                <li className="mx-xl-5 mx-md-4 mx-2">Portfolio</li>
-              </NavLink>
-            </ul>
-          </div>
-          <div className="col-xxl-4 col-xl-6 col-5 ">
-            <div className="d-flex  header_Icon align-items-center justify-content-md-end ps-md-5">
-              {user ? (
-                <>
-                  <div className="">
-                    <p
-                      className="post_article pe-3 my-auto"
-                      onClick={handleShow}
-                    >
-                      發表文章
-                    </p>
-                    <Modal
-                      show={show}
-                      onHide={handleClose}
-                      className="custom_modal"
-                    >
-                      <Modal.Header closeButton className="text-center">
-                        <Modal.Title>發表文章</Modal.Title>
-                      </Modal.Header>
-                      <Modal.Body>
-                        <div className="row">
-                          <div className="col-12">
-                            <NewPosts setShow={setShow} />
+    <>
+      <div className="header_main_body fixed-top">
+        <div className="header_main ">
+          <div className="row d-flex align-items-center">
+            <div className="col-xxl-4 col-xl-3 col-1">
+              <Link to="/" className="header_menu">
+                <div className="header_logo">
+                  <img src={logoPhoto} alt="" />
+                </div>
+              </Link>
+            </div>
+            <div className="col-xxl-4 col-xl-3 col-6 ">
+              <ul className="d-flex my-auto header_hoverLink">
+                <NavLink to="/Post" className="">
+                  <li className="mx-xl-5 mx-md-4 mx-2">Post</li>
+                </NavLink>
+                <NavLink to="/AboutMe" className="">
+                  <li className="mx-xl-5 mx-md-4 mx-2">About</li>
+                </NavLink>
+                <NavLink to="/404" className="">
+                  <li className="mx-xl-5 mx-md-4 mx-2">Anything</li>
+                </NavLink>
+                <NavLink to="/404" className="">
+                  <li className="mx-xl-5 mx-md-4 mx-2">Portfolio</li>
+                </NavLink>
+              </ul>
+            </div>
+            <div className="col-xxl-4 col-xl-6 col-5 ">
+              <div className="d-flex  header_Icon align-items-center justify-content-md-end ps-md-5">
+                {user ? (
+                  <>
+                    <div className="">
+                      <p
+                        className="post_article pe-3 my-auto"
+                        onClick={handleShow}
+                      >
+                        發表文章
+                      </p>
+                      <Modal
+                        show={show}
+                        onHide={handleClose}
+                        className="custom_modal"
+                      >
+                        <Modal.Header closeButton className="text-center">
+                          <Modal.Title>發表文章</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                          <div className="row">
+                            <div className="col-12">
+                              <NewPosts setShow={setShow} />
+                            </div>
                           </div>
-                        </div>
-                      </Modal.Body>
-                    </Modal>
-                  </div>
+                        </Modal.Body>
+                      </Modal>
+                    </div>
 
-                  <div className="user-picture my-auto">
-                    <img src={localStorage.getItem("profilePicture")} alt="" />
-                  </div>
-                  <div className=" d-flex">
-                    <Link className=" ps-3" to="/MyMenu">
-                      <AuthBtn></AuthBtn>
-                    </Link>
-                  </div>
-                  <div className="">
-                    <Link className="ps-md-3 my-auto" onClick={logout}>
-                      登出
-                    </Link>
-                  </div>
-                </>
-              ) : (
-                <></>
-              )}
+                    <div className="user-picture my-auto">
+                      <img
+                        src={localStorage.getItem("profilePicture")}
+                        alt=""
+                      />
+                    </div>
+                    <div className=" d-flex">
+                      <Link className=" ps-3" to="/MyMenu">
+                        <AuthBtn></AuthBtn>
+                      </Link>
+                    </div>
+                    <div className="">
+                      <Link className="ps-md-3 my-auto" onClick={logout}>
+                        登出
+                      </Link>
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 export default Header;
