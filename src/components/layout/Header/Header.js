@@ -1,5 +1,6 @@
 import { FaUser } from "react-icons/fa";
 import firebase from "../../../utils/firebase";
+import HomePaheHeader from "../../../pages/HomePageHeader/HomePageHeader";
 import { Link, useNavigate, NavLink } from "react-router-dom";
 import "./_Header.scss";
 import { useEffect, useState } from "react";
@@ -37,10 +38,40 @@ const Header = ({ usersLodaing }) => {
       </div>
     );
   };
+  function useScrollDirection() {
+    const [scrollDirection, setScrollDirection] = useState(null);
 
+    useEffect(() => {
+      let lastScrollY = window.pageYOffset;
+
+      const updateScrollDirection = () => {
+        const scrollY = window.pageYOffset;
+        const direction = scrollY > lastScrollY ? "down" : "up";
+        if (
+          direction !== scrollDirection &&
+          (scrollY - lastScrollY > 10 || scrollY - lastScrollY < -10)
+        ) {
+          setScrollDirection(direction);
+        }
+        lastScrollY = scrollY > 0 ? scrollY : 0;
+      };
+      window.addEventListener("scroll", updateScrollDirection); // add event listener
+      return () => {
+        window.removeEventListener("scroll", updateScrollDirection); // clean up
+      };
+    }, [scrollDirection]);
+
+    return scrollDirection;
+  }
+  const scrollDirection = useScrollDirection();
+  console.log("scrollDirection=======", scrollDirection);
   return (
     <>
-      <div className="header_main_body fixed-top">
+      <div
+        className={`header_main_body   ${
+          scrollDirection === "down" ? "hide" : "show"
+        }`}
+      >
         <div className="header_main ">
           <div className="row d-flex align-items-center">
             <div className="col-xxl-4 col-xl-3 col-1">
@@ -119,6 +150,9 @@ const Header = ({ usersLodaing }) => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="rwd_headerMenu">
+        <HomePaheHeader />
       </div>
     </>
   );

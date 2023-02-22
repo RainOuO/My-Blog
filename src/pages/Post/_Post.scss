@@ -1,5 +1,5 @@
 .post {
-  margin-top: 100px;
+  margin-top: 30px;
   position: relative;
   h2 {
     font-weight: 500;
@@ -86,4 +86,9 @@
   }
 }
 @media screen and (max-width: 767px) {
+  .post {
+    h2 {
+      padding-top: 5rem;
+    }
+  }
 }

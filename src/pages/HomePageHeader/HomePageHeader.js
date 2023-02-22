@@ -11,16 +11,29 @@ const HomePaheHeader = () => {
   const handleMouseOut = () => {
     setActive(false);
   };
+  const handleClick = (event) => {
+    if (event.currentTarget.classList.contains("is-act")) {
+      handleMouseOut();
+    } else {
+      handleMouseOver();
+    }
+  };
   return (
     <>
       <div
         className={active ? "homepage-header is-act" : "homepage-header"}
         onMouseOver={handleMouseOver}
         onMouseOut={handleMouseOut}
+        onClick={handleClick}
       >
         <div className="menu-drawer">
           <div className="menu-drawer__container">
             <ul className="menu-drawer__list c-text07 -thin">
+              <li>
+                <Link to="/" className="homepage-textlink-through">
+                  <span>Home</span>
+                </Link>
+              </li>
               <li>
                 <Link to="/Post" className="homepage-textlink-through">
                   <span>Post</span>
