@@ -1,39 +1,102 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import firebase from "../../utils/firebase";
-import { BsBookmark } from "react-icons/bs";
-import { FcLikePlaceholder } from "react-icons/fc";
-import { FcLike } from "react-icons/fc";
-import ChatPage from "../../components/ChatPage/ChatPage";
+import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 import { Waypoint } from "react-waypoint";
-import photo_backgroung from "../../images/photo_backgroung.jpg";
 import Modal from "react-bootstrap/Modal";
-import { handleWarningComfirm } from "../../utils/handler/handleStatusCard";
-
+import firebase from "../../utils/firebase";
 import "firebase/compat/storage";
+import ChatPage from "../../components/ChatPage/ChatPage";
+import { handleWarningComfirm } from "../../utils/handler/handleStatusCard";
+import photo_backgroung from "../../images/photo_backgroung.jpg";
+import Chatbot from "../Chatbot/Chatbot";
+
 import "./_Post.scss";
 
-const Post = ({ socket, usersLodaing }) => {
+const Post = ({ socket, usersLodaing, newPost, setNewPosts }) => {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [show, setShow] = useState(false);
   const [Likecancel, setLikeCancel] = useState(false);
   const [postLikeID, setPostLikeID] = useState("");
   const [likeee, setLikeee] = useState([]);
-  // console.log("這是true 或false", likeee);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const lastPostSnapshotRef = useRef();
-  // console.log("目前文章", posts);
+  const userLikes = firebase.auth().currentUser?.displayName;
   useEffect(() => {
-    //第一次拉firebase資料渲染
+    fetchPosts();
+  }, [Likecancel]);
+
+  //只有一發表文章newPost狀態會變成true 就會重新render撈firebase資料渲染畫面 原先是fasle 發文後會變成ture
+  useEffect(() => {
+    if (newPost) {
+      fetchPosts();
+      setNewPosts(false);
+    }
+  }, [newPost]);
+
+  useEffect(() => {
+    const unsubscribe = firebase
+      .firestore()
+      .collection("posts")
+      .orderBy("createdAt", "desc")
+      .limit(4)
+      .onSnapshot((querySnapshot) => {
+        const data = querySnapshot.docs.map((docSnapshot) => {
+          const id = docSnapshot.id;
+          return { ...docSnapshot.data(), id };
+        });
+        setPosts(data);
+      });
+    return () => unsubscribe();
+  }, []);
+
+  const handleLike = async (postId) => {
+    let WhoLikesID = posts.filter((v) => v.id.includes(postId));
+    const whoLikes = WhoLikesID[0]?.LikeBy.filter((e) => e === userLikes || "");
+    const toogleLike = whoLikes?.includes(userLikes);
+    const postRef = firebase.firestore().collection("posts").doc(postId);
+    const email = firebase.auth().currentUser.email;
+    const likeuserPhoto = firebase.auth().currentUser.photoURL;
+    if (toogleLike) {
+      await postRef.update({
+        LikeBy: firebase.firestore.FieldValue.arrayRemove(userLikes),
+        LikeByEmail: firebase.firestore.FieldValue.arrayRemove(email),
+        LikeuserPhot: firebase.firestore.FieldValue.arrayRemove(likeuserPhoto),
+      });
+      setLikeee((prev) => {
+        const newState = [...prev];
+        newState[postId] = false;
+        console.log("if刪除", newState);
+        return newState;
+      });
+      console.log("likeee刪除", likeee);
+    } else {
+      await postRef.update({
+        LikeBy: firebase.firestore.FieldValue.arrayUnion(userLikes),
+        LikeByEmail: firebase.firestore.FieldValue.arrayUnion(email),
+        LikeuserPhot: firebase.firestore.FieldValue.arrayUnion(likeuserPhoto),
+      });
+      setLikeee((prev) => {
+        const newState = [...prev];
+        newState[postId] = true;
+        console.log("newState", newState);
+        return newState;
+      });
+      console.log("likeee增加", likeee);
+    }
+  };
+  useEffect(() => {
+    setLikeee(posts.map((e) => e.LikeBy.includes(userLikes)));
+  }, [posts]);
+
+  const fetchPosts = () => {
     firebase
       .firestore()
       .collection("posts")
       .orderBy("createdAt", "desc")
       .limit(4)
-      .get()
-      .then((collectionSnapshot) => {
+      .onSnapshot((collectionSnapshot) => {
         const data = collectionSnapshot.docs.map((docSnapshot) => {
           const id = docSnapshot.id;
           return { ...docSnapshot.data(), id };
@@ -41,65 +104,14 @@ const Post = ({ socket, usersLodaing }) => {
         lastPostSnapshotRef.current =
           collectionSnapshot.docs[collectionSnapshot.docs.length - 1];
         setPosts(data);
+        setNewPosts(false);
       });
-    userLike();
-    //點擊愛心後的函式
-  }, [Likecancel]);
-  useEffect(() => {
-    let like_icon = posts.map((e) => {
-      return e.LikeBy.includes(userLikes);
-    });
-    setLikeee(like_icon);
-  }, [posts]);
+  };
 
-  const userLikes = firebase.auth().currentUser?.displayName;
-  let WhoLikesID = posts.filter((v) => {
-    return v.id.includes(postLikeID);
-  });
-  const whoLikes = WhoLikesID[0]?.LikeBy.filter((e) => {
-    return e === userLikes || "";
-  });
-  //判斷使用者是否有點過
-  const toogleLike = whoLikes?.includes(
-    firebase.auth().currentUser?.displayName
-  );
-  const commentID = posts.map((e) => {
-    return e.id;
-  });
-  const NewComment = commentID.filter((x) => {
-    return x === postLikeID;
-  });
-  const postListID = posts.filter((e) => {
-    return e.id === NewComment[0];
-  });
-  async function userLike() {
-    const emails = firebase.auth().currentUser.email;
-    const LikeuserPhoto = firebase.auth().currentUser.photoURL;
+  const commentID = posts.map((e) => e.id);
+  const newComment = commentID.filter((id) => id === postLikeID);
+  const postListID = posts.filter((post) => post.id === newComment[0]);
 
-    const likeuser = firebase.auth().currentUser.displayName;
-    if (toogleLike) {
-      await firebase
-        .firestore()
-        .collection("posts")
-        .doc(postLikeID)
-        .update({
-          LikeBy: firebase.firestore.FieldValue.arrayRemove(likeuser),
-          LikeByEmail: firebase.firestore.FieldValue.arrayRemove(emails),
-          LikeuserPhot:
-            firebase.firestore.FieldValue.arrayRemove(LikeuserPhoto),
-        });
-    } else {
-      await firebase
-        .firestore()
-        .collection("posts")
-        .doc(postLikeID)
-        .update({
-          LikeBy: firebase.firestore.FieldValue.arrayUnion(likeuser),
-          LikeByEmail: firebase.firestore.FieldValue.arrayUnion(emails),
-          LikeuserPhot: firebase.firestore.FieldValue.arrayUnion(LikeuserPhoto),
-        });
-    }
-  }
   function GuestSubmit() {
     handleWarningComfirm(
       "你沒有登入",
@@ -112,7 +124,8 @@ const Post = ({ socket, usersLodaing }) => {
   return (
     <>
       <div className="container post custom-container">
-        <ChatPage socket={socket} />
+        {/* <ChatPage socket={socket} /> */}
+        <Chatbot />
         <video
           class="cloud-sunBackground"
           autoPlay
@@ -153,31 +166,38 @@ const Post = ({ socket, usersLodaing }) => {
                             {usersLodaing === null ? (
                               <>
                                 <span
-                                  className="pe-lg-3 pe-md-2 likeIcon "
+                                  // className="pe-lg-3 pe-md-2 likeIcon "
+                                  className="heart"
                                   onClick={() => {
                                     GuestSubmit();
                                   }}
                                 >
                                   {likeee[index] !== false ? (
-                                    <FcLike />
+                                    <FcLike size={20} />
                                   ) : (
-                                    <FcLikePlaceholder />
+                                    <FcLikePlaceholder size={20} />
                                   )}
                                 </span>
                               </>
                             ) : (
                               <>
                                 <span
-                                  className="pe-3 likeIcon "
+                                  // className="pe-3 likeIcon "
+                                  className="heart"
                                   onClick={() => {
-                                    setPostLikeID(post.id);
-                                    setLikeCancel(!Likecancel);
+                                    handleLike(post.id);
                                   }}
                                 >
-                                  {likeee[index] !== false ? (
-                                    <FcLike />
+                                  {likeee[index] ? (
+                                    <FcLike
+                                      size={20}
+                                      onClick={() => setLikeCancel(false)}
+                                    />
                                   ) : (
-                                    <FcLikePlaceholder />
+                                    <FcLikePlaceholder
+                                      size={20}
+                                      onClick={() => setLikeCancel(true)}
+                                    />
                                   )}
                                 </span>
                               </>

@@ -6,6 +6,7 @@ import "firebase/compat/auth";
 import { FaUserCircle } from "react-icons/fa";
 import ChatPage from "../../components/ChatPage/ChatPage";
 import HomePaheHeader from "../HomePageHeader/HomePageHeader";
+import Chatbot from "../Chatbot/Chatbot";
 import "./_homepage.scss";
 
 const Homepage = ({ socket, setguestLodaing }) => {
@@ -29,52 +30,13 @@ const Homepage = ({ socket, setguestLodaing }) => {
     setguestLodaing(null);
     navigate("/post");
   }
-  let string1 = "leetcode";
-
-  function abc(string1) {
-    let arr = {};
-    for (let value of string1) {
-      let bbb = (arr[value] = (arr[value] || 0) + 1);
-      console.log("bbb,", bbb);
-      // for (let i = 0; i < string1.length; i++) {
-      //   if (arr[i] === 0) {
-      //     console.log("i111", i++);
-      //     return i++;
-      //   } else {
-      //     console.log("i", i);
-      //     return -1;
-      //   }
-      // }
-    }
-    console.log("arr", arr);
-  }
-  abc(string1);
-  // const s = "loveleetcode";
-
-  // let firstUniqChar = function (s) {
-  //   const map = {};
-  //   for (let v of s) {
-  //     map[v] = (map[v] || 0) + 1;
-  //   }
-  //   for (let i = 0; i < s.length; i++) {
-  //     if (map[s[i]] === 1) {
-  //       console.log("arr", map);
-  //       return i;
-  //     } else {
-  //       console.log("arr", map);
-  //       return -1;
-  //     }
-  //   }
-  //   console.log("arr", map);
-  // };
-  // firstUniqChar(s);
-
   return (
     <>
       <HomePaheHeader />
-      <ChatPage socket={socket} />
+      {/* <ChatPage socket={socket} /> */}
+      <Chatbot />
       <video
-        class="cloud-sunBackground"
+        className="cloud-sunBackground"
         autoPlay
         loop
         muted
@@ -85,7 +47,7 @@ const Homepage = ({ socket, setguestLodaing }) => {
       <div className="header-background"></div>
       <div className="homeContainer">
         <div className="container ">
-          <ChatPage socket={socket} />
+          {/* <ChatPage socket={socket} /> */}
           <div className="row">
             <div className="col-12">
               <a href="#down">
@@ -119,8 +81,8 @@ const Homepage = ({ socket, setguestLodaing }) => {
             <div className="col-6 ">
               <div className="row">
                 <div className="col-12  d-flex justify-content-end">
-                  <div class="js-anim_elm -button is-act">
-                    <div class="c-button01 c-text07 -thin u-mt35 -delay2">
+                  <div className="js-anim_elm -button is-act">
+                    <div className="c-button01 c-text07 -thin u-mt35 -delay2">
                       <a href="#!" onClick={guestSubmit}>
                         <span className="text ">訪客模式</span>
                         <figure className="c-illust is-loaded">
@@ -135,8 +97,8 @@ const Homepage = ({ socket, setguestLodaing }) => {
                   </div>
                 </div>
                 <div className="col-12  d-flex justify-content-end ">
-                  <div class="js-anim_elm -button is-act">
-                    <div class="c-button01 c-text07 -thin u-mt35 -delay2 ">
+                  <div className="js-anim_elm -button is-act">
+                    <div className="c-button01 c-text07 -thin u-mt35 -delay2 ">
                       <a href="#!" className="" onClick={onSubmit}>
                         <span className="text ">Google登入</span>
                         <figure className="c-illust is-loaded">

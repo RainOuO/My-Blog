@@ -9,9 +9,8 @@ import { handleWarningComfirm } from "../../../utils/handler/handleStatusCard";
 import Modal from "react-bootstrap/Modal";
 import logoPhoto from "../../../images/logo3.png";
 
-const Header = ({ usersLodaing }) => {
+const Header = ({ newPost, setNewPosts }) => {
   const navigate = useNavigate();
-
   const [user, setUser] = useState(null);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -40,10 +39,8 @@ const Header = ({ usersLodaing }) => {
   };
   function useScrollDirection() {
     const [scrollDirection, setScrollDirection] = useState(null);
-
     useEffect(() => {
       let lastScrollY = window.pageYOffset;
-
       const updateScrollDirection = () => {
         const scrollY = window.pageYOffset;
         const direction = scrollY > lastScrollY ? "down" : "up";
@@ -64,11 +61,10 @@ const Header = ({ usersLodaing }) => {
     return scrollDirection;
   }
   const scrollDirection = useScrollDirection();
-  console.log("scrollDirection=======", scrollDirection);
   return (
     <>
       <div
-        className={`header_main_body   ${
+        className={`header_main_body ${
           scrollDirection === "down" ? "hide" : "show"
         }`}
       >
@@ -83,16 +79,16 @@ const Header = ({ usersLodaing }) => {
             </div>
             <div className="col-xxl-4 col-xl-3 col-6 ">
               <ul className="d-flex my-auto header_hoverLink">
-                <NavLink to="/Post" className="">
+                <NavLink to="/Post">
                   <li className="mx-xl-5 mx-md-4 mx-2">Post</li>
                 </NavLink>
-                <NavLink to="/AboutMe" className="">
+                <NavLink to="/AboutMe">
                   <li className="mx-xl-5 mx-md-4 mx-2">About</li>
                 </NavLink>
-                <NavLink to="/404" className="">
+                <NavLink to="/404">
                   <li className="mx-xl-5 mx-md-4 mx-2">Anything</li>
                 </NavLink>
-                <NavLink to="/404" className="">
+                <NavLink to="/404">
                   <li className="mx-xl-5 mx-md-4 mx-2">Portfolio</li>
                 </NavLink>
               </ul>
@@ -101,7 +97,7 @@ const Header = ({ usersLodaing }) => {
               <div className="d-flex  header_Icon align-items-center justify-content-md-end ps-md-5">
                 {user ? (
                   <>
-                    <div className="">
+                    <div>
                       <p
                         className="post_article pe-3 my-auto"
                         onClick={handleShow}
@@ -119,7 +115,11 @@ const Header = ({ usersLodaing }) => {
                         <Modal.Body>
                           <div className="row">
                             <div className="col-12">
-                              <NewPosts setShow={setShow} />
+                              <NewPosts
+                                setShow={setShow}
+                                setNewPosts={setNewPosts}
+                                newPost={newPost}
+                              />
                             </div>
                           </div>
                         </Modal.Body>

@@ -70,6 +70,125 @@
   font-size: 1.4rem;
   font-weight: 500;
 }
+//>> 按讚icon特效開始
+$heart-size: 20px;
+$heart-color: #ff4d4f;
+$heart-background-color: #fff2f2;
+
+.heart {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  width: $heart-size;
+  height: $heart-size;
+  transition: all 0.2s;
+  vertical-align: middle;
+  margin-right: 0.5rem;
+
+  &:hover,
+  &:active {
+    &::before,
+    &::after {
+      position: absolute;
+      content: "";
+      width: $heart-size;
+      height: $heart-size;
+      background-color: $heart-background-color;
+      border-radius: 50% 50% 0 0;
+      transform: rotate(-45deg);
+      transform-origin: 0 100%;
+    }
+  }
+
+  &::before {
+    top: 0;
+    left: -20px;
+  }
+
+  &::after {
+    top: -20px;
+    left: 0;
+  }
+
+  &:hover,
+  &.liked {
+    &::before {
+      animation: like-up 0.5s ease-out;
+      opacity: 0;
+    }
+    &::after {
+      animation: like-right 0.5s ease-out;
+      opacity: 0;
+    }
+  }
+
+  &.liked {
+    &::before,
+    &::after {
+      display: none;
+    }
+    &::before,
+    &::after,
+    svg {
+      color: $heart-color;
+    }
+  }
+
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0px;
+    width: $heart-size;
+    height: $heart-size;
+    fill: none;
+    stroke: $heart-color;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: all 0.2s;
+  }
+
+  &:hover svg,
+  &.liked svg {
+    transform: scale(1.3);
+  }
+
+  &:active svg {
+    // transform: scale(1);
+  }
+
+  @keyframes like-up {
+    0% {
+      transform: rotate(-45deg) scale(1) translate(0, 0);
+      opacity: 1;
+    }
+    50% {
+      transform: rotate(-45deg) scale(1.5) translate(0, -40%);
+      opacity: 0.5;
+    }
+    100% {
+      transform: rotate(-45deg) scale(2) translate(0, -80%);
+      opacity: 0;
+    }
+  }
+
+  @keyframes like-right {
+    0% {
+      transform: rotate(-45deg) scale(1) translate(0, 0);
+      opacity: 1;
+    }
+    50% {
+      transform: rotate(-45deg) scale(1.5) translate(40%, 0);
+      opacity: 0.5;
+    }
+    100% {
+      transform: rotate(-45deg) scale(2) translate(80%, 0);
+      opacity: 0;
+    }
+  }
+}
+
+//>> 按讚icon特效結束
 @media screen and (max-width: 768px) and (max-width: 920px) {
   .post {
     .post_description {

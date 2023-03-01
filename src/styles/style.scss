@@ -9,21 +9,18 @@
   box-sizing: border-box;
   -webkit-user-drag: none;
 }
+
 .swal2-icon.swal2-warning {
   border-color: #fd0230 !important;
   color: #fd0230 !important;
 }
 
-.modal-content {
-  // width: 1000px !important;
-}
 body {
   font-family: "Noto Sans TC", "Open Sans", sans-serif !important;
 }
 
 * {
   scrollbar-width: thin;
-  /* Firefox */
 }
 
 *::-webkit-scrollbar {
@@ -44,11 +41,9 @@ body {
 }
 
 .app {
-  // margin-top: 94px;
 }
 .offcanvas {
   border: none;
-  // max-width: 90vw;
 }
 .custom-container {
   max-width: 1280px;

@@ -1,19 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import firebase from "../../utils/firebase";
 import "firebase/compat/firestore";
 import "firebase/compat/storage";
 import defaultPhoto from "../../images/photo_backgroung.jpg";
-import { useNavigate } from "react-router-dom";
 import PostEditor from "../../components/WYSIWYG/PostEditor";
 import "./_NewPosts.scss";
 import { handleWarningComfirm } from "../../utils/handler/handleStatusCard";
 
-const NewPosts = ({ setShow }) => {
+const NewPosts = ({ setShow, newPost, setNewPosts }) => {
+  console.log("newPost狀態 true或false", newPost);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [file, setFile] = useState(null);
-  const navigate = useNavigate();
-
   const [getData, setGetData] = useState("");
   const [postData, setPostData] = useState({
     title: "",
@@ -63,7 +61,6 @@ const NewPosts = ({ setShow }) => {
               .then((res) => {
                 try {
                   console.log("res成功", res);
-                  navigate("/Post");
                   setShow(false);
                 } catch (error) {
                   console.log(error);
@@ -100,8 +97,9 @@ const NewPosts = ({ setShow }) => {
             .then((res) => {
               try {
                 console.log("res成功", res);
-                navigate("/Post");
                 setShow(false);
+                setNewPosts(true);
+                console.log("222222222", newPost);
               } catch (error) {
                 console.log(error);
               }

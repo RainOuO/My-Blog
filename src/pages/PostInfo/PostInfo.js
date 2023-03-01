@@ -8,17 +8,14 @@ import { BsBookmarkFill } from "react-icons/bs";
 import axios from "axios";
 import { FaUserCircle } from "react-icons/fa";
 import "firebase/compat/storage";
-import PostEditor from "../../components/WYSIWYG/PostEditor";
 import "./_PostInfo.scss";
+import Chatbot from "../Chatbot/Chatbot";
 import { handleWarningComfirm } from "../../utils/handler/handleStatusCard";
 const API_URL = process.env.REACT_APP_OPEN_URL;
 const PostInfo = ({ usersLodaing }) => {
   const navigate = useNavigate();
   const { postId } = useParams();
   const [post, setPost] = useState({ auther: {} });
-
-  console.log("所有內容", post);
-
   const [commentContent, setCommentContent] = useState("");
   const [userMessage, setuserMessage] = useState({});
   const [comments, setComments] = useState("");
@@ -48,34 +45,35 @@ const PostInfo = ({ usersLodaing }) => {
           return doc.data();
         });
         setComments(data);
+        console.log("留言========", data);
       });
   }, []);
-  async function toggleCollected() {
-    const uid = firebase.auth().currentUser.uid;
+  // async function toggleCollected() {
+  //   const uid = firebase.auth().currentUser.uid;
 
-    if (isCollected) {
-      firebase
-        .firestore()
-        .collection("posts")
-        .doc(postId)
-        .update({
-          collectedBy: firebase.firestore.FieldValue.arrayRemove(uid),
-          // arrayUnion 是把陣列加進去 不管怎樣舊的值都不會被取代
-        });
-    } else {
-      firebase
-        .firestore()
-        .collection("posts")
-        .doc(postId)
-        .update({
-          collectedBy: firebase.firestore.FieldValue.arrayUnion(uid),
-          // arrayUnion 是把陣列加進去 不管怎樣舊的值都不會被取代
-        });
-    }
-  }
-  const isCollected = post.collectedBy?.includes(
-    firebase.auth().currentUser?.uid
-  );
+  //   if (isCollected) {
+  //     firebase
+  //       .firestore()
+  //       .collection("posts")
+  //       .doc(postId)
+  //       .update({
+  //         collectedBy: firebase.firestore.FieldValue.arrayRemove(uid),
+  //         // arrayUnion 是把陣列加進去 不管怎樣舊的值都不會被取代
+  //       });
+  //   } else {
+  //     firebase
+  //       .firestore()
+  //       .collection("posts")
+  //       .doc(postId)
+  //       .update({
+  //         collectedBy: firebase.firestore.FieldValue.arrayUnion(uid),
+  //         // arrayUnion 是把陣列加進去 不管怎樣舊的值都不會被取代
+  //       });
+  //   }
+  // }
+  // const isCollected = post.collectedBy?.includes(
+  //   firebase.auth().currentUser?.uid
+  // );
   function toggleLiked() {
     const email = firebase.auth().currentUser.email;
     const LikeuserPhoto = firebase.auth().currentUser.photoURL;
@@ -198,6 +196,7 @@ const PostInfo = ({ usersLodaing }) => {
   }
   return (
     <>
+      <Chatbot />
       {usersLodaing === null ? (
         <>
           <div className="boxheight"></div>
@@ -222,8 +221,8 @@ const PostInfo = ({ usersLodaing }) => {
                   <img className="" src={post.imageUrl} alt="" />
                 </div> */}
                 <div className="col-12 p-3 mt-2">
-                  <div className=" ">
-                    <div className="row mt-3 ">
+                  <div>
+                    <div className="row mt-5 ">
                       <div className="col-10">
                         <p>{post.content}</p>
                         <div
@@ -238,8 +237,16 @@ const PostInfo = ({ usersLodaing }) => {
                         <div className="col-xxl-3 col-md-4">
                           <span>{post.LikeBy?.length || ""}個讚</span>
                           <span className="my-1 ms-5">
-                            {post.LikeBy?.[0]}
-                            <span>和其他人都說讚</span>
+                            {post.LikeBy == "" ? (
+                              <span></span>
+                            ) : post.LikeBy?.length > 1 ? (
+                              <span>
+                                和其他
+                                {post.LikeBy?.length - 1 || ""}人都說讚
+                              </span>
+                            ) : (
+                              <span></span>
+                            )}
                             <br />
                           </span>
                         </div>
@@ -247,17 +254,18 @@ const PostInfo = ({ usersLodaing }) => {
                         <div className="d-flex mb-2 ">
                           {/* 留言 {post.commentsCount || 0} */}
                           <div
-                            className="isLikes_icon mx-3 mt-1"
+                            // className="isLikes_icon mx-3 mt-1"
+                            className="postinfo_heart"
                             onClick={GuestSubmit}
                           >
                             {isLike ? <FcLike /> : <FcLikePlaceholder />}
                           </div>
-                          <div
+                          {/* <div
                             className="isCollected mx-3 mt-1 "
                             onClick={Collected}
                           >
                             {isCollected ? <BsBookmarkFill /> : <BsBookmark />}
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     </div>
@@ -355,8 +363,8 @@ const PostInfo = ({ usersLodaing }) => {
                   <img className="" src={post.imageUrl} alt="" />
                 </div> */}
                 <div className="col-12 p-3 mt-2">
-                  <div className=" ">
-                    <div className="row mt-3 ">
+                  <div>
+                    <div className="row mt-5 ">
                       <div className="col-10">
                         <p>{post.content}</p>
                         <div
@@ -371,8 +379,16 @@ const PostInfo = ({ usersLodaing }) => {
                         <div className="col-xxl-3 col-md-4 ">
                           <span>{post.LikeBy?.length || 0}個讚</span>
                           <span className="my-1 ms-5">
-                            {post.LikeBy?.[0]}
-                            <span>和其他人都說讚</span>
+                            {post.LikeBy == "" ? (
+                              <span></span>
+                            ) : post.LikeBy?.length > 1 ? (
+                              <span>
+                                和其他
+                                {post.LikeBy?.length - 1 || ""}人都說讚
+                              </span>
+                            ) : (
+                              <span></span>
+                            )}
                             <br />
                           </span>
                         </div>
@@ -380,17 +396,19 @@ const PostInfo = ({ usersLodaing }) => {
                         <div className="d-flex mb-2 ">
                           {/* 留言 {post.commentsCount || 0} */}
                           <div
-                            className="isLikes_icon mx-3 mt-1"
+                            // className="isLikes_icon mx-3 mt-1"
+                            className="postinfo_heart"
                             onClick={toggleLiked}
                           >
                             {isLike ? <FcLike /> : <FcLikePlaceholder />}
                           </div>
-                          <div
+                          {/* <div
                             className="isCollected mx-3 mt-1 "
+                            // className="heart"
                             onClick={toggleCollected}
                           >
                             {isCollected ? <BsBookmarkFill /> : <BsBookmark />}
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     </div>

@@ -15,7 +15,7 @@ import { FaReact } from "react-icons/fa";
 import { IoLogoJavascript } from "react-icons/io";
 import { DiBootstrap } from "react-icons/di";
 import { DiGit } from "react-icons/di";
-
+import Chatbot from "../Chatbot/Chatbot";
 import { GrDocumentPdf } from "react-icons/gr";
 
 const AboutMe = ({ socket }) => {
@@ -37,7 +37,8 @@ const AboutMe = ({ socket }) => {
   };
   return (
     <>
-      <ChatPage socket={socket} />
+      <Chatbot />
+      {/* <ChatPage socket={socket} /> */}
       <div className="about_background"></div>
       <div className="abouts" id="aboutPDF">
         <div className="about custom-container container">

@@ -5,30 +5,22 @@ import booksIcon from "../../images/book-svgrepo-com.svg";
 const HomePaheHeader = () => {
   //滑鼠移出hover事件 更改State增加className
   const [active, setActive] = useState(false);
-  const handleMouseOver = () => {
-    setActive(true);
-  };
-  const handleMouseOut = () => {
-    setActive(false);
-  };
   const handleClick = (event) => {
-    if (event.currentTarget.classList.contains("is-act")) {
-      handleMouseOut();
-    } else {
-      handleMouseOver();
-    }
+    event.currentTarget.classList.contains("is-act")
+      ? setActive(false)
+      : setActive(true);
   };
   return (
     <>
       <div
         className={active ? "homepage-header is-act" : "homepage-header"}
-        onMouseOver={handleMouseOver}
-        onMouseOut={handleMouseOut}
+        onMouseOver={() => setActive(true)}
+        onMouseOut={() => setActive(false)}
         onClick={handleClick}
       >
         <div className="menu-drawer">
           <div className="menu-drawer__container">
-            <ul className="menu-drawer__list c-text07 -thin">
+            <ul className="menu-drawer__list">
               <li>
                 <Link to="/" className="homepage-textlink-through">
                   <span>Home</span>
@@ -58,7 +50,7 @@ const HomePaheHeader = () => {
           </div>
         </div>
         <button type="button" className="c-fluid homepage-header__button">
-          <span className="u-relative">
+          <span>
             <div className="img">
               <span>
                 <img alt="#" src={booksIcon} />
@@ -67,7 +59,7 @@ const HomePaheHeader = () => {
                 <img alt="menu" src={booksIcon} />
               </span>
             </div>
-            <span className="text u-center mt-4">menu</span>
+            <span className="text mt-4">menu</span>
           </span>
         </button>
       </div>
