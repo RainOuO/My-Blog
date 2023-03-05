@@ -8,7 +8,6 @@ import "./_NewPosts.scss";
 import { handleWarningComfirm } from "../../utils/handler/handleStatusCard";
 
 const NewPosts = ({ setShow, newPost, setNewPosts }) => {
-  console.log("newPost狀態 true或false", newPost);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [file, setFile] = useState(null);
@@ -60,7 +59,6 @@ const NewPosts = ({ setShow, newPost, setNewPosts }) => {
               })
               .then((res) => {
                 try {
-                  console.log("res成功", res);
                   setShow(false);
                 } catch (error) {
                   console.log(error);
@@ -96,10 +94,8 @@ const NewPosts = ({ setShow, newPost, setNewPosts }) => {
             })
             .then((res) => {
               try {
-                console.log("res成功", res);
                 setShow(false);
                 setNewPosts(true);
-                console.log("222222222", newPost);
               } catch (error) {
                 console.log(error);
               }

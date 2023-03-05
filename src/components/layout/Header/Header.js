@@ -133,7 +133,7 @@ const Header = ({ newPost, setNewPosts }) => {
                       />
                     </div>
                     <div className=" d-flex">
-                      <Link className=" ps-3" to="/MyMenu">
+                      <Link className=" ps-3">
                         <AuthBtn></AuthBtn>
                       </Link>
                     </div>

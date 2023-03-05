@@ -194,6 +194,7 @@ const PostInfo = ({ usersLodaing }) => {
       "所以不能收藏唷~點擊確認到首頁登入google吧!"
     );
   }
+  console.log("post 2023看這=============", post);
   return (
     <>
       <Chatbot />

@@ -1,15 +1,12 @@
 import React from "react";
-import Editor from "ckeditor5-custom-build-full/build/ckeditor";
-// import {Editor as ClassicEditor} from 'ckeditor5-custom-build/build/ckeditor';
+import firebase from "../../utils/firebase";
+import "firebase/compat/firestore";
+import "firebase/compat/storage";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-// import { ImageToolbar } from '@ckeditor/ckeditor5-image/src/imagetoolbar';
-
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import "./PostEditor.scss";
-// TODO: 圖像toolbar叫出來
 const MyCkeditor = (props) => {
-  const IMG_URL = "http://localhost:3007";
-  const { postData, setGetData, handleContentChange } = props;
-
+  const { postData, handleContentChange } = props;
   const uploadAdapter = (loader) => {
     return {
       upload: () => {
@@ -17,20 +14,27 @@ const MyCkeditor = (props) => {
           const body = new FormData();
           loader.file.then((file) => {
             body.append("files", file);
-            // fetch(`${API_URL}/post/${UPLOAD_ENDPOINT}`, {
-            //   method: 'post',
-            //   body: body,
-            // })
-            //   .then((res) => res.json())
-            //   .then((res) => {
-            //     console.log(res);
-            //     resolve({
-            //       default: `${IMG_URL}/post/${res}`,
-            //     });
-            //   })
-            //   .catch((err) => {
-            //     reject(err);
-            //   });
+            const documentRef = firebase.firestore().collection("posts").doc();
+            const fileRef = firebase
+              .storage()
+              .ref("/post-info-images/" + documentRef.id);
+            fileRef.put(file).then(() => {
+              fileRef
+                .getDownloadURL()
+                .then((url) => {
+                  documentRef
+                    .set({
+                      descriptionIMG: url,
+                    })
+                    .then(() => {
+                      resolve({ default: url });
+                    });
+                })
+                .catch((error) => {
+                  console.error(error);
+                  reject(error);
+                });
+            });
           });
         });
       },
@@ -42,7 +46,6 @@ const MyCkeditor = (props) => {
       return uploadAdapter(loader);
     };
   }
-  console.log("postData", postData);
   return (
     <div>
       <div className="Apps">
@@ -52,41 +55,32 @@ const MyCkeditor = (props) => {
             toolbar: [
               "heading",
               "|",
-              "FontColor",
+              "fontColor",
+              "fontSize",
+              "fontBackgroundColor",
               "bold",
               "italic",
               "underline",
               "link",
               "bulletedList",
+              "numberedList",
               "|",
-              "uploadImage",
-              "|",
+              "imageUpload",
+              "blockQuote",
               "undo",
               "redo",
             ],
             extraPlugins: [uploadPlugin],
             image: {
-              toolbar: ["toggleImageCaption", "imageTextAlternative"],
+              toolbar: ["imageTextAlternative"],
+              types: ["jpeg", "png", "gif"],
+              uploader: uploadAdapter,
             },
+            maxFileSize: 2000 * 1024, // 限制檔案大小不超過 2000KB
           }}
           data={postData[0]?.content ? postData[0]?.content : ""}
-          editor={Editor}
-          onReady={(editor) => {
-            // You can store the "editor" and use when it is needed.,
-            // console.log('Editor is ready to use!', editor);
-          }}
+          editor={ClassicEditor}
           onChange={handleContentChange}
-          // onChange={(event, editor) => {
-          //   const data = editor.getData();
-          //   setGetData(data);
-          //   // console.log({ data });
-          // }}
-          onBlur={(event, editor) => {
-            // console.log('Blur.', editor);
-          }}
-          onFocus={(event, editor) => {
-            // console.log('Focus.', editor);
-          }}
         />
       </div>
     </div>

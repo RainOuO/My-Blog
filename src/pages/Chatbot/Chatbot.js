@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./_Chatbot.scss";
 
 const FAQ = [
@@ -27,6 +27,11 @@ const Chatbot = () => {
   ]);
   const [isExpanded, setIsExpanded] = useState(false);
   const [defaultQuestion, setDefaultQuestion] = useState(false);
+  const lastMessageRef = useRef(null);
+  useEffect(() => {
+    // 👇️ scroll to bottom every time messages change
+    lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chatHistory]);
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
@@ -37,7 +42,6 @@ const Chatbot = () => {
       const keyword = inputValue.trim();
       if (keyword.length > 0) {
         const results = getResults(keyword);
-
         setChatHistory([
           ...chatHistory,
           { question: keyword, answer: results },
@@ -51,11 +55,9 @@ const Chatbot = () => {
   const getResults = (keyword) => {
     const regex = new RegExp(keyword, "i");
     const matchingFAQs = FAQ.filter((faq) => regex.test(faq.question));
-
     if (matchingFAQs.length > 0) {
       return matchingFAQs.map((faq) => faq.answer);
     }
-
     return "對不起，我不明白您的問題。";
   };
 
@@ -71,7 +73,6 @@ const Chatbot = () => {
       >
         <div className={`${isExpanded ? "" : "icon"}`}></div>
       </div>
-
       {isExpanded && (
         <div className={`${defaultQuestion ? "d-none" : "chat-options"} `}>
           <div
@@ -95,11 +96,14 @@ const Chatbot = () => {
               setDefaultQuestion(true);
               setChatHistory([
                 ...chatHistory,
-                { question: "天氣如何", answer: "好天氣呢!" },
+                {
+                  question: "這是個什麼樣的網站?",
+                  answer: "這是個會分享JS技術文章、React文章的blog!",
+                },
               ]);
             }}
           >
-            天氣如何
+            這是什麼樣的網站?
           </div>
           <div
             className="option"
@@ -137,8 +141,18 @@ const Chatbot = () => {
           } `}
         >
           {chatHistory.map((chat, index) => (
-            <div key={index} className={`${isExpanded ? "" : "d-none"}`}>
-              {chat.question && <div className="question">{chat.question}</div>}
+            <div
+              key={index}
+              ref={lastMessageRef}
+              className={`${isExpanded ? "" : "d-none"}`}
+            >
+              {chat.question && (
+                <div className="question-container">
+                  <div className="question">
+                    <span>{chat.question}</span>
+                  </div>
+                </div>
+              )}
               <div className="answer">
                 {Array.isArray(chat.answer)
                   ? chat.answer.map((answer, index) => (

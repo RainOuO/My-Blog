@@ -100,7 +100,13 @@ ul {
     width: calc(100% - 30px);
   }
 }
-
+.custom_modal {
+  .modal-content {
+    width: 800px;
+    transform: translate(-50%, 0%);
+    left: 50%;
+  }
+}
 @media screen and (max-width: 1024px) {
   .header_main {
     padding: 0 70px;

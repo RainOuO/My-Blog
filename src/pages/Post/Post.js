@@ -127,7 +127,7 @@ const Post = ({ socket, usersLodaing, newPost, setNewPosts }) => {
         {/* <ChatPage socket={socket} /> */}
         <Chatbot />
         <video
-          class="cloud-sunBackground"
+          className="cloud-sunBackground"
           autoPlay
           loop
           muted

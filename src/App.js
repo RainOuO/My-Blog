@@ -1,11 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import Footer from "./components/layout/Footer";
 import Homepage from "./pages/HomePage";
-import PDFContent from "./components/PDF/PDFContent";
-import Signin from "./pages/Signin";
 import Post from "./pages/Post";
 import PostInfo from "./pages/PostInfo";
-import MyMenu from "./components/MyMenu";
 // import socketIO from "socket.io-client";
 import MyPosts from "./pages/MyPosts";
 import Mycollections from "./pages/Mycollections";
@@ -55,7 +52,6 @@ function App() {
           }
         >
           <Route path="/AboutMe" element={<AboutMe />}></Route>
-          <Route path="/PDF" element={<PDFContent />}></Route>
           <Route
             path="/post"
             element={
@@ -66,13 +62,11 @@ function App() {
               />
             }
           ></Route>
-          <Route path="/signin" element={<Signin />}></Route>
           <Route path="/Loading" element={<Loading />}></Route>
           <Route
             path="/postInfo/:postId"
             element={<PostInfo usersLodaing={usersLodaing} />}
           ></Route>
-          <Route path="/MyMenu" element={<MyMenu />}></Route>
           <Route path="/my/posts" element={<MyPosts />}></Route>
           <Route path="/my/collections" element={<Mycollections />}></Route>
           <Route path="/my/settings" element={<Mysettings />}></Route>
