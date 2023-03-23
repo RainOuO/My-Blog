@@ -1,19 +1,20 @@
-import React, { useState } from "react";
-import { NavLink, Link } from "react-router-dom";
-import "./_HomePageHeader.scss";
-import booksIcon from "../../images/book-svgrepo-com.svg";
+import React, { useState } from 'react';
+import { NavLink, Link } from 'react-router-dom';
+import './_HomePageHeader.scss';
+import booksIcon from '../../images/book-svgrepo-com.svg';
 const HomePaheHeader = () => {
   //滑鼠移出hover事件 更改State增加className
   const [active, setActive] = useState(false);
   const handleClick = (event) => {
-    event.currentTarget.classList.contains("is-act")
+    event.currentTarget.classList.contains('is-act')
       ? setActive(false)
       : setActive(true);
   };
+
   return (
     <>
       <div
-        className={active ? "homepage-header is-act" : "homepage-header"}
+        className={active ? 'homepage-header is-act' : 'homepage-header'}
         onMouseOver={() => setActive(true)}
         onMouseOut={() => setActive(false)}
         onClick={handleClick}

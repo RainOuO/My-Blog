@@ -1,36 +1,36 @@
-import React, { useEffect, useRef, useState } from "react";
-import "./_Chatbot.scss";
+import React, { useEffect, useRef, useState } from 'react';
+import './_Chatbot.scss';
 
 const FAQ = [
   {
-    question: "哈囉你好呀",
-    answer: "歡迎來到Reain Blog!",
+    question: '哈囉你好呀',
+    answer: '歡迎來到Reain Blog!',
   },
   {
-    question: "天氣如何",
-    answer: "大好天氣呢!。",
+    question: '天氣如何',
+    answer: '大好天氣呢!。',
   },
   {
-    question: "早安",
-    answer: "早安><",
+    question: '早安',
+    answer: '早安><',
   },
   {
-    question: "版主是誰?",
-    answer: "太神啦",
+    question: '版主是誰?',
+    answer: '太神啦',
   },
 ];
 
 const Chatbot = () => {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
   const [chatHistory, setChatHistory] = useState([
-    { question: "", answer: "歡迎使用聊天機器人，請問有需要幫忙的嗎？" },
+    { question: '', answer: '歡迎使用聊天機器人，請問有需要幫忙的嗎？' },
   ]);
   const [isExpanded, setIsExpanded] = useState(false);
   const [defaultQuestion, setDefaultQuestion] = useState(false);
   const lastMessageRef = useRef(null);
   useEffect(() => {
     // 👇️ scroll to bottom every time messages change
-    lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+    lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [chatHistory]);
 
   const handleInputChange = (e) => {
@@ -38,7 +38,7 @@ const Chatbot = () => {
   };
 
   const handleInputKeyDown = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       const keyword = inputValue.trim();
       if (keyword.length > 0) {
         const results = getResults(keyword);
@@ -47,42 +47,43 @@ const Chatbot = () => {
           { question: keyword, answer: results },
         ]);
 
-        setInputValue("");
+        setInputValue('');
       }
     }
   };
 
   const getResults = (keyword) => {
-    const regex = new RegExp(keyword, "i");
+    const regex = new RegExp(keyword, 'i');
     const matchingFAQs = FAQ.filter((faq) => regex.test(faq.question));
     if (matchingFAQs.length > 0) {
       return matchingFAQs.map((faq) => faq.answer);
     }
-    return "對不起，我不明白您的問題。";
+    return '對不起，我不明白您的問題。';
   };
-
+  // 切換展開/收合聊天機器人
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
 
   return (
-    <div className={`chatbot-container${isExpanded ? " expanded" : ""}`}>
+    <div className={`chatbot-container${isExpanded ? ' expanded' : ''}`}>
       <div
-        className={`${isExpanded ? "header" : " header_iconNone"}`}
+        className={`${isExpanded ? 'header' : ' header_iconNone'}`}
         onClick={toggleExpand}
       >
-        <div className={`${isExpanded ? "" : "icon"}`}></div>
+        <div className={`${isExpanded ? '' : 'icon'}`}></div>
       </div>
+      {/* 聊天機器人展開狀態下，顯示預設問題列表 */}
       {isExpanded && (
-        <div className={`${defaultQuestion ? "d-none" : "chat-options"} `}>
+        <div className={`${defaultQuestion ? 'd-none' : 'chat-options'} `}>
           <div
             className="option"
             onClick={() => {
               setChatHistory([
                 ...chatHistory,
                 {
-                  question: "我要怎發表文章?",
-                  answer: "在首頁登入google帳號就能發表囉!",
+                  question: '我要怎發表文章?',
+                  answer: '在首頁登入google帳號就能發表囉!',
                 },
               ]);
               setDefaultQuestion(true);
@@ -97,8 +98,8 @@ const Chatbot = () => {
               setChatHistory([
                 ...chatHistory,
                 {
-                  question: "這是個什麼樣的網站?",
-                  answer: "這是個會分享JS技術文章、React文章的blog!",
+                  question: '這是個什麼樣的網站?',
+                  answer: '這是個會分享JS技術文章、React文章的blog!',
                 },
               ]);
             }}
@@ -112,8 +113,8 @@ const Chatbot = () => {
               setChatHistory([
                 ...chatHistory,
                 {
-                  question: "如何開始互動呢?",
-                  answer: "可以輸入些關鍵字來查詢您的疑問",
+                  question: '如何開始互動呢?',
+                  answer: '可以輸入些關鍵字來查詢您的疑問',
                 },
               ]);
             }}
@@ -125,7 +126,7 @@ const Chatbot = () => {
             onClick={() => {
               setChatHistory([
                 ...chatHistory,
-                { question: "版主是誰", answer: "可以到About那邊觀看唷~" },
+                { question: '版主是誰', answer: '可以到About那邊觀看唷~' },
               ]);
               setDefaultQuestion(true);
             }}
@@ -137,14 +138,14 @@ const Chatbot = () => {
       <div className="content">
         <div
           className={`${
-            defaultQuestion ? "chat-history_none" : "chat-history"
+            defaultQuestion ? 'chat-history_none' : 'chat-history'
           } `}
         >
           {chatHistory.map((chat, index) => (
             <div
               key={index}
               ref={lastMessageRef}
-              className={`${isExpanded ? "" : "d-none"}`}
+              className={`${isExpanded ? '' : 'd-none'}`}
             >
               {chat.question && (
                 <div className="question-container">
@@ -164,10 +165,10 @@ const Chatbot = () => {
           ))}
         </div>
         <div
-          className={`${defaultQuestion ? "input_show" : "input-container"}`}
+          className={`${defaultQuestion ? 'input_show' : 'input-container'}`}
         >
           <input
-            className={`${isExpanded ? "chat_input" : "d-none"}`}
+            className={`${isExpanded ? 'chat_input' : 'd-none'}`}
             type="text"
             value={inputValue}
             placeholder="請輸入您的問題"

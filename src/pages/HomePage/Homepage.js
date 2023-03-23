@@ -1,34 +1,35 @@
-import React, { useState } from "react";
-import { GoogleAuthProvider } from "firebase/auth";
-import firebase from "../../utils/firebase";
-import { useNavigate } from "react-router-dom";
-import "firebase/compat/auth";
-import { FaUserCircle } from "react-icons/fa";
-import ChatPage from "../../components/ChatPage/ChatPage";
-import HomePaheHeader from "../HomePageHeader/HomePageHeader";
-import Chatbot from "../Chatbot/Chatbot";
-import "./_homepage.scss";
+import React, { useContext } from 'react';
+import { GoogleAuthProvider } from 'firebase/auth';
+import firebase from '../../utils/firebase';
+import { useNavigate } from 'react-router-dom';
+import 'firebase/compat/auth';
+import { FaUserCircle } from 'react-icons/fa';
+import ChatPage from '../../components/ChatPage/ChatPage';
+import HomePaheHeader from '../HomePageHeader/HomePageHeader';
+import Chatbot from '../Chatbot/Chatbot';
+import './_homepage.scss';
+import AuthContext from '../../hooks/auth-context';
 
-const Homepage = ({ socket, setguestLodaing }) => {
+const Homepage = ({ socket }) => {
+  const contextData = useContext(AuthContext);
   const navigate = useNavigate();
   const provider = new GoogleAuthProvider();
   function onSubmit(e) {
     e.preventDefault();
-
     firebase
       .auth()
       .signInWithPopup(provider)
       .then((res) => {
-        console.log("成功登入", res);
-        navigate("/post");
+        console.log('成功登入', res);
+        navigate('/post');
       })
       .catch((error) => {
         console.log(error);
       });
   }
   function guestSubmit() {
-    setguestLodaing(null);
-    navigate("/post");
+    contextData.setguestLodaing(null);
+    navigate('/post');
   }
   return (
     <>
@@ -132,7 +133,7 @@ const Homepage = ({ socket, setguestLodaing }) => {
                   <br />
                   在這網站上也提供了客服聊天室，能提供些簡單的問題回答您。
                   <br />
-                  在技術文章中或是其他文章內也穿接了google loading API來登入，{" "}
+                  在技術文章中或是其他文章內也穿接了google loading API來登入，{' '}
                   <br /> 登入後即可留言和按讚~
                   <br />
                   留言也會有即時line訊息通知我您說了什麼~歡迎大家登入google帳號來留言互動!

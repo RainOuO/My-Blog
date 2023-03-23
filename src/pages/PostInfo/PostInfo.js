@@ -1,29 +1,32 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import firebase from "../../utils/firebase";
-import { FcLike } from "react-icons/fc";
-import { FcLikePlaceholder } from "react-icons/fc";
-import { BsBookmark } from "react-icons/bs";
-import { BsBookmarkFill } from "react-icons/bs";
-import axios from "axios";
-import { FaUserCircle } from "react-icons/fa";
-import "firebase/compat/storage";
-import "./_PostInfo.scss";
-import Chatbot from "../Chatbot/Chatbot";
-import { handleWarningComfirm } from "../../utils/handler/handleStatusCard";
+import React, { useContext, useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import firebase from '../../utils/firebase';
+import { FcLike } from 'react-icons/fc';
+import { FcLikePlaceholder } from 'react-icons/fc';
+// import { BsBookmark } from 'react-icons/bs';
+// import { BsBookmarkFill } from 'react-icons/bs';
+import axios from 'axios';
+import { FaUserCircle } from 'react-icons/fa';
+import 'firebase/compat/storage';
+import './_PostInfo.scss';
+import Chatbot from '../Chatbot/Chatbot';
+import { handleWarningComfirm } from '../../utils/handler/handleStatusCard';
+import AuthContext from '../../hooks/auth-context';
 const API_URL = process.env.REACT_APP_OPEN_URL;
-const PostInfo = ({ usersLodaing }) => {
+const PostInfo = () => {
+  const contextData = useContext(AuthContext);
+
   const navigate = useNavigate();
   const { postId } = useParams();
   const [post, setPost] = useState({ auther: {} });
-  const [commentContent, setCommentContent] = useState("");
+  const [commentContent, setCommentContent] = useState('');
   const [userMessage, setuserMessage] = useState({});
-  const [comments, setComments] = useState("");
+  const [comments, setComments] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     firebase
       .firestore()
-      .collection("posts")
+      .collection('posts')
       .doc(postId)
       // onSnapshot 更新狀態監聽功能意思 只要postId值有改變 會更新Firestore資料 會馬上取得最新狀態
       .onSnapshot((documentSnapshot) => {
@@ -35,17 +38,17 @@ const PostInfo = ({ usersLodaing }) => {
   useEffect(() => {
     firebase
       .firestore()
-      .collection("posts")
+      .collection('posts')
       .doc(postId)
-      .collection("comments")
-      .orderBy("createdAt", "desc")
+      .collection('comments')
+      .orderBy('createdAt', 'desc')
       // 可以做一個選擇留言順序 更新desc
       .onSnapshot((collectionSnapshot) => {
         const data = collectionSnapshot.docs.map((doc) => {
           return doc.data();
         });
         setComments(data);
-        console.log("留言========", data);
+        console.log('留言========', data);
       });
   }, []);
   // async function toggleCollected() {
@@ -81,7 +84,7 @@ const PostInfo = ({ usersLodaing }) => {
     if ((isLike, LikeByEmails, LikebyPhoto)) {
       firebase
         .firestore()
-        .collection("posts")
+        .collection('posts')
         .doc(postId)
         .update({
           LikeBy: firebase.firestore.FieldValue.arrayRemove(likeuser),
@@ -92,7 +95,7 @@ const PostInfo = ({ usersLodaing }) => {
     } else {
       firebase
         .firestore()
-        .collection("posts")
+        .collection('posts')
         .doc(postId)
         .update({
           LikeBy: firebase.firestore.FieldValue.arrayUnion(likeuser),
@@ -118,18 +121,18 @@ const PostInfo = ({ usersLodaing }) => {
   );
   async function onSubmit(e) {
     e.preventDefault();
-    if (commentContent === "") {
+    if (commentContent === '') {
       return;
     }
     setIsLoading(true);
     const firestore = firebase.firestore();
     const batch = firestore.batch();
-    const postRef = firestore.collection("posts").doc(postId);
+    const postRef = firestore.collection('posts').doc(postId);
     batch.update(postRef, {
       commentsCount: firebase.firestore.FieldValue.increment(1),
       // increment是firestore提供的增加1的function
     });
-    const commentRef = postRef.collection("comments").doc();
+    const commentRef = postRef.collection('comments').doc();
     try {
       e.preventDefault();
       batch.set(commentRef, {
@@ -137,16 +140,16 @@ const PostInfo = ({ usersLodaing }) => {
         createdAt: firebase.firestore.Timestamp.now(),
         auther: {
           uid: firebase.auth().currentUser.uid,
-          displayName: firebase.auth().currentUser.displayName || "",
-          photoURL: firebase.auth().currentUser.photoURL || "",
+          displayName: firebase.auth().currentUser.displayName || '',
+          photoURL: firebase.auth().currentUser.photoURL || '',
         },
       });
-      console.log("batch==================", batch);
+      console.log('batch==================', batch);
     } catch (error) {
       console.log(error);
     }
     await batch.commit().then(() => {
-      setCommentContent("");
+      setCommentContent('');
       setIsLoading(false);
     });
     try {
@@ -158,47 +161,47 @@ const PostInfo = ({ usersLodaing }) => {
         }
       );
       const data = result.data;
-      console.log("data", data);
+      console.log('data', data);
     } catch (error) {
-      console.log("404伺服器網址出現問題", error);
+      console.log('404伺服器網址出現問題', error);
     }
   }
   function GuestSubmit(e) {
     e.preventDefault();
     handleWarningComfirm(
-      "你沒有登入",
+      '你沒有登入',
       () => {
-        navigate("/");
+        navigate('/');
       },
-      "所以不能按讚唷~點擊確認到首頁登入google吧!"
+      '所以不能按讚唷~點擊確認到首頁登入google吧!'
     );
   }
   function GuestInputSubmit(e) {
     e.preventDefault();
     handleWarningComfirm(
-      "你沒有登入",
+      '你沒有登入',
       () => {
-        navigate("/");
+        navigate('/');
       },
-      "所以不能留言唷~點擊確認到首頁登入google吧!"
+      '所以不能留言唷~點擊確認到首頁登入google吧!'
     );
   }
 
   function Collected(e) {
     e.preventDefault();
     handleWarningComfirm(
-      "你沒有登入",
+      '你沒有登入',
       () => {
-        navigate("/");
+        navigate('/');
       },
-      "所以不能收藏唷~點擊確認到首頁登入google吧!"
+      '所以不能收藏唷~點擊確認到首頁登入google吧!'
     );
   }
-  console.log("post 2023看這=============", post);
+  console.log('post 2023看這=============', post);
   return (
     <>
       <Chatbot />
-      {usersLodaing === null ? (
+      {contextData.usersLodaing === null ? (
         <>
           <div className="boxheight"></div>
           <div className="postheader text-center">
@@ -210,8 +213,8 @@ const PostInfo = ({ usersLodaing }) => {
             </div>
             <div>
               <p>
-                {post.createdAt?.toDate().toLocaleDateString()} /{" "}
-                {post.author?.displayName || "使用者"}
+                {post.createdAt?.toDate().toLocaleDateString()} /{' '}
+                {post.author?.displayName || '使用者'}
               </p>
             </div>
           </div>
@@ -223,7 +226,7 @@ const PostInfo = ({ usersLodaing }) => {
                 </div> */}
                 <div className="col-12 p-3 mt-2">
                   <div>
-                    <div className="row mt-5 ">
+                    <div className="row mt-md-5 mt-3">
                       <div className="col-10">
                         <p>{post.content}</p>
                         <div
@@ -236,14 +239,14 @@ const PostInfo = ({ usersLodaing }) => {
                     <div className="p-2 ">
                       <div className="my-1  d-md-flex justify-content-between align-items-center">
                         <div className="col-xxl-3 col-md-4">
-                          <span>{post.LikeBy?.length || ""}個讚</span>
+                          <span>{post.LikeBy?.length || ''}個讚</span>
                           <span className="my-1 ms-5">
-                            {post.LikeBy == "" ? (
+                            {post.LikeBy == '' ? (
                               <span></span>
                             ) : post.LikeBy?.length > 1 ? (
                               <span>
                                 和其他
-                                {post.LikeBy?.length - 1 || ""}人都說讚
+                                {post.LikeBy?.length - 1 || ''}人都說讚
                               </span>
                             ) : (
                               <span></span>
@@ -296,9 +299,9 @@ const PostInfo = ({ usersLodaing }) => {
                           <button
                             className={
                               isLoading
-                                ? "btn btn-waring m-5 text-light"
+                                ? 'btn btn-waring m-5 text-light'
                                 : // 記得做一個lodaing的特效
-                                  "btn btn-info  text-start"
+                                  'btn btn-info  text-start'
                             }
                           >
                             留言
@@ -324,11 +327,11 @@ const PostInfo = ({ usersLodaing }) => {
                           </div>
                           <div className="col-10 my-auto">
                             <span className="pe-3">
-                              {comment.auther.displayName || "使用者"}
+                              {comment.auther.displayName || '使用者'}
                             </span>
-                            {comment.content || ""}
+                            {comment.content || ''}
                             <br />
-                            {comment.createdAt.toDate().toLocaleString() || ""}
+                            {comment.createdAt.toDate().toLocaleString() || ''}
                           </div>
                         </div>
                       );
@@ -352,8 +355,8 @@ const PostInfo = ({ usersLodaing }) => {
             </div>
             <div>
               <p>
-                {post.createdAt?.toDate().toLocaleDateString()} /{" "}
-                {post.author?.displayName || "使用者"}
+                {post.createdAt?.toDate().toLocaleDateString()} /{' '}
+                {post.author?.displayName || '使用者'}
               </p>
             </div>
           </div>
@@ -365,7 +368,7 @@ const PostInfo = ({ usersLodaing }) => {
                 </div> */}
                 <div className="col-12 p-3 mt-2">
                   <div>
-                    <div className="row mt-5 ">
+                    <div className="row mt-md-5 mt-3">
                       <div className="col-10">
                         <p>{post.content}</p>
                         <div
@@ -380,12 +383,12 @@ const PostInfo = ({ usersLodaing }) => {
                         <div className="col-xxl-3 col-md-4 ">
                           <span>{post.LikeBy?.length || 0}個讚</span>
                           <span className="my-1 ms-5">
-                            {post.LikeBy == "" ? (
+                            {post.LikeBy == '' ? (
                               <span></span>
                             ) : post.LikeBy?.length > 1 ? (
                               <span>
                                 和其他
-                                {post.LikeBy?.length - 1 || ""}人都說讚
+                                {post.LikeBy?.length - 1 || ''}人都說讚
                               </span>
                             ) : (
                               <span></span>
@@ -439,9 +442,9 @@ const PostInfo = ({ usersLodaing }) => {
                           <button
                             className={
                               isLoading
-                                ? "btn btn-waring m-5 text-light"
+                                ? 'btn btn-waring m-5 text-light'
                                 : // 記得做一個lodaing的特效
-                                  "btn btn-info  text-start"
+                                  'btn btn-info  text-start'
                             }
                           >
                             留言
@@ -467,11 +470,11 @@ const PostInfo = ({ usersLodaing }) => {
                           </div>
                           <div className="col-10 my-auto">
                             <span className="pe-3">
-                              {comment.auther.displayName || "使用者"}
+                              {comment.auther.displayName || '使用者'}
                             </span>
-                            {comment.content || ""}
+                            {comment.content || ''}
                             <br />
-                            {comment.createdAt.toDate().toLocaleString() || ""}
+                            {comment.createdAt.toDate().toLocaleString() || ''}
                           </div>
                         </div>
                       );

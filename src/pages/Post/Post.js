@@ -1,23 +1,24 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { FcLike, FcLikePlaceholder } from "react-icons/fc";
-import { Waypoint } from "react-waypoint";
-import Modal from "react-bootstrap/Modal";
-import firebase from "../../utils/firebase";
-import "firebase/compat/storage";
-import ChatPage from "../../components/ChatPage/ChatPage";
-import { handleWarningComfirm } from "../../utils/handler/handleStatusCard";
-import photo_backgroung from "../../images/photo_backgroung.jpg";
-import Chatbot from "../Chatbot/Chatbot";
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { FcLike, FcLikePlaceholder } from 'react-icons/fc';
+import { Waypoint } from 'react-waypoint';
+import Modal from 'react-bootstrap/Modal';
+import firebase from '../../utils/firebase';
+import 'firebase/compat/storage';
+import ChatPage from '../../components/ChatPage/ChatPage';
+import { handleWarningComfirm } from '../../utils/handler/handleStatusCard';
+import photo_backgroung from '../../images/photo_backgroung.jpg';
+import Chatbot from '../Chatbot/Chatbot';
+import './_Post.scss';
+import AuthContext from '../../hooks/auth-context';
 
-import "./_Post.scss";
-
-const Post = ({ socket, usersLodaing, newPost, setNewPosts }) => {
+const Post = () => {
+  const contextData = useContext(AuthContext);
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [show, setShow] = useState(false);
   const [Likecancel, setLikeCancel] = useState(false);
-  const [postLikeID, setPostLikeID] = useState("");
+  const [postLikeID, setPostLikeID] = useState('');
   const [likeee, setLikeee] = useState([]);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -29,17 +30,17 @@ const Post = ({ socket, usersLodaing, newPost, setNewPosts }) => {
 
   //只有一發表文章newPost狀態會變成true 就會重新render撈firebase資料渲染畫面 原先是fasle 發文後會變成ture
   useEffect(() => {
-    if (newPost) {
+    if (contextData.newPost) {
       fetchPosts();
-      setNewPosts(false);
+      contextData.setNewPosts(false);
     }
-  }, [newPost]);
+  }, [contextData.newPost]);
 
   useEffect(() => {
     const unsubscribe = firebase
       .firestore()
-      .collection("posts")
-      .orderBy("createdAt", "desc")
+      .collection('posts')
+      .orderBy('createdAt', 'desc')
       .limit(4)
       .onSnapshot((querySnapshot) => {
         const data = querySnapshot.docs.map((docSnapshot) => {
@@ -53,9 +54,9 @@ const Post = ({ socket, usersLodaing, newPost, setNewPosts }) => {
 
   const handleLike = async (postId) => {
     let WhoLikesID = posts.filter((v) => v.id.includes(postId));
-    const whoLikes = WhoLikesID[0]?.LikeBy.filter((e) => e === userLikes || "");
+    const whoLikes = WhoLikesID[0]?.LikeBy.filter((e) => e === userLikes || '');
     const toogleLike = whoLikes?.includes(userLikes);
-    const postRef = firebase.firestore().collection("posts").doc(postId);
+    const postRef = firebase.firestore().collection('posts').doc(postId);
     const email = firebase.auth().currentUser.email;
     const likeuserPhoto = firebase.auth().currentUser.photoURL;
     if (toogleLike) {
@@ -67,10 +68,10 @@ const Post = ({ socket, usersLodaing, newPost, setNewPosts }) => {
       setLikeee((prev) => {
         const newState = [...prev];
         newState[postId] = false;
-        console.log("if刪除", newState);
+        console.log('if刪除', newState);
         return newState;
       });
-      console.log("likeee刪除", likeee);
+      console.log('likeee刪除', likeee);
     } else {
       await postRef.update({
         LikeBy: firebase.firestore.FieldValue.arrayUnion(userLikes),
@@ -80,10 +81,10 @@ const Post = ({ socket, usersLodaing, newPost, setNewPosts }) => {
       setLikeee((prev) => {
         const newState = [...prev];
         newState[postId] = true;
-        console.log("newState", newState);
+        console.log('newState', newState);
         return newState;
       });
-      console.log("likeee增加", likeee);
+      console.log('likeee增加', likeee);
     }
   };
   useEffect(() => {
@@ -93,8 +94,8 @@ const Post = ({ socket, usersLodaing, newPost, setNewPosts }) => {
   const fetchPosts = () => {
     firebase
       .firestore()
-      .collection("posts")
-      .orderBy("createdAt", "desc")
+      .collection('posts')
+      .orderBy('createdAt', 'desc')
       .limit(4)
       .onSnapshot((collectionSnapshot) => {
         const data = collectionSnapshot.docs.map((docSnapshot) => {
@@ -104,7 +105,7 @@ const Post = ({ socket, usersLodaing, newPost, setNewPosts }) => {
         lastPostSnapshotRef.current =
           collectionSnapshot.docs[collectionSnapshot.docs.length - 1];
         setPosts(data);
-        setNewPosts(false);
+        contextData.setNewPosts(false);
       });
   };
 
@@ -114,11 +115,11 @@ const Post = ({ socket, usersLodaing, newPost, setNewPosts }) => {
 
   function GuestSubmit() {
     handleWarningComfirm(
-      "你沒有登入",
+      '你沒有登入',
       () => {
-        navigate("/");
+        navigate('/');
       },
-      "所以不能按讚唷~點擊確認到首頁登入google吧!"
+      '所以不能按讚唷~點擊確認到首頁登入google吧!'
     );
   }
   return (
@@ -142,7 +143,7 @@ const Post = ({ socket, usersLodaing, newPost, setNewPosts }) => {
           Most recent works
         </h2>
         <div className="row">
-          {posts !== "" ? (
+          {posts !== '' ? (
             posts.map((post, index) => {
               return (
                 <div
@@ -163,7 +164,7 @@ const Post = ({ socket, usersLodaing, newPost, setNewPosts }) => {
                       <div className="">
                         <div className="row ">
                           <div className="col-lg-3 d-flex col-md-4">
-                            {usersLodaing === null ? (
+                            {contextData.usersLodaing === null ? (
                               <>
                                 <span
                                   // className="pe-lg-3 pe-md-2 likeIcon "
@@ -203,7 +204,7 @@ const Post = ({ socket, usersLodaing, newPost, setNewPosts }) => {
                               </>
                             )}
 
-                            <p>{post.LikeBy?.[0] || "0"}</p>
+                            <p>{post.LikeBy?.[0] || '0'}</p>
                           </div>
                           <div
                             className=" d-inline otherLikes col-lg-7 col-md-6"
@@ -212,12 +213,12 @@ const Post = ({ socket, usersLodaing, newPost, setNewPosts }) => {
                               setPostLikeID(post.id);
                             }}
                           >
-                            {post.LikeBy == "" ? (
+                            {post.LikeBy == '' ? (
                               <span></span>
                             ) : post.LikeBy.length > 1 ? (
                               <span>
                                 和其他
-                                {post.LikeBy?.length - 1 || ""}人都說讚
+                                {post.LikeBy?.length - 1 || ''}人都說讚
                               </span>
                             ) : (
                               <span></span>
@@ -279,7 +280,7 @@ const Post = ({ socket, usersLodaing, newPost, setNewPosts }) => {
                       </div>
                       <div className="post_description">
                         <span className="pe-3">
-                          {post.author?.displayName || "使用者"}
+                          {post.author?.displayName || '使用者'}
                         </span>
                         <span className="post_title">{post.title}</span>
                       </div>
@@ -295,7 +296,7 @@ const Post = ({ socket, usersLodaing, newPost, setNewPosts }) => {
             })
           ) : (
             <>
-              <div style={{ height: "80vh" }}>
+              <div style={{ height: '80vh' }}>
                 <h1 className="text-center mt-5">網頁搜尋不到 請重新整理</h1>
               </div>
             </>
@@ -307,8 +308,8 @@ const Post = ({ socket, usersLodaing, newPost, setNewPosts }) => {
           if (lastPostSnapshotRef.current) {
             firebase
               .firestore()
-              .collection("posts")
-              .orderBy("createdAt", "desc")
+              .collection('posts')
+              .orderBy('createdAt', 'desc')
               .startAfter(lastPostSnapshotRef.current)
               .limit(2)
               .get()

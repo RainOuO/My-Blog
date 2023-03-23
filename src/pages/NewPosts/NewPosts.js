@@ -1,23 +1,25 @@
-import React, { useEffect, useState } from "react";
-import firebase from "../../utils/firebase";
-import "firebase/compat/firestore";
-import "firebase/compat/storage";
-import defaultPhoto from "../../images/photo_backgroung.jpg";
-import PostEditor from "../../components/WYSIWYG/PostEditor";
-import "./_NewPosts.scss";
-import { handleWarningComfirm } from "../../utils/handler/handleStatusCard";
+import React, { useContext, useEffect, useState } from 'react';
+import firebase from '../../utils/firebase';
+import 'firebase/compat/firestore';
+import 'firebase/compat/storage';
+import defaultPhoto from '../../images/photo_backgroung.jpg';
+import PostEditor from '../../components/WYSIWYG/PostEditor';
+import './_NewPosts.scss';
+import { handleWarningComfirm } from '../../utils/handler/handleStatusCard';
+import AuthContext from '../../hooks/auth-context';
 
-const NewPosts = ({ setShow, newPost, setNewPosts }) => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+const NewPosts = ({ setShow }) => {
+  const contextData = useContext(AuthContext);
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
   const [file, setFile] = useState(null);
-  const [getData, setGetData] = useState("");
+  const [getData, setGetData] = useState('');
   const [postData, setPostData] = useState({
-    title: "",
-    location: "",
-    tags: "",
-    photo: "",
-    content: "",
+    title: '',
+    location: '',
+    tags: '',
+    photo: '',
+    content: '',
   });
 
   //>>所見即所得，輸入資料更新用
@@ -28,13 +30,13 @@ const NewPosts = ({ setShow, newPost, setNewPosts }) => {
 
   function onSubmit(e) {
     e.preventDefault();
-    const documentRef = firebase.firestore().collection("posts").doc();
-    const fileRef = firebase.storage().ref("post-images/" + documentRef.id);
+    const documentRef = firebase.firestore().collection('posts').doc();
+    const fileRef = firebase.storage().ref('post-images/' + documentRef.id);
 
     if (file === null) {
-      handleWarningComfirm("圖片為空唷~請記得上傳", () => {
+      handleWarningComfirm('圖片為空唷~請記得上傳', () => {
         handleWarningComfirm(
-          "確認送出?",
+          '確認送出?',
           () => {
             fileRef
               .put(file)
@@ -46,8 +48,8 @@ const NewPosts = ({ setShow, newPost, setNewPosts }) => {
                     createdAt: firebase.firestore.Timestamp.now(),
                     author: {
                       displayName:
-                        firebase.auth().currentUser.displayName || "",
-                      photoURL: firebase.auth().currentUser.photoURL || "",
+                        firebase.auth().currentUser.displayName || '',
+                      photoURL: firebase.auth().currentUser.photoURL || '',
                       uid: firebase.auth().currentUser.uid,
                       email: firebase.auth().currentUser.email,
                     },
@@ -65,12 +67,12 @@ const NewPosts = ({ setShow, newPost, setNewPosts }) => {
                 }
               });
           },
-          "很開心您能與我們共享文章!"
+          '很開心您能與我們共享文章!'
         );
       });
     } else {
       handleWarningComfirm(
-        "確認送出?",
+        '確認送出?',
         () => {
           fileRef
             .put(file)
@@ -81,8 +83,8 @@ const NewPosts = ({ setShow, newPost, setNewPosts }) => {
                   content,
                   createdAt: firebase.firestore.Timestamp.now(),
                   author: {
-                    displayName: firebase.auth().currentUser.displayName || "",
-                    photoURL: firebase.auth().currentUser.photoURL || "",
+                    displayName: firebase.auth().currentUser.displayName || '',
+                    photoURL: firebase.auth().currentUser.photoURL || '',
                     uid: firebase.auth().currentUser.uid,
                     email: firebase.auth().currentUser.email,
                   },
@@ -95,13 +97,13 @@ const NewPosts = ({ setShow, newPost, setNewPosts }) => {
             .then((res) => {
               try {
                 setShow(false);
-                setNewPosts(true);
+                contextData.setNewPosts(true);
               } catch (error) {
                 console.log(error);
               }
             });
         },
-        "很開心您能與我們共享文章!"
+        '很開心您能與我們共享文章!'
       );
     }
   }
@@ -125,7 +127,7 @@ const NewPosts = ({ setShow, newPost, setNewPosts }) => {
                 <input
                   type="file"
                   name=""
-                  style={{ display: "none" }}
+                  style={{ display: 'none' }}
                   id="post-image"
                   onChange={(e) => setFile(e.target.files[0])}
                 />

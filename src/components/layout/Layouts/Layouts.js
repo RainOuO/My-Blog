@@ -1,11 +1,16 @@
-import React, { useState } from "react";
-import { Outlet } from "react-router-dom";
-import Header from "../Header";
+import React, { useContext } from 'react';
+import { Outlet } from 'react-router-dom';
+import AuthContext from '../../../hooks/auth-context';
+import Header from '../Header';
 
-const Layouts = ({ setNewPosts, newPost }) => {
+const Layouts = () => {
+  const contextData = useContext(AuthContext);
   return (
     <>
-      <Header newPost={newPost} setNewPosts={setNewPosts} />
+      <Header
+        newPost={contextData.newPost}
+        setNewPosts={contextData.setNewPosts}
+      />
       <Outlet />
     </>
   );
