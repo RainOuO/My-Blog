@@ -90,7 +90,7 @@ $heart-background-color: #fff2f2;
     &::before,
     &::after {
       position: absolute;
-      content: "";
+      content: '';
       width: $heart-size;
       height: $heart-size;
       background-color: $heart-background-color;

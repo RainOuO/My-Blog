@@ -1,17 +1,24 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FcLike, FcLikePlaceholder } from 'react-icons/fc';
 import { Waypoint } from 'react-waypoint';
 import Modal from 'react-bootstrap/Modal';
+import WhoLikesUser from '../WhoLikesUser/WhoLikesUser';
 import firebase from '../../utils/firebase';
 import 'firebase/compat/storage';
-import ChatPage from '../../components/ChatPage/ChatPage';
+// import ChatPage from '../../components/ChatPage/ChatPage';
 import { handleWarningComfirm } from '../../utils/handler/handleStatusCard';
 import photo_backgroung from '../../images/photo_backgroung.jpg';
 import Chatbot from '../Chatbot/Chatbot';
 import './_Post.scss';
 import AuthContext from '../../hooks/auth-context';
-
 const Post = () => {
   const contextData = useContext(AuthContext);
   const navigate = useNavigate();
@@ -19,79 +26,13 @@ const Post = () => {
   const [show, setShow] = useState(false);
   const [Likecancel, setLikeCancel] = useState(false);
   const [postLikeID, setPostLikeID] = useState('');
-  const [likeee, setLikeee] = useState([]);
+  const [wholikes, setWhoLikes] = useState([]);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const lastPostSnapshotRef = useRef();
   const userLikes = firebase.auth().currentUser?.displayName;
-  useEffect(() => {
-    fetchPosts();
-  }, [Likecancel]);
-
-  //只有一發表文章newPost狀態會變成true 就會重新render撈firebase資料渲染畫面 原先是fasle 發文後會變成ture
-  useEffect(() => {
-    if (contextData.newPost) {
-      fetchPosts();
-      contextData.setNewPosts(false);
-    }
-  }, [contextData.newPost]);
-
-  useEffect(() => {
-    const unsubscribe = firebase
-      .firestore()
-      .collection('posts')
-      .orderBy('createdAt', 'desc')
-      .limit(4)
-      .onSnapshot((querySnapshot) => {
-        const data = querySnapshot.docs.map((docSnapshot) => {
-          const id = docSnapshot.id;
-          return { ...docSnapshot.data(), id };
-        });
-        setPosts(data);
-      });
-    return () => unsubscribe();
-  }, []);
-
-  const handleLike = async (postId) => {
-    let WhoLikesID = posts.filter((v) => v.id.includes(postId));
-    const whoLikes = WhoLikesID[0]?.LikeBy.filter((e) => e === userLikes || '');
-    const toogleLike = whoLikes?.includes(userLikes);
-    const postRef = firebase.firestore().collection('posts').doc(postId);
-    const email = firebase.auth().currentUser.email;
-    const likeuserPhoto = firebase.auth().currentUser.photoURL;
-    if (toogleLike) {
-      await postRef.update({
-        LikeBy: firebase.firestore.FieldValue.arrayRemove(userLikes),
-        LikeByEmail: firebase.firestore.FieldValue.arrayRemove(email),
-        LikeuserPhot: firebase.firestore.FieldValue.arrayRemove(likeuserPhoto),
-      });
-      setLikeee((prev) => {
-        const newState = [...prev];
-        newState[postId] = false;
-        console.log('if刪除', newState);
-        return newState;
-      });
-      console.log('likeee刪除', likeee);
-    } else {
-      await postRef.update({
-        LikeBy: firebase.firestore.FieldValue.arrayUnion(userLikes),
-        LikeByEmail: firebase.firestore.FieldValue.arrayUnion(email),
-        LikeuserPhot: firebase.firestore.FieldValue.arrayUnion(likeuserPhoto),
-      });
-      setLikeee((prev) => {
-        const newState = [...prev];
-        newState[postId] = true;
-        console.log('newState', newState);
-        return newState;
-      });
-      console.log('likeee增加', likeee);
-    }
-  };
-  useEffect(() => {
-    setLikeee(posts.map((e) => e.LikeBy.includes(userLikes)));
-  }, [posts]);
-
-  const fetchPosts = () => {
+  //fetchPosts是每次滑動時更多資訊出現
+  const fetchPosts = useCallback(() => {
     firebase
       .firestore()
       .collection('posts')
@@ -107,12 +48,82 @@ const Post = () => {
         setPosts(data);
         contextData.setNewPosts(false);
       });
-  };
+  }, [contextData]);
+  const newPostHandler = contextData.newPost;
+  const memoizedNewPostHandler = useMemo(
+    () => newPostHandler,
+    [newPostHandler]
+  );
+  const memoizedFetchPosts = useMemo(() => fetchPosts, [fetchPosts]);
+  useEffect(() => {
+    memoizedFetchPosts();
+  }, [Likecancel, memoizedFetchPosts]);
+  //只有一發表文章newPost狀態會變成true 就會重新render撈firebase資料渲染畫面 原先是fasle 發文後會變成ture
+  useEffect(() => {
+    if (memoizedNewPostHandler) {
+      fetchPosts();
+      contextData.setNewPosts(false);
+    }
+  }, [contextData, fetchPosts, memoizedNewPostHandler]);
+  //第一次撈資料的useEffect
+  useEffect(() => {
+    firebase
+      .firestore()
+      .collection('posts')
+      .orderBy('createdAt', 'desc')
+      .limit(4)
+      .onSnapshot((querySnapshot) => {
+        const data = querySnapshot.docs.map((docSnapshot) => {
+          const id = docSnapshot.id;
+          return { ...docSnapshot.data(), id };
+        });
+        setPosts(data);
+      });
+  }, []);
+  const handleLike = useCallback(
+    async (postId) => {
+      let WhoLikesID = posts.filter((v) => v.id.includes(postId));
+      const whoLikesFilter = WhoLikesID[0]?.LikeBy.filter(
+        (e) => e === userLikes || ''
+      );
+      const toogleLike = whoLikesFilter?.includes(userLikes);
+      const postRef = firebase.firestore().collection('posts').doc(postId);
+      const email = firebase.auth().currentUser.email;
+      const likeuserPhoto = firebase.auth().currentUser.photoURL;
+      if (toogleLike) {
+        await postRef.update({
+          LikeBy: firebase.firestore.FieldValue.arrayRemove(userLikes),
+          LikeByEmail: firebase.firestore.FieldValue.arrayRemove(email),
+          LikeuserPhot:
+            firebase.firestore.FieldValue.arrayRemove(likeuserPhoto),
+        });
+        setWhoLikes((prev) => {
+          const newState = [...prev];
+          newState[postId] = false;
+          return newState;
+        });
+      } else {
+        await postRef.update({
+          LikeBy: firebase.firestore.FieldValue.arrayUnion(userLikes),
+          LikeByEmail: firebase.firestore.FieldValue.arrayUnion(email),
+          LikeuserPhot: firebase.firestore.FieldValue.arrayUnion(likeuserPhoto),
+        });
+        setWhoLikes((prev) => {
+          const newState = [...prev];
+          newState[postId] = true;
+          return newState;
+        });
+      }
+    },
+    [posts, userLikes]
+  );
+  useEffect(() => {
+    setWhoLikes(posts.map((e) => e.LikeBy.includes(userLikes)));
+  }, [posts, userLikes]);
 
   const commentID = posts.map((e) => e.id);
   const newComment = commentID.filter((id) => id === postLikeID);
   const postListID = posts.filter((post) => post.id === newComment[0]);
-
   function GuestSubmit() {
     handleWarningComfirm(
       '你沒有登入',
@@ -122,6 +133,9 @@ const Post = () => {
       '所以不能按讚唷~點擊確認到首頁登入google吧!'
     );
   }
+  const handleLikeClick = useCallback(() => {
+    setLikeCancel((prevState) => !prevState);
+  }, []);
   return (
     <>
       <div className="container post custom-container">
@@ -136,7 +150,6 @@ const Post = () => {
         >
           <source src="https://www.mitonedesign.jp/img/common/sunlight.mp4" />
         </video>
-
         <h2 className="text-center">
           Portfolio
           <br />
@@ -161,19 +174,18 @@ const Post = () => {
                   </div>
                   <div className="col-12  ">
                     <div className="article mx-auto ">
-                      <div className="">
+                      <div>
                         <div className="row ">
                           <div className="col-lg-3 d-flex col-md-4">
                             {contextData.usersLodaing === null ? (
                               <>
                                 <span
-                                  // className="pe-lg-3 pe-md-2 likeIcon "
                                   className="heart"
                                   onClick={() => {
                                     GuestSubmit();
                                   }}
                                 >
-                                  {likeee[index] !== false ? (
+                                  {wholikes[index] !== false ? (
                                     <FcLike size={20} />
                                   ) : (
                                     <FcLikePlaceholder size={20} />
@@ -183,27 +195,25 @@ const Post = () => {
                             ) : (
                               <>
                                 <span
-                                  // className="pe-3 likeIcon "
                                   className="heart"
                                   onClick={() => {
                                     handleLike(post.id);
                                   }}
                                 >
-                                  {likeee[index] ? (
+                                  {wholikes[index] ? (
                                     <FcLike
                                       size={20}
-                                      onClick={() => setLikeCancel(false)}
+                                      onClick={handleLikeClick}
                                     />
                                   ) : (
                                     <FcLikePlaceholder
                                       size={20}
-                                      onClick={() => setLikeCancel(true)}
+                                      onClick={handleLikeClick}
                                     />
                                   )}
                                 </span>
                               </>
                             )}
-
                             <p>{post.LikeBy?.[0] || '0'}</p>
                           </div>
                           <div
@@ -213,7 +223,7 @@ const Post = () => {
                               setPostLikeID(post.id);
                             }}
                           >
-                            {post.LikeBy == '' ? (
+                            {post.LikeBy === '' ? (
                               <span></span>
                             ) : post.LikeBy.length > 1 ? (
                               <span>
@@ -224,54 +234,16 @@ const Post = () => {
                               <span></span>
                             )}
                           </div>
-                          {/* <div className="col-lg-2 col-md-2 text-end pe-4">
-                            <BsBookmark className="BsBookmark" />
-                          </div> */}
                           <Modal show={show} onHide={handleClose}>
                             <Modal.Header closeButton className="text-center">
                               <Modal.Title>說讚的用戶</Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
                               <div className="row">
-                                {/* <div className="col-2 otherLikes_photo"></div> */}
                                 <div className="col-12">
-                                  {postListID.map((e) => {
-                                    let likeList = e.LikeBy;
-                                    let likeEmail = e.LikeByEmail;
-                                    let likeuserImage = e.LikeuserPhot;
-                                    let tidyUser_info = [];
-                                    for (let i = 0; i < likeList.length; i++) {
-                                      let newsssss = {
-                                        name: likeList[i],
-                                        email: likeEmail[i],
-                                        photo: likeuserImage[i],
-                                      };
-                                      tidyUser_info.push(newsssss);
-                                    }
-                                    return (
-                                      <>
-                                        {tidyUser_info.map((v) => {
-                                          return (
-                                            <>
-                                              <div className="d-flex">
-                                                <div className="modal_like_photo">
-                                                  <img src={v.photo} alt="" />
-                                                </div>
-                                                <div className="d-flex align-items-center">
-                                                  <p className="modal_like_userName">
-                                                    {v.name}
-                                                  </p>
-                                                </div>
-                                              </div>
-
-                                              <br />
-                                              {/* <p>{v.email}</p> */}
-                                            </>
-                                          );
-                                        })}
-                                      </>
-                                    );
-                                  })}
+                                  <WhoLikesUser
+                                    postListWhoLikeID={postListID}
+                                  />
                                 </div>
                               </div>
                             </Modal.Body>

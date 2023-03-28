@@ -15,7 +15,6 @@ import AuthContext from '../../hooks/auth-context';
 const API_URL = process.env.REACT_APP_OPEN_URL;
 const PostInfo = () => {
   const contextData = useContext(AuthContext);
-
   const navigate = useNavigate();
   const { postId } = useParams();
   const [post, setPost] = useState({ auther: {} });
@@ -33,7 +32,7 @@ const PostInfo = () => {
         const data = documentSnapshot.data();
         setPost(data);
       });
-  }, []);
+  }, [postId]);
   // 處理留言狀態開始
   useEffect(() => {
     firebase
@@ -48,9 +47,8 @@ const PostInfo = () => {
           return doc.data();
         });
         setComments(data);
-        console.log('留言========', data);
       });
-  }, []);
+  }, [postId]);
   // async function toggleCollected() {
   //   const uid = firebase.auth().currentUser.uid;
 
@@ -186,22 +184,22 @@ const PostInfo = () => {
       '所以不能留言唷~點擊確認到首頁登入google吧!'
     );
   }
-
-  function Collected(e) {
-    e.preventDefault();
-    handleWarningComfirm(
-      '你沒有登入',
-      () => {
-        navigate('/');
-      },
-      '所以不能收藏唷~點擊確認到首頁登入google吧!'
-    );
-  }
-  console.log('post 2023看這=============', post);
+  // function Collected(e) {
+  //   e.preventDefault();
+  //   handleWarningComfirm(
+  //     '你沒有登入',
+  //     () => {
+  //       navigate('/');
+  //     },
+  //     '所以不能收藏唷~點擊確認到首頁登入google吧!'
+  //   );
+  // }
+  let usersLodaing = contextData.usersLodaing;
+  console.log('usersLodaing', usersLodaing);
   return (
     <>
       <Chatbot />
-      {contextData.usersLodaing === null ? (
+      {usersLodaing === null ? (
         <>
           <div className="boxheight"></div>
           <div className="postheader text-center">
@@ -241,7 +239,7 @@ const PostInfo = () => {
                         <div className="col-xxl-3 col-md-4">
                           <span>{post.LikeBy?.length || ''}個讚</span>
                           <span className="my-1 ms-5">
-                            {post.LikeBy == '' ? (
+                            {post.LikeBy === '' ? (
                               <span></span>
                             ) : post.LikeBy?.length > 1 ? (
                               <span>
@@ -383,7 +381,7 @@ const PostInfo = () => {
                         <div className="col-xxl-3 col-md-4 ">
                           <span>{post.LikeBy?.length || 0}個讚</span>
                           <span className="my-1 ms-5">
-                            {post.LikeBy == '' ? (
+                            {post.LikeBy === '' ? (
                               <span></span>
                             ) : post.LikeBy?.length > 1 ? (
                               <span>
