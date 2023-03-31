@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:ital@1&family=Zeyada&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital@1&family=Zeyada&display=swap');
 .header-background {
   // background-color: #eae7dc;
   min-height: 60vh;
@@ -18,8 +18,8 @@
 .homeContainer {
   .welcome_h2 {
     font-size: 4rem;
-    font-family: "Roboto", sans-serif;
-    font-family: "Zeyada", cursive;
+    font-family: 'Roboto', sans-serif;
+    font-family: 'Zeyada', cursive;
     text-align: center;
   }
   .about-Myblog {
@@ -31,19 +31,20 @@
   }
 }
 .u-mt35 {
-  margin-top: min(1.8382352941vw + 44.8897058824px, 70px) !important;
+  margin-top: min(1.8382352941vw + 44.8897058824px, 50px) !important;
+  cursor: pointer;
 }
 // button滑動特效 開始
-.c-button01 a:focus:before,
-.c-button01 a:hover:before {
+.c-button01 p:focus:before,
+.c-button01 p:hover:before {
   box-shadow: 0 0 min(1.6806722689vw + 25.0420168067px, 48px) 0
     rgba(0, 0, 0, 0.15);
   width: 100%;
   border-color: #fff;
   background-color: #fff;
 }
-.c-button01 a:focus .c-illust,
-.c-button01 a:hover .c-illust {
+.c-button01 p:focus .c-illust,
+.c-button01 p:hover .c-illust {
   opacity: 1;
   transform: translateX(0);
   transition: opacity 0.4s 0.2s,
@@ -53,7 +54,7 @@
   display: flex;
   align-items: center;
   position: relative;
-  a {
+  p {
     width: 270px;
     position: relative;
     padding-right: 90px;
@@ -77,13 +78,13 @@
       font-size: 1.8rem;
     }
   }
-  a .text {
+  p .text {
     position: relative;
     transition: margin-left 0.4s cubic-bezier(0.77, 0, 0.175, 1),
       opacity 0.8s 1.6s;
   }
-  a:after {
-    content: "";
+  p:after {
+    content: '';
     display: block;
     width: 5px;
     height: 5px;
@@ -94,8 +95,8 @@
     border-radius: 9999px;
     transform: translate(-50%, -50%);
   }
-  a:before {
-    content: "";
+  p:before {
+    content: '';
     display: flex;
     padding-left: 30px;
     position: absolute;
@@ -116,8 +117,8 @@
 //滑鼠轉動開始
 .mouse-hover {
   .mouser-box {
-    width: "50%";
-    height: "10%";
+    width: '50%';
+    height: '10%';
   }
 
   margin-top: 5%;
@@ -188,7 +189,7 @@
   .section-down-arrow::before {
     z-index: 5;
     position: absolute;
-    content: "";
+    content: '';
     display: block;
     left: 50%;
     margin-left: -1px;
@@ -201,7 +202,7 @@
   }
 
   .section-down-arrow::after {
-    content: "";
+    content: '';
     position: absolute;
     top: 20px;
     left: 50%;

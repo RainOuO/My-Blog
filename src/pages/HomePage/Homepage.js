@@ -4,7 +4,7 @@ import firebase from '../../utils/firebase';
 import { useNavigate } from 'react-router-dom';
 import 'firebase/compat/auth';
 import { FaUserCircle } from 'react-icons/fa';
-import ChatPage from '../../components/ChatPage/ChatPage';
+// import ChatPage from '../../components/ChatPage/ChatPage';
 import HomePaheHeader from '../HomePageHeader/HomePageHeader';
 import Chatbot from '../Chatbot/Chatbot';
 import './_homepage.scss';
@@ -12,6 +12,8 @@ import AuthContext from '../../hooks/auth-context';
 
 const Homepage = ({ socket }) => {
   const contextData = useContext(AuthContext);
+  const setguestLodaing = contextData.setguestLodaing;
+  const usersLodaing = contextData.usersLodaing;
   const navigate = useNavigate();
   const provider = new GoogleAuthProvider();
   function onSubmit(e) {
@@ -27,8 +29,9 @@ const Homepage = ({ socket }) => {
         console.log(error);
       });
   }
+
   function guestSubmit() {
-    contextData.setguestLodaing(null);
+    setguestLodaing(null);
     navigate('/post');
   }
   return (
@@ -48,7 +51,6 @@ const Homepage = ({ socket }) => {
       <div className="header-background"></div>
       <div className="homeContainer">
         <div className="container ">
-          {/* <ChatPage socket={socket} /> */}
           <div className="row">
             <div className="col-12">
               <a href="#down">
@@ -81,43 +83,49 @@ const Homepage = ({ socket }) => {
             </div>
             <div className="col-6 ">
               <div className="row">
-                <div className="col-12  d-flex justify-content-end">
-                  <div className="js-anim_elm -button is-act">
-                    <div className="c-button01 c-text07 -thin u-mt35 -delay2">
-                      <a href="#!" onClick={guestSubmit}>
-                        <span className="text ">訪客模式</span>
-                        <figure className="c-illust is-loaded">
-                          <span>
+                {!usersLodaing && (
+                  <>
+                    <div className="col-12  d-flex justify-content-end">
+                      <div className="js-anim_elm -button is-act">
+                        <div className="c-button01 c-text07 -thin u-mt35 -delay2">
+                          <p onClick={guestSubmit}>
+                            <span className="text ">訪客模式</span>
+                            <figure className="c-illust is-loaded">
+                              <span>
+                                <span>
+                                  <FaUserCircle />
+                                </span>
+                              </span>
+                            </figure>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+                {!usersLodaing && (
+                  <div className="col-12  d-flex justify-content-end ">
+                    <div className="js-anim_elm -button is-act">
+                      <div className="c-button01 c-text07 -thin u-mt35 -delay2 ">
+                        <p className="" onClick={onSubmit}>
+                          <span className="text ">Google登入</span>
+                          <figure className="c-illust is-loaded">
                             <span>
-                              <FaUserCircle />
+                              <span>
+                                <img
+                                  className="google_btnPhoto"
+                                  alt=""
+                                  aria-hidden="true"
+                                  src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4="
+                                />
+                              </span>
                             </span>
-                          </span>
-                        </figure>
-                      </a>
+                          </figure>
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="col-12  d-flex justify-content-end ">
-                  <div className="js-anim_elm -button is-act">
-                    <div className="c-button01 c-text07 -thin u-mt35 -delay2 ">
-                      <a href="#!" className="" onClick={onSubmit}>
-                        <span className="text ">Google登入</span>
-                        <figure className="c-illust is-loaded">
-                          <span>
-                            <span>
-                              <img
-                                className="google_btnPhoto"
-                                alt=""
-                                aria-hidden="true"
-                                src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4="
-                              />
-                            </span>
-                          </span>
-                        </figure>
-                      </a>
-                    </div>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
             <div className="col-12 about-Myblog" id="down">
