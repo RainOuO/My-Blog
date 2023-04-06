@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './_Chatbot.scss';
-
+import DefaultQAChatBot from '../../components/DefaultQAChatBot/DefaultQAChatBot';
 const FAQ = [
   {
     question: '哈囉你好呀',
@@ -25,6 +25,7 @@ const Chatbot = () => {
   const [chatHistory, setChatHistory] = useState([
     { question: '', answer: '歡迎使用聊天機器人，請問有需要幫忙的嗎？' },
   ]);
+  console.log('目前chatHistory111', chatHistory);
   const [isExpanded, setIsExpanded] = useState(false);
   const [defaultQuestion, setDefaultQuestion] = useState(false);
   const lastMessageRef = useRef(null);
@@ -36,7 +37,6 @@ const Chatbot = () => {
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
-
   const handleInputKeyDown = (e) => {
     if (e.key === 'Enter') {
       const keyword = inputValue.trim();
@@ -51,7 +51,6 @@ const Chatbot = () => {
       }
     }
   };
-
   const getResults = (keyword) => {
     const regex = new RegExp(keyword, 'i');
     const matchingFAQs = FAQ.filter((faq) => regex.test(faq.question));
@@ -64,83 +63,30 @@ const Chatbot = () => {
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
-
+  const inputContainerClassess = defaultQuestion
+    ? 'input_show'
+    : 'input-container';
+  const inputTextClassess = isExpanded ? 'chat_input' : 'd-none';
+  const chathistoryClassess = defaultQuestion
+    ? 'chat-history_none'
+    : 'chat-history';
+  const isheaderHandlerIcon = isExpanded ? 'header' : ' header_iconNone';
   return (
     <div className={`chatbot-container${isExpanded ? ' expanded' : ''}`}>
-      <div
-        className={`${isExpanded ? 'header' : ' header_iconNone'}`}
-        onClick={toggleExpand}
-      >
+      <div className={isheaderHandlerIcon} onClick={toggleExpand}>
         <div className={`${isExpanded ? '' : 'icon'}`}></div>
       </div>
       {/* 聊天機器人展開狀態下，顯示預設問題列表 */}
       {isExpanded && (
-        <div className={`${defaultQuestion ? 'd-none' : 'chat-options'} `}>
-          <div
-            className="option"
-            onClick={() => {
-              setChatHistory([
-                ...chatHistory,
-                {
-                  question: '我要怎發表文章?',
-                  answer: '在首頁登入google帳號就能發表囉!',
-                },
-              ]);
-              setDefaultQuestion(true);
-            }}
-          >
-            我要怎發表文章?
-          </div>
-          <div
-            className="option"
-            onClick={() => {
-              setDefaultQuestion(true);
-              setChatHistory([
-                ...chatHistory,
-                {
-                  question: '這是個什麼樣的網站?',
-                  answer: '這是個會分享JS技術文章、React文章的blog!',
-                },
-              ]);
-            }}
-          >
-            這是什麼樣的網站?
-          </div>
-          <div
-            className="option"
-            onClick={() => {
-              setDefaultQuestion(true);
-              setChatHistory([
-                ...chatHistory,
-                {
-                  question: '如何開始互動呢?',
-                  answer: '可以輸入些關鍵字來查詢您的疑問',
-                },
-              ]);
-            }}
-          >
-            如何開始互動呢?
-          </div>
-          <div
-            className="option"
-            onClick={() => {
-              setChatHistory([
-                ...chatHistory,
-                { question: '版主是誰', answer: '可以到About那邊觀看唷~' },
-              ]);
-              setDefaultQuestion(true);
-            }}
-          >
-            版主是誰?
-          </div>
-        </div>
+        <DefaultQAChatBot
+          setChatHistory={setChatHistory}
+          setDefaultQuestion={setDefaultQuestion}
+          chatHistory={chatHistory}
+          defaultQuestion={defaultQuestion}
+        />
       )}
       <div className="content">
-        <div
-          className={`${
-            defaultQuestion ? 'chat-history_none' : 'chat-history'
-          } `}
-        >
+        <div className={chathistoryClassess}>
           {chatHistory.map((chat, index) => (
             <div
               key={index}
@@ -164,11 +110,9 @@ const Chatbot = () => {
             </div>
           ))}
         </div>
-        <div
-          className={`${defaultQuestion ? 'input_show' : 'input-container'}`}
-        >
+        <div className={inputContainerClassess}>
           <input
-            className={`${isExpanded ? 'chat_input' : 'd-none'}`}
+            className={inputTextClassess}
             type="text"
             value={inputValue}
             placeholder="請輸入您的問題"
