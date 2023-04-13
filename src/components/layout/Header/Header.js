@@ -1,13 +1,13 @@
-import { FaUser } from "react-icons/fa";
-import firebase from "../../../utils/firebase";
-import HomePaheHeader from "../../../pages/HomePageHeader/HomePageHeader";
-import { Link, useNavigate, NavLink } from "react-router-dom";
-import "./_Header.scss";
-import { useEffect, useState } from "react";
-import NewPosts from "../../../pages/NewPosts";
-import { handleWarningComfirm } from "../../../utils/handler/handleStatusCard";
-import Modal from "react-bootstrap/Modal";
-import logoPhoto from "../../../images/logo3.png";
+import { FaUser } from 'react-icons/fa';
+import firebase from '../../../utils/firebase';
+import HomePaheHeader from '../../../pages/HomePageHeader/HomePageHeader';
+import { Link, useNavigate, NavLink } from 'react-router-dom';
+import './_Header.scss';
+import { useEffect, useState } from 'react';
+import NewPosts from '../../../pages/NewPosts';
+import { handleWarningComfirm } from '../../../utils/handler/handleStatusCard';
+import Modal from 'react-bootstrap/Modal';
+import logoPhoto from '../../../images/logo3.png';
 
 const Header = ({ newPost, setNewPosts }) => {
   const navigate = useNavigate();
@@ -22,12 +22,12 @@ const Header = ({ newPost, setNewPosts }) => {
   }, []);
   function logout() {
     handleWarningComfirm(
-      "是否登出?",
+      '是否登出?',
       () => {
         firebase.auth().signOut();
-        navigate("/");
+        navigate('/');
       },
-      "歡迎再次登入來留言互動!"
+      '歡迎再次登入來留言互動!'
     );
   }
   const AuthBtn = () => {
@@ -43,7 +43,7 @@ const Header = ({ newPost, setNewPosts }) => {
       let lastScrollY = window.pageYOffset;
       const updateScrollDirection = () => {
         const scrollY = window.pageYOffset;
-        const direction = scrollY > lastScrollY ? "down" : "up";
+        const direction = scrollY > lastScrollY ? 'down' : 'up';
         if (
           direction !== scrollDirection &&
           (scrollY - lastScrollY > 10 || scrollY - lastScrollY < -10)
@@ -52,9 +52,9 @@ const Header = ({ newPost, setNewPosts }) => {
         }
         lastScrollY = scrollY > 0 ? scrollY : 0;
       };
-      window.addEventListener("scroll", updateScrollDirection); // add event listener
+      window.addEventListener('scroll', updateScrollDirection); // add event listener
       return () => {
-        window.removeEventListener("scroll", updateScrollDirection); // clean up
+        window.removeEventListener('scroll', updateScrollDirection); // clean up
       };
     }, [scrollDirection]);
 
@@ -65,7 +65,7 @@ const Header = ({ newPost, setNewPosts }) => {
     <>
       <div
         className={`header_main_body ${
-          scrollDirection === "down" ? "hide" : "show"
+          scrollDirection === 'down' ? 'hide' : 'show'
         }`}
       >
         <div className="header_main ">
@@ -85,10 +85,10 @@ const Header = ({ newPost, setNewPosts }) => {
                 <NavLink to="/AboutMe">
                   <li className="mx-xl-5 mx-md-4 mx-2">About</li>
                 </NavLink>
-                <NavLink to="/404">
+                <NavLink to="/404undefined">
                   <li className="mx-xl-5 mx-md-4 mx-2">Anything</li>
                 </NavLink>
-                <NavLink to="/404">
+                <NavLink to="/404undefined">
                   <li className="mx-xl-5 mx-md-4 mx-2">Portfolio</li>
                 </NavLink>
               </ul>
@@ -128,7 +128,7 @@ const Header = ({ newPost, setNewPosts }) => {
 
                     <div className="user-picture my-auto">
                       <img
-                        src={localStorage.getItem("profilePicture")}
+                        src={localStorage.getItem('profilePicture')}
                         alt=""
                       />
                     </div>

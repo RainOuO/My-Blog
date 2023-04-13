@@ -38,12 +38,15 @@ const HomePaheHeader = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/404" className="homepage-textlink-through">
+                <NavLink
+                  to="/404undefined"
+                  className="homepage-textlink-through"
+                >
                   <span>Anything</span>
                 </NavLink>
               </li>
               <li>
-                <Link to="/404" className="homepage-textlink-through">
+                <Link to="/404undefined" className="homepage-textlink-through">
                   <span>Portfolio</span>
                 </Link>
               </li>

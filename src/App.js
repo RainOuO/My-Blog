@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Footer from './components/layout/Footer';
 import Homepage from './pages/HomePage';
 import Post from './pages/Post';
@@ -10,10 +10,10 @@ import Mysettings from './pages/MySettings/Mysettings';
 import AboutMe from './pages/AboutMe';
 import Layouts from './components/layout/Layouts';
 import './styles/style.scss';
-// import firebase from './utils/firebase';
 import Loading from './components/layout/Loading';
 import Undefined404 from './pages/Undefined404';
 import { AuthConextProvider } from './hooks/auth-context';
+import ErrorPage from './pages/Error/Error';
 // import { io } from "socket.io-client";
 // const API_URL = process.env.REACT_APP_OPEN_URL;
 // const NgrokCookie = API_URL.replace("https://", "");
@@ -28,23 +28,50 @@ import { AuthConextProvider } from './hooks/auth-context';
 // const socket = socketIO.connect("http://localhost:3002");
 // const socket = io("wss://7e18-114-32-110-136.jp.ngrok.io");
 function App() {
+  const router = createBrowserRouter([
+    { path: '/', errorElement: <ErrorPage />, element: <Homepage /> },
+    {
+      element: <Layouts />,
+      children: [
+        {
+          path: '/AboutMe',
+          element: <AboutMe />,
+        },
+        {
+          path: '/post',
+          element: <Post />,
+        },
+        {
+          path: '/Loading',
+          element: <Loading />,
+        },
+        {
+          path: '/postInfo/:postId',
+          element: <PostInfo />,
+        },
+        {
+          path: '/my/posts',
+          element: <MyPosts />,
+        },
+        {
+          path: '/my/collections',
+          element: <Mycollections />,
+        },
+        {
+          path: '/my/settings',
+          element: <Mysettings />,
+        },
+        {
+          path: '/404undefined',
+          element: <Undefined404 />,
+        },
+      ],
+    },
+  ]);
   return (
     <div className="app">
       <AuthConextProvider>
-        <Routes>
-          <Route element={<Layouts />}>
-            <Route path="/AboutMe" element={<AboutMe />}></Route>
-            <Route path="/post" element={<Post />}></Route>
-            <Route path="/Loading" element={<Loading />}></Route>
-            <Route path="/postInfo/:postId" element={<PostInfo />}></Route>
-            <Route path="/my/posts" element={<MyPosts />}></Route>
-            <Route path="/my/collections" element={<Mycollections />}></Route>
-            <Route path="/my/settings" element={<Mysettings />}></Route>
-            <Route path="/404" element={<Undefined404 />}></Route>
-          </Route>
-          <Route path="/" element={<Homepage />} />
-        </Routes>
-        <Routes element={<Layouts />}></Routes>
+        <RouterProvider router={router} />
         <Footer />
       </AuthConextProvider>
     </div>
