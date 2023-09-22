@@ -69,6 +69,7 @@ function App() {
     },
   ]);
   return (
+    // 做個Context把provider傳進去app裡面 再把router也傳進去
     <div className="app">
       <AuthConextProvider>
         <RouterProvider router={router} />

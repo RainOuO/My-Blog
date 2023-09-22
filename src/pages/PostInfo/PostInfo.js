@@ -3,8 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import firebase from '../../utils/firebase';
 import { FcLike } from 'react-icons/fc';
 import { FcLikePlaceholder } from 'react-icons/fc';
-// import { BsBookmark } from 'react-icons/bs';
-// import { BsBookmarkFill } from 'react-icons/bs';
 import axios from 'axios';
 import { FaUserCircle } from 'react-icons/fa';
 import 'firebase/compat/storage';
@@ -21,6 +19,8 @@ const PostInfo = () => {
   const [commentContent, setCommentContent] = useState('');
   const [userMessage, setuserMessage] = useState({});
   const [comments, setComments] = useState('');
+  console.log('post', comments);
+
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     firebase
@@ -49,33 +49,9 @@ const PostInfo = () => {
         setComments(data);
       });
   }, [postId]);
-  // async function toggleCollected() {
-  //   const uid = firebase.auth().currentUser.uid;
 
-  //   if (isCollected) {
-  //     firebase
-  //       .firestore()
-  //       .collection("posts")
-  //       .doc(postId)
-  //       .update({
-  //         collectedBy: firebase.firestore.FieldValue.arrayRemove(uid),
-  //         // arrayUnion 是把陣列加進去 不管怎樣舊的值都不會被取代
-  //       });
-  //   } else {
-  //     firebase
-  //       .firestore()
-  //       .collection("posts")
-  //       .doc(postId)
-  //       .update({
-  //         collectedBy: firebase.firestore.FieldValue.arrayUnion(uid),
-  //         // arrayUnion 是把陣列加進去 不管怎樣舊的值都不會被取代
-  //       });
-  //   }
-  // }
-  // const isCollected = post.collectedBy?.includes(
-  //   firebase.auth().currentUser?.uid
-  // );
   function toggleLiked() {
+    // 刷新案讚的動態 回傳到Firebase上
     const email = firebase.auth().currentUser.email;
     const LikeuserPhoto = firebase.auth().currentUser.photoURL;
     const likeuser = firebase.auth().currentUser.displayName;
@@ -108,6 +84,7 @@ const PostInfo = () => {
     setCommentContent(e.target.value);
     setuserMessage(e.target.value);
   }
+  // 判斷哪個user點讚和大頭貼email
   const isLike = post.LikeBy?.includes(
     firebase.auth().currentUser?.displayName
   );
@@ -150,10 +127,15 @@ const PostInfo = () => {
       setCommentContent('');
       setIsLoading(false);
     });
+    // 傳送api post出去把留言內容+使用者名稱傳去line api
     try {
       const result = await axios.post(
         `${API_URL}/Rain0u0`,
-        { userMessage },
+        {
+          userMessage,
+          displayName: firebase.auth().currentUser.displayName,
+        },
+
         {
           withCredentials: true,
         }
@@ -184,21 +166,13 @@ const PostInfo = () => {
       '所以不能留言唷~點擊確認到首頁登入google吧!'
     );
   }
-  // function Collected(e) {
-  //   e.preventDefault();
-  //   handleWarningComfirm(
-  //     '你沒有登入',
-  //     () => {
-  //       navigate('/');
-  //     },
-  //     '所以不能收藏唷~點擊確認到首頁登入google吧!'
-  //   );
-  // }
+
   let usersLodaing = contextData.usersLodaing;
   console.log('usersLodaing', usersLodaing);
   return (
     <>
       <Chatbot />
+      {/* 偵測user有沒有登入 才能使用其他功能 */}
       {usersLodaing === null ? (
         <>
           <div className="boxheight"></div>
@@ -262,12 +236,6 @@ const PostInfo = () => {
                           >
                             {isLike ? <FcLike /> : <FcLikePlaceholder />}
                           </div>
-                          {/* <div
-                            className="isCollected mx-3 mt-1 "
-                            onClick={Collected}
-                          >
-                            {isCollected ? <BsBookmarkFill /> : <BsBookmark />}
-                          </div> */}
                         </div>
                       </div>
                     </div>

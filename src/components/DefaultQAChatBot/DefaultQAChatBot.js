@@ -8,6 +8,7 @@ const DefaultQAChatBot = ({
 }) => {
   console.log('chatHistory', chatHistory);
   console.log('defaultQuestion', defaultQuestion);
+  // 在聊天chatBot上顯示的提示按鈕 點擊後會回答您點選的問題答案
   return (
     <div className={`${defaultQuestion ? 'd-none' : 'chat-options'} `}>
       <div

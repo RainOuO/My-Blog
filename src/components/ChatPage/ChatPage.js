@@ -1,26 +1,26 @@
-import React, { useEffect, useState, useRef } from "react";
-import ChatBody from "./ChatBody";
-import ChatFooter from "./ChatFooter";
-import "./Chatpage.scss";
-import "./_Chatbot.scss";
-
+import React, { useEffect, useState, useRef } from 'react';
+import ChatBody from './ChatBody';
+import ChatFooter from './ChatFooter';
+import './Chatpage.scss';
+import './_Chatbot.scss';
+// !原本寫的socket.io 但不能上傳到線上 就沒繼續優化了
 const ChatPage = ({ socket }) => {
   const [messages, setMessages] = useState([]);
 
-  const [typingStatus, setTypingStatus] = useState("");
+  const [typingStatus, setTypingStatus] = useState('');
   const lastMessageRef = useRef(null);
 
   useEffect(() => {
-    socket.on("messageResponse", (data) => setMessages([...messages, data]));
+    socket.on('messageResponse', (data) => setMessages([...messages, data]));
   }, [socket, messages]);
 
   useEffect(() => {
-    socket.on("typingResponse", (data) => setTypingStatus(data));
+    socket.on('typingResponse', (data) => setTypingStatus(data));
   }, [socket]);
 
   useEffect(() => {
     // 👇️ scroll to bottom every time messages change
-    lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+    lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
   const [chatbot, setChatbot] = useState(false);
   // console.log(messages);
@@ -32,7 +32,7 @@ const ChatPage = ({ socket }) => {
           <div className="chat-icon"></div>
         </div>
       ) : (
-        ""
+        ''
       )}
       {chatbot === true ? (
         <>
@@ -61,7 +61,7 @@ const ChatPage = ({ socket }) => {
                       </div>
 
                       {messages.map((message) =>
-                        message.typeID !== "1" ? (
+                        message.typeID !== '1' ? (
                           <div className="message__chats" key={message.id}>
                             <p className="sender__name">{message.name}</p>
                             <div className="message__sender">
@@ -90,7 +90,7 @@ const ChatPage = ({ socket }) => {
               </div>
             </div>
           ) : (
-            ""
+            ''
           )}
           <ChatBody
             className="wrap"
@@ -100,7 +100,7 @@ const ChatPage = ({ socket }) => {
           />
         </>
       ) : (
-        ""
+        ''
       )}
     </div>
   );

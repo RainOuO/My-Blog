@@ -31,7 +31,24 @@ const Post = () => {
   const handleShow = () => setShow(true);
   const lastPostSnapshotRef = useRef();
   const userLikes = firebase.auth().currentUser?.displayName;
+  //第一次撈資料的useEffect
+  useEffect(() => {
+    firebase
+      .firestore()
+      .collection('posts')
+      .orderBy('createdAt', 'desc')
+      .limit(4)
+      .onSnapshot((querySnapshot) => {
+        const data = querySnapshot.docs.map((docSnapshot) => {
+          const id = docSnapshot.id;
+          return { ...docSnapshot.data(), id };
+        });
+        setPosts(data);
+      });
+  }, []);
+
   //fetchPosts是每次滑動時更多資訊出現
+  // 使用useCallback優化每次的function 只有contextData狀態改變才會執行此useCallback
   const fetchPosts = useCallback(() => {
     firebase
       .firestore()
@@ -50,6 +67,7 @@ const Post = () => {
       });
   }, [contextData]);
   const newPostHandler = contextData.newPost;
+  // 使用useMemo 把context的newPost狀態優化 不會每次更改就render
   const memoizedNewPostHandler = useMemo(
     () => newPostHandler,
     [newPostHandler]
@@ -65,21 +83,8 @@ const Post = () => {
       contextData.setNewPosts(false);
     }
   }, [contextData, fetchPosts, memoizedNewPostHandler]);
-  //第一次撈資料的useEffect
-  useEffect(() => {
-    firebase
-      .firestore()
-      .collection('posts')
-      .orderBy('createdAt', 'desc')
-      .limit(4)
-      .onSnapshot((querySnapshot) => {
-        const data = querySnapshot.docs.map((docSnapshot) => {
-          const id = docSnapshot.id;
-          return { ...docSnapshot.data(), id };
-        });
-        setPosts(data);
-      });
-  }, []);
+
+  //使用useCallback 只有誰點讚或是post頁面任何狀態改變時才會執行此函數
   const handleLike = useCallback(
     async (postId) => {
       let WhoLikesID = posts.filter((v) => v.id.includes(postId));
