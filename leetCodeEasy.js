@@ -173,6 +173,73 @@ let numVal = [0, 1, 0, 3, 12];
 const moveZeroesResult = moveZeroes(numVal);
 console.log('moveZeroesResult', moveZeroesResult);
 
+//-  88題
+
+/*
+Given two sorted integer arrays nums1 and nums2, merge nums2 into nums1 as one sorted array.
+Note: You may assume that nums1 has enough space (size that is greater or equal to m + n) 
+to hold additional elements from nums2. 
+The number of elements initialized in nums1 and nums2 are m and n respectively
+給兩個已經排序過的的整數陣列nums1與nums2，將nums2合併入nums1之中
+
+注意：
+nums1會有有足夠的空間可以塞入兩個陣列(nums1.length = m+n)，m為nums1的元素數量，n為nums2的元素數量
+
+範例： nums1 = [1,1,2,4,6,null,null,null], m = 5, nums2 = [2,3,7], n = 3
+合併後 nums1 = [1,1,2,2,3,4,6,7]
+ */
+//-  88題目開始
+
+const sortFN = function (nums1, m, nums2, n) {
+  let sortIndex = 0;
+  for (let i = m; i < m + n; i++) {
+    nums1[i] = nums2[sortIndex];
+    sortIndex++;
+    console.log('nums11', nums1);
+  }
+  for (let j = 0; j < nums1.length - 1; j++) {
+    for (let k = j + 1; k < nums1.length; k++) {
+      if (nums1[j] > nums1[k]) {
+        let temp = nums1[j];
+        nums1[j] = nums1[k];
+        nums1[k] = temp;
+      }
+    }
+  }
+  return nums1;
+};
+let nums1Sort = [1, 1, 2, 4, 6, null, null, null];
+let SortM = 5;
+let nums2Sort = [2, 3, 7];
+let SortN = 3;
+const resultSort = sortFN(nums1Sort, SortM, nums2Sort, SortN);
+console.log(resultSort);
+
+//! es6解法
+const sortFN6 = function (nums1, m, nums2, n) {
+  /*
+   for (let i = m, j = 0; j < n; i++, j++) {
+        nums1[i] = nums2[j];
+    }
+  nums1.sort((a, b) => a - b);
+  */
+  // 將 nums2 的元素追加到 nums1 中
+  nums1.splice(m, n, ...nums2);
+
+  // 使用 sort() 方法對整個數組進行排序
+  nums1.sort((a, b) => a - b);
+
+  return nums1;
+};
+
+let nums1Sort6 = [1, 2, 2, 4, 6, null, null, null];
+let SortM6 = 5;
+let nums2Sort6 = [2, 3, 7];
+let SortN6 = 3;
+
+const resultSort6 = sortFN6(nums1Sort6, SortM6, nums2Sort6, SortN6);
+console.log(resultSort6);
+
 /*
 兩數之和（Two Sum） - 題號：1
 
@@ -190,10 +257,10 @@ console.log('moveZeroesResult', moveZeroesResult);
 
 將整數轉換為羅馬數字表示形式。
 有效的括號（Valid Parentheses） - 題號：20
-
 判斷一個包含 '(', ')', '{', '}', '[' 和 ']' 的字符串是否有效。
-合併兩個有序數組（Merge Sorted Array） - 題號：88
 
+! 88題 OK
+合併兩個有序數組（Merge Sorted Array） - 題號：88
 合併兩個已排序的數組。
 移除元素（Remove Element） - 題號：27
 ! 27題 OK
@@ -206,6 +273,7 @@ console.log('moveZeroesResult', moveZeroesResult);
 
 合併兩個有序的鏈表。
 
+! 283題OK
 零移動（Move Zeroes） - 題號：283
 
 將數組中的所有零移動到末尾，保持其他元素的相對順序。
@@ -232,7 +300,7 @@ function transformSentence(appendWord) {
 
 const inputSentence = 'THis is A TeSt for sHort wOrds.';
 const Textresult = transformSentence(inputSentence);
-console.log(Textresult); // "Ths is a test for short words."
+// console.log(Textresult); // "Ths is a test for short words."
 
 // 第二題:攤平一個陣列內的元素，陣列內可能還有陣列多層崁套，最後的結果必須是小到大排序。
 function flattenAndSort(arr) {
@@ -249,4 +317,4 @@ function flattenAndSort(arr) {
 
 const nestedArray = [5, 2, [7, -1], 3, [6, [4, 9]]];
 const resultflatt = flattenAndSort(nestedArray);
-console.log(resultflatt); // [ -1, 2, 3, 4, 5, 6, 7, 9 ]
+// console.log(resultflatt); // [ -1, 2, 3, 4, 5, 6, 7, 9 ]
